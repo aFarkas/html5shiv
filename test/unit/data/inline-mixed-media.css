@@ -1,0 +1,22 @@
+
+@media screen {
+	article:before {
+	   content: "isfnotorprint";
+	   isfnotorprint: true;
+	}
+	article {
+	   content: "isfnotorprint";
+	   isfnotorprint: true;
+	}
+}
+
+@media print  {
+	article:before {
+	   content: "isforprint";
+	   isforprint: true;
+	}
+	article {
+	   content: "isforprint";
+	   isforprint: true;
+	}
+}

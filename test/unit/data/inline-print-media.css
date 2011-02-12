@@ -1,0 +1,11 @@
+
+@media print  {
+	article:before {
+	   content: "isforprint";
+	   isforprint: true;
+	}
+	article {
+	   content: "isforprint";
+	   isforprint: true;
+	}
+}

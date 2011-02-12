@@ -1,0 +1,28 @@
+
+.show_on_screen {
+	display: none;
+}
+.show_on_print {
+	display: block;
+}
+.print-body-class .dotted-with-body-class {
+	border-style: dotted;
+}
+#print-body-id .groove-with-body-id {
+	border-style: groove;
+}
+.dashed_on_print {
+	border-style: dashed;
+	
+}
+#section.section section p.groove-with-long-selector {
+	border-style: groove;
+	
+}
+#section.dotted-section-childs section {
+	border-style: dotted;
+}
+section article#foo {
+	border-style: double;
+}
+
