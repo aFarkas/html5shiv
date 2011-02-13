@@ -1,4 +1,3 @@
-
 .show_on_screen {
 	display: none;
 }
@@ -25,4 +24,9 @@
 section article#foo {
 	border-style: double;
 }
-
+@media print {
+	article.print-is-copied {
+		display: inline-block !important;
+		border-style: groove;
+	}
+}

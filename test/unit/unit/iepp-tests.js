@@ -154,11 +154,9 @@
 		delayed.test('equals', [$('.dotted-section-childs .iepp_section').css('borderBottomStyle'), 'dotted', "long selector test"]);
 		
 		delayed.test('equals', [$('#foo').css('borderBottomStyle'), 'double', "id selector test"]);
-		
-		
-		
-		
-		
+				
+		delayed.test('equals', [$('.print-is-copied').css('display'), 'inline-block', "print only styles are applied"]);
+				
 		iepp._afterPrint();
 		delayed.showResults();
 		
