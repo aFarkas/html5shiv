@@ -70,6 +70,7 @@
 		html.appendChild(bodyElem);
 		// Write iepp substitute print-safe document
 		bodyElem.className = body.className;
+		bodyElem.id = body.id;
 		// Replace HTML5 elements with <font> which is print-safe and shouldn't conflict since it isn't part of html5
 		bodyElem.innerHTML = body.innerHTML.replace(tagRegExp, '<$1font');
 	};
