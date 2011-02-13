@@ -17,6 +17,7 @@
 		head = html.firstChild,
 		bodyElem = doc.createElement('body'),
 		styleElem = doc.createElement('style'),
+		printMedias = /print|all/,
 		body;
 	function shim(doc) {
 		var a = -1;
@@ -33,9 +34,13 @@
 			cssTextArr = [];
 		while (++a < len) {
 			styleSheet = styleSheetList[a];
-			
+			//currently no test for disabled/alternate stylesheets
+			if(styleSheet.disabled){continue;}
+			mediaType = styleSheet.media || mediaType;
 			// Get css from all non-screen stylesheets and their imports
-			if ((mediaType = styleSheet.media || mediaType) != 'screen') cssTextArr.push(iepp.getCSS(styleSheet.imports, mediaType), styleSheet.cssText);
+			if (printMedias.test(mediaType)) cssTextArr.push(iepp.getCSS(styleSheet.imports, mediaType), styleSheet.cssText);
+			//reset mediaType to all with every new *not imported* stylesheet
+			mediaType = 'all';
 		}
 		return cssTextArr.join('');
 	};
