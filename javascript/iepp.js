@@ -26,6 +26,7 @@
 	}
 	
 	iepp.getCSS = function(styleSheetList, mediaType) {
+		if(styleSheetList+'' === undefined){return '';}
 		var a = -1,
 			len = styleSheetList.length,
 			styleSheet,
