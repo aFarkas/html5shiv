@@ -93,10 +93,49 @@
 	
 	module("parseCSS");
 	test("nothing here yet", function() {
-		expect(1);
+//		expect(1);
+		ieppStyleElement.media = 'all';
+		$('<div id="test-markup"><font class="iepp_article dotted">foo</font><font class="iepp_section dotted">bar</font><font class="iepp_aside dotted">bar</font></div>').appendTo('body');
+		var fontElements = ['font.iepp_article.dotted', 'font.iepp_section.dotted', 'font.iepp_aside.dotted'];
+		var parseCSS = function(style){
+			ieppStyleElement.styleSheet.cssText = style;
+			return iepp.parseCSS(ieppStyleElement.styleSheet.cssText);
+		};
+		var testParser1 = function(name, style, appliedTest){
+			appliedTest = appliedTest || 0; 
+			style = parseCSS(style);
+			ieppStyleElement.styleSheet.cssText = style;
+			
+			equals(style.split('{').length, style.split('}').length, "length of { equals length of } in parsed CSS: "+name);
+			for(var i = 0; i < appliedTest; i++){
+				ok($(fontElements[i]).css('borderBottomStyle') == 'dotted', "parsed styles can be applied:"+ name);
+			}
+			
+		};
+		
+		for(var i = 0; i < 3; i++){
+			ok($(fontElements[i]).css('borderBottomStyle') !== 'dotted', i+ ": self test: testobjects aren't dotted");
+		}
+		
+		testParser1("simple", "article.dotted, section.dotted, aside.dotted {border-style: dotted;}", 1);
+		testParser1("leading normal", "div {display: block} article.dotted, section.dotted, aside.dotted {border-style: dotted;}", 2);
+		testParser1("wrapping @media", "@media all { article.dotted, section.dotted, aside.dotted {border-style: dotted;} }", 2);
+		testParser1("@media in the middle", "article.dotted {border-style: dotted;} @media all { section.dotted {border-style: dotted;} } aside.dotted {border-style: dotted;}", 3);
+		
+		var css;
+		
+		css = parseCSS("article.article {display: none}");
+		ok(css.indexOf('.iepp_article.article') != 1, "simple selector is transformed correctly");
+		
+		if(parseInt($.browser.version, 10) > 6){
+			css = parseCSS("#article article#section[data-article='article'].article {display: none}");
+			ok(css.indexOf('#article .iepp_article#section[data-article="article"].article') != 1, "complex selector is transformed correctly");
+		}
 		
 		
-		ok(true, "ToDo")
+		
+		ieppStyleElement.styleSheet.cssText = '';
+		$('#test-markup').remove();
 	});
 	
 	

@@ -1,7 +1,9 @@
-.show_on_screen {
+section.show_on_screen,
+article.show_on_screen {
 	display: none;
 }
-.show_on_print {
+section.show_on_print,
+article.show_on_print {
 	display: block;
 }
 .print-body-class .dotted-with-body-class {
