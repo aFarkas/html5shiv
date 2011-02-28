@@ -92,7 +92,7 @@
 	
 	
 	module("parseCSS");
-	test("nothing here yet", function() {
+	test("simple css tests", function() {
 //		expect(1);
 		ieppStyleElement.media = 'all';
 		$('<div id="test-markup"><font class="iepp_article dotted">foo</font><font class="iepp_section dotted">bar</font><font class="iepp_aside dotted">bar</font></div>').appendTo('body');
@@ -119,8 +119,11 @@
 		
 		testParser1("simple", "article.dotted, section.dotted, aside.dotted {border-style: dotted;}", 1);
 		testParser1("leading normal", "div {display: block} article.dotted, section.dotted, aside.dotted {border-style: dotted;}", 2);
+		testParser1("leading normal with following normal/html5 element", "div {display: block} div article.dotted, section.dotted, aside.dotted {border-style: dotted;}", 2);
 		testParser1("wrapping @media", "@media all { article.dotted, section.dotted, aside.dotted {border-style: dotted;} }", 2);
+		testParser1("wrapping @media with following normal/html5 element", "@media all { div article.dotted, section.dotted, #test-markup aside.dotted {border-style: dotted;} }", 2);
 		testParser1("@media in the middle", "article.dotted {border-style: dotted;} @media all { section.dotted {border-style: dotted;} } aside.dotted {border-style: dotted;}", 3);
+		testParser1("@media in the middle with following normal/html5 element", "article.dotted {border-style: dotted;} @media all { body section.dotted {border-style: dotted;} } div aside.dotted {border-style: dotted;}", 3);
 		
 		var css;
 		

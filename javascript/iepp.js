@@ -11,6 +11,7 @@
 		elemsArrLen = elemsArr.length,
 		elemRegExp = new RegExp('(^|\\s)('+elems+')', 'gi'), 
 		tagRegExp = new RegExp('<(\/*)('+elems+')', 'gi'),
+		filterReg = /^\s*[\{\}]\s*$/,
 		ruleRegExp = new RegExp('(^|[^\\n]*?\\s)('+elems+')([^\\n]*)({[\\n\\w\\W]*?})', 'gi'),
 		docFrag = doc.createDocumentFragment(),
 		html = doc.documentElement,
@@ -48,9 +49,10 @@
 	iepp.parseCSS = function(cssText) {
 		var cssTextArr = [],
 			rule;
-		while ((rule = ruleRegExp.exec(cssText)) != null)
+		while ((rule = ruleRegExp.exec(cssText)) != null){
 			// Replace all html5 element references with iepp substitute classnames
-			cssTextArr.push((rule[1]+rule[2]+rule[3]).replace(elemRegExp, '$1.iepp_$2')+rule[4]);
+			cssTextArr.push(( (filterReg.exec(rule[1]) ? '\n' : rule[1]) +rule[2]+rule[3]).replace(elemRegExp, '$1.iepp_$2')+rule[4]);
+		}
 		return cssTextArr.join('\n');
 	};
 	
