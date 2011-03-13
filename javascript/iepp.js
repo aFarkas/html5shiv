@@ -84,15 +84,20 @@
 		iepp.writeHTML();
 	};
 	
-	iepp._afterPrint = function(){
+	iepp.restoreHTML = function(){
 		// Undo everything done in onbeforeprint
 		bodyElem.innerHTML = '';
 		html.removeChild(bodyElem);
 		html.appendChild(body);
+	};
+	
+	iepp._afterPrint = function(){
+		// Undo everything done in onbeforeprint
+		iepp.restoreHTML();
 		styleElem.styleSheet.cssText = '';
 	};
 	
-	iepp.restoreHTML = iepp._afterPrint;
+	
 	
 	// Shim the document and iepp fragment
 	shim(doc);
