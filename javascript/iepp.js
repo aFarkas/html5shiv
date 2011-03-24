@@ -104,7 +104,7 @@
 	shim(docFrag);
 	
 	//
-	if(iepp.printProtection){return;}
+	if(iepp.disablePP){return;}
 	
 	// Add iepp custom print style element
 	head.insertBefore(styleElem, head.firstChild);
