@@ -1,7 +1,7 @@
 /*! iepp v2.0 MIT @jon_neal & afarkas */
 (function(win, doc) {
 	//taken from modernizr
-	if ( !window.attachEvent || !doc.createStyleSheet || !(function(){ var elem = document.createElement("div"); elem.innerHTML = "<elem></elem>"; return elem.childNodes.length !== 1; })()) {
+	if ( !window.attachEvent || !doc.createStyleSheet || !(function() { var elem = document.createElement("div"); elem.innerHTML = "<elem></elem>"; return elem.childNodes.length !== 1; }()) ) {
 		return;
 	}
 	win.iepp = win.iepp || {};
@@ -22,13 +22,16 @@
 		body;
 	function shim(doc) {
 		var a = -1;
-		while (++a < elemsArrLen)
+		while (++a < elemsArrLen) {
 			// Use createElement so IE allows HTML5-named elements in a document
 			doc.createElement(elemsArr[a]);
+		}
 	}
 	
 	iepp.getCSS = function(styleSheetList, mediaType) {
-		if(styleSheetList+'' === undefined){return '';}
+		if (!styleSheetList) {
+			return '';
+		}
 		var a = -1,
 			len = styleSheetList.length,
 			styleSheet,
@@ -36,7 +39,9 @@
 		while (++a < len) {
 			styleSheet = styleSheetList[a];
 			//currently no test for disabled/alternate stylesheets
-			if(styleSheet.disabled){continue;}
+			if (styleSheet.disabled) {
+				continue;
+			}
 			mediaType = styleSheet.media || mediaType;
 			// Get css from all non-screen stylesheets and their imports
 			if (printMedias.test(mediaType)) cssTextArr.push(iepp.getCSS(styleSheet.imports, mediaType), styleSheet.cssText);
@@ -51,7 +56,7 @@
 			rule;
 		while ((rule = ruleRegExp.exec(cssText)) != null){
 			// Replace all html5 element references with iepp substitute classnames
-			cssTextArr.push(( (filterReg.exec(rule[1]) ? '\n' : rule[1]) +rule[2]+rule[3]).replace(elemRegExp, '$1.iepp_$2')+rule[4]);
+			cssTextArr.push(( (filterReg.exec(rule[1]) ? '\n' : rule[1]) +rule[2]+rule[3]).replace(elemRegExp, '$1.iepp-$2')+rule[4]);
 		}
 		return cssTextArr.join('\n');
 	};
@@ -64,9 +69,9 @@
 				nodeListLen = nodeList.length,
 				b = -1;
 			while (++b < nodeListLen)
-				if (nodeList[b].className.indexOf('iepp_') < 0)
+				if (nodeList[b].className.indexOf('iepp-') < 0)
 					// Append iepp substitute classnames to all html5 elements
-					nodeList[b].className += ' iepp_'+elemsArr[a];
+					nodeList[b].className += ' iepp-'+elemsArr[a];
 		}
 		docFrag.appendChild(body);
 		html.appendChild(bodyElem);
@@ -84,27 +89,27 @@
 		iepp.writeHTML();
 	};
 	
-	iepp.restoreHTML = function(){
+	iepp.restoreHTML = function() {
 		// Undo everything done in onbeforeprint
 		bodyElem.innerHTML = '';
 		html.removeChild(bodyElem);
 		html.appendChild(body);
 	};
 	
-	iepp._afterPrint = function(){
+	iepp._afterPrint = function() {
 		// Undo everything done in onbeforeprint
 		iepp.restoreHTML();
 		styleElem.styleSheet.cssText = '';
 	};
-	
-	
 	
 	// Shim the document and iepp fragment
 	shim(doc);
 	shim(docFrag);
 	
 	//
-	if(iepp.disablePP){return;}
+	if (iepp.disablePP) {
+		return;
+	}
 	
 	// Add iepp custom print style element
 	head.insertBefore(styleElem, head.firstChild);
@@ -118,4 +123,4 @@
 		'onafterprint',
 		iepp._afterPrint
 	);
-})(this, document);
+}(this, document));
