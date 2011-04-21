@@ -15,7 +15,7 @@
 		ruleRegExp = new RegExp('(^|[^\\n]*?\\s)('+elems+')([^\\n]*)({[\\n\\w\\W]*?})', 'gi'),
 		docFrag = doc.createDocumentFragment(),
 		html = doc.documentElement,
-		head = html.firstChild,
+		head = doc.getElementsByTagName('script')[0].parentNode,
 		bodyElem = doc.createElement('body'),
 		styleElem = doc.createElement('style'),
 		printMedias = /print|all/,
