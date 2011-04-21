@@ -20,8 +20,21 @@
 		link.href = src;
 		
 	};
-	
 	var ieppStyleElement = $('style.iepp-printshim')[0];
+	var delayed = {
+		store: [],
+		test: function(name, args){
+			this.store.push({name: name, args: args})
+		},
+		showResults: function(){
+			$.each(this.store, function(i, test){
+				window[test.name].apply(window, test.args);
+			});
+			this.store = [];
+		}
+	};
+	
+	
 	
 	
 	
@@ -142,39 +155,27 @@
 	});
 	
 	
-	module("writeHTML");
+	module("writeHTML/restoreHTML");
 	test("nothing here yet", function() {
-		expect(1);
+		//test writeHTML
+		iepp.writeHTML();
+		delayed.test('equals', [$('form').attr('action'), '/test/ test', "action attribute works"]);
+		delayed.test('equals', [$('form div.inside-of-form').length, 1, "action='test/' does no't selfclose form in printview"]);
 		
-		//test rewrite
+		iepp.restoreHTML();
+		delayed.showResults();
 		
-		ok(true, "ToDo")
+		//restoreHTML
+		equals($('form div.inside-of-form').length, 1, "action='test/test' does no't selfclose form");
 	});
 	
-	module("restoreHTML");
-	test("nothing here yet", function() {
-		expect(1);
-		
-		
-		ok(true, "ToDo")
-	});
+	
 	
 	
 	module("print styles applyed");
 	test("beforePrint/afterPrint", function() {
 //		expect(1);
 		
-		var delayed = {
-			store: [],
-			test: function(name, args){
-				this.store.push({name: name, args: args})
-			},
-			showResults: function(){
-				$.each(this.store, function(i, test){
-					window[test.name].apply(window, test.args);
-				});
-			}
-		};
 		removStyles();
 		ieppStyleElement.media = 'all';
 		addLink('data/print-styles.css', 'all');
