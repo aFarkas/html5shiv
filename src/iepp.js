@@ -86,9 +86,7 @@
 	
 	iepp.restoreHTML = function(){
 		// Undo everything done in onbeforeprint
-		bodyElem.innerHTML = '';
-		html.removeChild(bodyElem);
-		html.appendChild(body);
+		bodyElem.swapNode(body);
 	};
 	
 	iepp._afterPrint = function(){
