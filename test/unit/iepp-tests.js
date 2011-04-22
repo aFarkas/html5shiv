@@ -50,7 +50,7 @@
 			ok(!window.iepp, 'iepp has not to be initialized');
 			return;
 		}
-		
+		if(!window.iepp){return;}
 		ok(iepp.getCSS(document.styleSheets, 'all') !== "", 'found some print styles');
 		removStyles();
 		ok(iepp.getCSS(document.styleSheets, 'all') === "", 'all print styles removed');

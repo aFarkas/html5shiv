@@ -1,4 +1,4 @@
-/*! iepp v2.0 MIT @jon_neal & afarkas */
+/*! iepp v2.1pre MIT @jon_neal & afarkas */
 (function(win, doc) {
 	//taken from modernizr
 	if ( !window.attachEvent || !doc.createStyleSheet || !(function(){ var elem = document.createElement("div"); elem.innerHTML = "<elem></elem>"; return elem.childNodes.length !== 1; })()) {
@@ -28,7 +28,11 @@
 	}
 	
 	iepp.getCSS = function(styleSheetList, mediaType) {
-		if(styleSheetList+'' === undefined){return '';}
+		try {
+			if(styleSheetList+'' === undefined){return '';}
+		} catch(er){
+			return '';
+		}
 		var a = -1,
 			len = styleSheetList.length,
 			styleSheet,
