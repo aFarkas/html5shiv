@@ -108,8 +108,8 @@
 	test("simple css tests", function() {
 //		expect(1);
 		ieppStyleElement.media = 'all';
-		$('<div id="test-markup"><font class="iepp_article dotted">foo</font><font class="iepp_section dotted">bar</font><font class="iepp_aside dotted">bar</font></div>').appendTo('body');
-		var fontElements = ['font.iepp_article.dotted', 'font.iepp_section.dotted', 'font.iepp_aside.dotted'];
+		$('<div id="test-markup"><font class="iepp-article dotted">foo</font><font class="iepp-section dotted">bar</font><font class="iepp-aside dotted">bar</font></div>').appendTo('body');
+		var fontElements = ['font.iepp-article.dotted', 'font.iepp-section.dotted', 'font.iepp-aside.dotted'];
 		var parseCSS = function(style){
 			ieppStyleElement.styleSheet.cssText = style;
 			return iepp.parseCSS(ieppStyleElement.styleSheet.cssText);
@@ -141,11 +141,11 @@
 		var css;
 		
 		css = parseCSS("article.article {display: none}");
-		ok(css.indexOf('.iepp_article.article') != 1, "simple selector is transformed correctly");
+		ok(css.indexOf('.iepp-article.article') != 1, "simple selector is transformed correctly");
 		
 		if(parseInt($.browser.version, 10) > 6){
 			css = parseCSS("#article article#section[data-article='article'].article {display: none}");
-			ok(css.indexOf('#article .iepp_article#section[data-article="article"].article') != 1, "complex selector is transformed correctly");
+			ok(css.indexOf('#article .iepp-article#section[data-article="article"].article') != 1, "complex selector is transformed correctly");
 		}
 		
 		
@@ -194,7 +194,7 @@
 		
 		delayed.test('equals', [$('p.groove-with-long-selector').css('borderBottomStyle'), 'groove', "long selector test"]);
 		
-		delayed.test('equals', [$('.dotted-section-childs .iepp_section').css('borderBottomStyle'), 'dotted', "long selector test"]);
+		delayed.test('equals', [$('.dotted-section-childs .iepp-section').css('borderBottomStyle'), 'dotted', "long selector test"]);
 		
 		delayed.test('equals', [$('#foo').css('borderBottomStyle'), 'double', "id selector test"]);
 				

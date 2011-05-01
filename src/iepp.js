@@ -20,16 +20,20 @@
 		styleElem = doc.createElement('style'),
 		printMedias = /print|all/,
 		body;
+
 	function shim(doc) {
 		var a = -1;
-		while (++a < elemsArrLen)
+		while (++a < elemsArrLen) {
 			// Use createElement so IE allows HTML5-named elements in a document
 			doc.createElement(elemsArr[a]);
+		}
 	}
 	
 	iepp.getCSS = function(styleSheetList, mediaType) {
 		try {
-			if(styleSheetList+'' === undefined){return '';}
+			if(styleSheetList+'' === undefined){
+				return '';
+			}
 		} catch(er){
 			return '';
 		}
@@ -40,10 +44,14 @@
 		while (++a < len) {
 			styleSheet = styleSheetList[a];
 			//currently no test for disabled/alternate stylesheets
-			if(styleSheet.disabled){continue;}
+			if(styleSheet.disabled){
+				continue;
+			}
 			mediaType = styleSheet.media || mediaType;
 			// Get css from all non-screen stylesheets and their imports
-			if (printMedias.test(mediaType)) cssTextArr.push(iepp.getCSS(styleSheet.imports, mediaType), styleSheet.cssText);
+			if (printMedias.test(mediaType)){
+				cssTextArr.push(iepp.getCSS(styleSheet.imports, mediaType), styleSheet.cssText);
+			}
 			//reset mediaType to all with every new *not imported* stylesheet
 			mediaType = 'all';
 		}
@@ -55,7 +63,7 @@
 			rule;
 		while ((rule = ruleRegExp.exec(cssText)) != null){
 			// Replace all html5 element references with iepp substitute classnames
-			cssTextArr.push(( (filterReg.exec(rule[1]) ? '\n' : rule[1]) +rule[2]+rule[3]).replace(elemRegExp, '$1.iepp_$2')+rule[4]);
+			cssTextArr.push(( (filterReg.exec(rule[1]) ? '\n' : rule[1]) + rule[2] + rule[3]).replace(elemRegExp, '$1.iepp-$2') + rule[4]);
 		}
 		return cssTextArr.join('\n');
 	};
@@ -67,10 +75,13 @@
 			var nodeList = doc.getElementsByTagName(elemsArr[a]),
 				nodeListLen = nodeList.length,
 				b = -1;
-			while (++b < nodeListLen)
-				if (nodeList[b].className.indexOf('iepp_') < 0)
+			while (++b < nodeListLen){
+				if (nodeList[b].className.indexOf('iepp-') < 0){
 					// Append iepp substitute classnames to all html5 elements
-					nodeList[b].className += ' iepp_'+elemsArr[a];
+					nodeList[b].className += ' iepp-'+elemsArr[a];
+				}
+			}
+				
 		}
 		docFrag.appendChild(body);
 		html.appendChild(bodyElem);
@@ -81,32 +92,33 @@
 		bodyElem.innerHTML = body.innerHTML.replace(tagRegExp, '<$1font');
 	};
 	
-	
 	iepp._beforePrint = function() {
+		if(iepp.disablePP){return;}
 		// Write iepp custom print CSS
 		styleElem.styleSheet.cssText = iepp.parseCSS(iepp.getCSS(doc.styleSheets, 'all'));
 		iepp.writeHTML();
 	};
 	
-	iepp.restoreHTML = function(){
+	iepp.restoreHTML = function() {
+		if(iepp.disablePP){return;}
 		// Undo everything done in onbeforeprint
 		bodyElem.swapNode(body);
 	};
 	
-	iepp._afterPrint = function(){
+	iepp._afterPrint = function() {
 		// Undo everything done in onbeforeprint
 		iepp.restoreHTML();
 		styleElem.styleSheet.cssText = '';
 	};
-	
-	
 	
 	// Shim the document and iepp fragment
 	shim(doc);
 	shim(docFrag);
 	
 	//
-	if(iepp.disablePP){return;}
+	if(iepp.disablePP){
+		return;
+	}
 	
 	// Add iepp custom print style element
 	head.insertBefore(styleElem, head.firstChild);
