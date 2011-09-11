@@ -1,5 +1,5 @@
 
-@media screen {
+@media screen, handheld {
 	article:before {
 	   content: "isfnotorprint";
 	   isfnotorprint: true;
@@ -7,6 +7,17 @@
 	article {
 	   content: "isfnotorprint";
 	   isfnotorprint: true;
+	}
+	   }
+
+@media all {
+	article:before {
+	   content: "isforprint";
+	   isforprint: true;
+	}
+	article {
+	   content: "isforprint";
+	   isforprint: true;
 	}
 }
 

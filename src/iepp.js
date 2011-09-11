@@ -1,4 +1,4 @@
-/*! iepp v2.1 MIT/GPL2 @jon_neal & afarkas */
+/*! iepp v2.2pre MIT/GPL2 @jon_neal & afarkas */
 (function(win, doc) {
 	//taken from modernizr
 	if ( !window.attachEvent || !doc.createStyleSheet || !(function(){ var elem = document.createElement("div"); elem.innerHTML = "<elem></elem>"; return elem.childNodes.length !== 1; })()) {
@@ -13,6 +13,7 @@
 		tagRegExp = new RegExp('<(\/*)('+elems+')', 'gi'),
 		filterReg = /^\s*[\{\}]\s*$/,
 		ruleRegExp = new RegExp('(^|[^\\n]*?\\s)('+elems+')([^\\n]*)({[\\n\\w\\W]*?})', 'gi'),
+		nonPrintMedias = /@media +(?![Print|All])[^{]+\{([^{}]+\{[^{}]+\})+[^}]+\}/g,
 		docFrag = doc.createDocumentFragment(),
 		html = doc.documentElement,
 		head = doc.getElementsByTagName('script')[0].parentNode,
@@ -40,6 +41,7 @@
 		var a = -1,
 			len = styleSheetList.length,
 			styleSheet,
+			cssText,
 			cssTextArr = [];
 		while (++a < len) {
 			styleSheet = styleSheetList[a];
@@ -50,7 +52,11 @@
 			mediaType = styleSheet.media || mediaType;
 			// Get css from all non-screen stylesheets and their imports
 			if (printMedias.test(mediaType)){
-				cssTextArr.push(iepp.getCSS(styleSheet.imports, mediaType), styleSheet.cssText);
+				cssText = styleSheet.cssText;
+				if(mediaType != 'print'){
+					cssText = cssText.replace(nonPrintMedias, "");
+				}
+				cssTextArr.push(iepp.getCSS(styleSheet.imports, mediaType), cssText);
 			}
 			//reset mediaType to all with every new *not imported* stylesheet
 			mediaType = 'all';
