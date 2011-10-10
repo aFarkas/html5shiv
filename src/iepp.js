@@ -1,4 +1,4 @@
-/*! iepp v2.2pre MIT/GPL2 @jon_neal & afarkas */
+/*! iepp v2.3pre MIT/GPL2 @jon_neal & afarkas */
 (function(win, doc) {
 	//taken from modernizr
 	if ( !window.attachEvent || !doc.createStyleSheet || !(function(){ var elem = document.createElement("div"); elem.innerHTML = "<elem></elem>"; return elem.childNodes.length !== 1; })()) {
@@ -75,8 +75,11 @@
 	};
 	
 	iepp.writeHTML = function() {
+		if(iepp.disablePP){return;}
+		
 		var a = -1;
 		body = body || doc.body;
+		
 		while (++a < elemsArrLen) {
 			var nodeList = doc.getElementsByTagName(elemsArr[a]),
 				nodeListLen = nodeList.length,
@@ -89,16 +92,50 @@
 			}
 				
 		}
+		
 		docFrag.appendChild(body);
+		
 		html.appendChild(bodyElem);
 		// Write iepp substitute print-safe document
 		bodyElem.className = body.className;
 		bodyElem.id = body.id;
 		// Replace HTML5 elements with <font> which is print-safe and shouldn't conflict since it isn't part of html5
 		bodyElem.innerHTML = body.innerHTML.replace(tagRegExp, '<$1font');
+		
+	};
+		
+	iepp._autoDisable = iepp._autoDisable || function(){
+		if(iepp.disablePP){return;}
+		
+		var iframes, 
+			i = 0, 
+			opac = /opacity=[', "]*0/i,
+			iHeight,
+			iWidth,
+			len;
+			
+		if(win.parent != win){
+			iepp.disablePP = true;
+			return;
+		}
+		
+		iframes = doc.getElementsByTagName('iframe');
+		
+		for(len = iframes.length; i < len; i++){
+			//if we deal with a content iframe, we should disable iepp
+			iHeight = iframes[i].offsetHeight;
+			iWidth = iframes[i].offsetWidth;
+			//content iframe assumption
+			if( ( (iHeight > 99 && iWidth > 750) || (iHeight > 299 && iWidth > 340)  ) && iframes[i].currentStyle.visibility != 'hidden' && !opac.test(iframes[i].currentStyle.filter || '') ){
+				iepp.disablePP = true;
+				break;
+			}
+		}
 	};
 	
 	iepp._beforePrint = function() {
+		iepp._autoDisable();
+		
 		if(iepp.disablePP){return;}
 		// Write iepp custom print CSS
 		styleElem.styleSheet.cssText = iepp.parseCSS(iepp.getCSS(doc.styleSheets, 'all'));
@@ -106,13 +143,12 @@
 	};
 	
 	iepp.restoreHTML = function() {
-		if(iepp.disablePP){return;}
-		// Undo everything done in onbeforeprint
 		bodyElem.swapNode(body);
 	};
 	
 	iepp._afterPrint = function() {
 		// Undo everything done in onbeforeprint
+		if(iepp.disablePP){return;}
 		iepp.restoreHTML();
 		styleElem.styleSheet.cssText = '';
 	};
