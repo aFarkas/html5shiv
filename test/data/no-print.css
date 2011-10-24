@@ -1,9 +1,0 @@
-
-article:before {
-   content: "isfnotorprint";
-   isfnotorprint: true;
-}
-article {
-   content: "isfnotorprint";
-   isfnotorprint: true;
-}
