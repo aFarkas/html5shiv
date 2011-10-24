@@ -1,0 +1,26 @@
+<PUBLIC:COMPONENT lightWeight="true">
+
+<PUBLIC:ATTACH EVENT="onreadystatechange" FOR="document" ONEVENT="init()" />
+
+<SCRIPT>
+	var doc = element.document;
+	var done = false;
+	if(doc.media == 'print'){
+		"abbr article aside audio canvas datalist details figcaption figure footer header hgroup mark meter nav output progress section subline summary time video".replace(/\w+/g,function(n){doc.createElement(n)})
+	}
+	
+	function init(){
+		if(!done && doc.media == 'print' && doc.readyState == 'complete'){
+			if(doc.body){
+				doc.body.innerHTML = doc.body.innerHTML;
+				done = true;
+			} else {
+				setTimeout(init, 9);
+			}
+		}
+	}
+	if(doc.readyState == 'complete'){
+		init();
+	}
+</SCRIPT>
+</PUBLIC:COMPONENT>
