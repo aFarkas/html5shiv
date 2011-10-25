@@ -25,7 +25,9 @@ How To Use
 * make sure that your server serves .htc files with 'text/x-component' mime type
 
 ---------------
+
 AddType text/x-component .htc
+
 ---------------
 
 
