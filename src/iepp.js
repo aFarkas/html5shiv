@@ -1,4 +1,4 @@
-(function(window, document) {
+(function(window, document, location) {
 	//taken from modernizr
 	if ( !window.attachEvent || !document.createStyleSheet || !(function(){ var elem = document.createElement("div"); elem.innerHTML = "<elem></elem>"; return elem.childNodes.length !== 1; })()) {
 		return;
@@ -10,10 +10,13 @@
 	var path = (scripts[scripts.length -1].src || '').split('?')[0];
 	path = path.slice(0, path.lastIndexOf("/") + 1);
 	
-	//todo: test if path is same origin
-	//do we need -ms-behavior?
-	document.createStyleSheet().addRule('head', 'behavior: url('+ path +'iepp.htc);');
+	//todo: test if path is same origin 
+	try {
+		setTimeout(function(){
+			document.createStyleSheet().addRule('head', 'behavior: url('+ path +'iepp.htc);');
+		}, 1);
+	} catch(er){}
 	
 	
-})(window, document);
+})(window, document, location);
 
