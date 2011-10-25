@@ -27,3 +27,9 @@ How To Use
 ---------------
 AddType text/x-component .htc
 ---------------
+
+
+How To Use
+------------------
+
+iepp.js and iepp.htc has to be served from the same domain as the HTML, which uses iepp.
