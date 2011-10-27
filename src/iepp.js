@@ -7,15 +7,13 @@
 	"abbr article aside audio canvas datalist details figcaption figure footer header hgroup mark meter nav output progress section subline summary time video".replace(/\w+/g,function(n){document.createElement(n);});
 	
 	var scripts = document.scripts;
-	var path = (scripts[scripts.length -1].src || '').split('?')[0];
+	var path = scripts[scripts.length -1].getAttribute('src', 2).split('?')[0];
 	path = path.slice(0, path.lastIndexOf("/") + 1);
 	
-	//todo: test if path is same origin 
-	try {
-		setTimeout(function(){
-			document.createStyleSheet().addRule('head', 'behavior: url('+ path +'iepp.htc);');
-		}, 1);
-	} catch(er){}
+	//todo: test if same origin test works fine
+	if(path.indexOf('//') < 1 || path.indexOf(location.protocol +'//'+ location.host) === 0){
+		document.createStyleSheet().addRule('head', 'behavior: url('+ path +'iepp.htc);');
+	}
 	
 	
 })(window, document, location);
