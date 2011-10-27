@@ -1,26 +1,18 @@
 <PUBLIC:COMPONENT lightWeight="true">
 
-<PUBLIC:ATTACH EVENT="onreadystatechange" FOR="document" ONEVENT="init()" />
+<PUBLIC:ATTACH EVENT="onreadystatechange" FOR="document" ONEVENT="shim()" />
 
 <SCRIPT>
-	var doc = element.document;
-	var done = false;
-	if(doc.media == 'print'){
-		"abbr article aside audio canvas datalist details figcaption figure footer header hgroup mark meter nav output progress section subline summary time video".replace(/\w+/g,function(n){doc.createElement(n)})
+	function shim() {
+		var doc = element.document;
+		if(doc.readyState != 'complete' || doc.media != 'print'){return;}
+		// search for the unbelievable
+		var shim = false, shimmed = {}, es = doc.getElementsByTagName('*'), l = es.length, i = -1, e;
+		// detect the unbelievable and begin to believe
+		while (++i < l && (e = es[i].nodeName)) if (e && !shimmed[e] && e.substr(0,1) === '/' && (shim = shimmed[e] = true)) doc.createElement(e.substr(1));
+		// reconsider everything after any newfound belief
+		if (shim) doc.body.innerHTML = doc.body.innerHTML;
 	}
-	
-	function init(){
-		if(!done && doc.media == 'print' && doc.readyState == 'complete'){
-			if(doc.body){
-				doc.body.innerHTML = doc.body.innerHTML;
-				done = true;
-			} else {
-				setTimeout(init, 9);
-			}
-		}
-	}
-	if(doc.readyState == 'complete'){
-		init();
-	}
+	shim();
 </SCRIPT>
 </PUBLIC:COMPONENT>
