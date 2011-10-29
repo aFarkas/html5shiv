@@ -4,7 +4,7 @@
 		return;
 	}
 	
-	"abbr article aside audio canvas datalist details figcaption figure footer header hgroup mark meter nav output progress section subline summary time video".replace(/\w+/g,function(n){document.createElement(n);});
+	"abbr article aside audio canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section subline summary time video".replace(/\w+/g,function(n){document.createElement(n);});
 	
 	var scripts = document.scripts;
 	var path = scripts[scripts.length -1].getAttribute('src', 2).split('?')[0];
