@@ -6,7 +6,7 @@
 	}
 	win.iepp = win.iepp || {};
 	var iepp = win.iepp,
-		elems = iepp.html5elements || 'abbr|article|aside|audio|canvas|datalist|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|subline|summary|time|video',
+		elems = iepp.html5elements || 'abbr|article|aside|audio|canvas|data|datalist|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|subline|summary|time|video',
 		elemsArr = elems.split('|'),
 		elemsArrLen = elemsArr.length,
 		elemRegExp = new RegExp('(^|\\s)('+elems+')', 'gi'), 
