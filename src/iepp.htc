@@ -7,9 +7,9 @@
 		var doc = element.document;
 		if(doc.readyState != 'complete' || doc.media != 'print'){return;}
 		// search for the unbelievable
-		var shim = false, shimmed = {}, es = doc.getElementsByTagName('*'), l = es.length, i = -1, e;
+		var shim = false, shimmed = {}, es = doc.body.getElementsByTagName('*'), l = es.length, i = -1, e;
 		// detect the unbelievable and begin to believe
-		while (++i < l && (e = es[i].nodeName)) if (e && !shimmed[e] && e.substr(0,1) === '/' && (shim = shimmed[e] = true)) doc.createElement(e.substr(1));
+		while (++i < l) if ((e = es[i].nodeName) && !shimmed[e] && e.substr(0,1) === '/' && (shim = shimmed[e] = true)) doc.createElement(e.substr(1));
 		// reconsider everything after any newfound belief
 		if (shim) doc.body.innerHTML = doc.body.innerHTML;
 	}
