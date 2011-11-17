@@ -4,9 +4,11 @@
 	if ( !window.attachEvent || !doc.createStyleSheet || !(function(){ var elem = document.createElement("div"); elem.innerHTML = "<elem></elem>"; return elem.childNodes.length !== 1; })()) {
 		return;
 	}
+
 	win.iepp = win.iepp || {};
 	var iepp = win.iepp,
-		elems = iepp.html5elements || 'abbr|article|aside|audio|canvas|data|datalist|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|subline|summary|time|video',
+		baseElems = iepp.html5elements || 'abbr|article|aside|audio|canvas|data|datalist|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|subline|summary|time|video',
+		elems = baseElems + (iepp.extraElements ? '|' + iepp.extraElements : ''),
 		elemsArr = elems.split('|'),
 		elemsArrLen = elemsArr.length,
 		elemRegExp = new RegExp('(^|\\s)('+elems+')', 'gi'), 
