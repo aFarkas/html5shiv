@@ -1,0 +1,9 @@
+article.print {
+	border: 5px solid #000;
+}
+.print-styles article {
+	border: 5px solid #000;
+}
+article.print-styles-print {
+	border: 5px solid #000;
+}
