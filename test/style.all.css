@@ -1,0 +1,11 @@
+html { font: 75% sans-serif; overflow-y: scroll; }
+body { margin: 0; }
+pre { margin: 0; padding: 1em 0; }
+section { border: 0.5em solid #8C8; margin: 1em; padding: 1em; }
+h1 { margin: 1em 2em; }
+ul { font: bold 1.5em sans-serif; margin: 1em; padding: 0 0 0 1.5em; }
+li { margin: 1em; }
+a { color: #66C; text-decoration: none; }
+
+.pass { color: #090; }
+.fail { color: #F00; }
