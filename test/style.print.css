@@ -1,0 +1,5 @@
+@media print {
+	section {
+		border-style: dotted;
+	}
+}
