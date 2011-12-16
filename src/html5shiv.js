@@ -51,9 +51,7 @@
 
 				// shiv document create element function
 				scopeDocument.createDocumentFragment = function () {
-					var documentFragment = documentCreateDocumentFragment();
-					html5.shivDocument(documentFragment);
-					return documentFragment;
+					return html5.shivDocument(documentCreateDocumentFragment());
 				};
 			}
 
