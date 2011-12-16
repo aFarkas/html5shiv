@@ -86,7 +86,7 @@
 			elementClone.setAttribute('data-html5shiv', element.nodeName.toLowerCase());
 		}
 		else {
-			var elementClone = element.document.createElement('shiv:' + element.nodeName);
+			var elementClone = doc.createElement('shiv:' + element.nodeName);
 		}
 		while (element.firstChild) {
 			elementClone.appendChild(element.childNodes[0]);
