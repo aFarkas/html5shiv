@@ -14,7 +14,7 @@
 
 	// html5 global so that more elements can be shived and also so that existing shiving can be detected on iframes
 	// more elements can be added and shived with the following code: html5.elements.push('element-name'); shivDocument(document);
-	win.html5 = {
+	var html5 = {
 		// a list of html5 elements
 		elements: 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
 
@@ -70,5 +70,7 @@
 	};
 
 	// shiv the document
-	win.html5.shivDocument(doc);
+	html5.shivDocument(doc);
+
+	win.html5 = html5;
 })(this, document);
