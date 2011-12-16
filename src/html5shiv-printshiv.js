@@ -81,14 +81,14 @@
 
 	// replaces an element with a namespace-shived clone (eg. header element becomes shiv:header element)
 	function namespaceShivElement(element) {
-		if (doc.documentMode && doc.documentMode > 7) {
-			var elementClone = element.document.createElement('font');
+		if (doc.documentMode > 7) {
+			var elementClone = doc.createElement('font');
 			elementClone.setAttribute('data-html5shiv', element.nodeName.toLowerCase());
 		}
 		else {
 			var elementClone = element.document.createElement('shiv:' + element.nodeName);
 		}
-		while (element.childNodes.length) {
+		while (element.firstChild) {
 			elementClone.appendChild(element.childNodes[0]);
 		}
 		for (var a = element.attributes, l = a.length, i = 0; i < l; ++i) {
@@ -148,7 +148,7 @@
 	function shivCssText (cssText) {
 		// set local variables
 		var
-		elementsRegExp = new RegExp('(^|[\\s\\,\\{\\}])(' + win.html5.elements.join('|') + ')', 'gi'),
+		elementsRegExp = new RegExp('(^|[\\s,{}])(' + win.html5.elements.join('|') + ')', 'gi'),
 		cssTextSplit = cssText.split('{'),
 		cssTextSplitLength = cssTextSplit.length,
 		i = -1;
@@ -156,7 +156,7 @@
 		// shiv css text
 		while (++i < cssTextSplitLength) {
 			cssTextSplit[i] = cssTextSplit[i].split('}');
-			if (doc.documentMode && doc.documentMode > 7) {
+			if (doc.documentMode > 7) {
 				cssTextSplit[i][cssTextSplit[i].length - 1] = cssTextSplit[i][cssTextSplit[i].length - 1].replace(elementsRegExp, '$1font[data-html5shiv="$2"]');
 			}
 			else {
