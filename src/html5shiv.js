@@ -1,10 +1,16 @@
 /*! HTML5 Shiv v3 | @jon_neal @afarkas @rem | MIT/GPL2 Licensed */
 (function (win, doc) {
 	// feature detection: whether the browser supports unknown elements
-	var supportsUnknownElements = (function (a) { a.innerHTML = '<x-element></x-element>'; return a.childNodes.length === 1; })(doc.createElement('a'));
+	var supportsUnknownElements = (function (a) {
+		a.innerHTML = '<x-element></x-element>';
+		return a.childNodes.length === 1;
+	})(doc.createElement('a'));
 
 	// feature detection: whether the browser supports default html5 styles
-	var supportsHtml5Styles = (function (nav, docEl, compStyle) { docEl.appendChild(nav); return (compStyle = (compStyle ? compStyle(nav) : nav.currentStyle).display) && docEl.removeChild(nav) && compStyle === 'block'; })(doc.createElement('nav'), doc.documentElement, win.getComputedStyle);
+	var supportsHtml5Styles = (function (nav, docEl, compStyle) {
+		docEl.appendChild(nav);
+		return (compStyle = (compStyle ? compStyle(nav) : nav.currentStyle).display) && docEl.removeChild(nav) && compStyle === 'block';
+	})(doc.createElement('nav'), doc.documentElement, win.getComputedStyle);
 
 	// html5 global so that more elements can be shivmed and also so that existing shivming can be detected on iframes
 	// more elements can be added and shivmed with the following code: html5.elements.push('element-name'); shivDocument(document);
