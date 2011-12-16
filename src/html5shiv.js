@@ -38,13 +38,13 @@
 			// shiv for unknown elements
 			if (!supportsUnknownElements) {
 				// shiv the document
-				win.html5.elements.join(' ').replace(/\w+/g, documentCreateElementReplaceFunction);
+				html5.elements.join(' ').replace(/\w+/g, documentCreateElementReplaceFunction);
 
 				// shiv document create element function
 				scopeDocument.createElement = function (nodeName) {
 					var element = documentCreateElement(nodeName);
 					if (!/^(input|script)$/i.test(nodeName)) {
-						win.html5.shivDocument(element.document);
+						html5.shivDocument(element.document);
 					}
 					return element;
 				};
@@ -52,7 +52,7 @@
 				// shiv document create element function
 				scopeDocument.createDocumentFragment = function () {
 					var documentFragment = documentCreateDocumentFragment();
-					win.html5.shivDocument(documentFragment);
+					html5.shivDocument(documentFragment);
 					return documentFragment;
 				};
 			}
