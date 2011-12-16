@@ -43,9 +43,7 @@
 				// shiv document create element function
 				scopeDocument.createElement = function (nodeName) {
 					var element = documentCreateElement(nodeName);
-					if (!/^(input|script)$/i.test(nodeName)) {
-						html5.shivDocument(element.document);
-					}
+					if (element.canHaveChildren) html5.shivDocument(element.document);
 					return element;
 				};
 
@@ -63,10 +61,13 @@
 					'audio{display:none}', // Corrects audio display not defined in IE6/7/8/9
 					'canvas,video{display:inline-block;*display:inline;*zoom:1}', // Corrects canvas and video display not defined in IE6/7/8/9 (audio[controls] in IE7)
 					'[hidden]{display:none}audio[controls]{display:inline-block;*display:inline;*zoom:1}', // Corrects styling for 'hidden' attribute and audio[controls] display not present in IE7/8/9
-					'mark{background:#FF0;color:#000}' // Addresses styling not present in IE6/7/8/9
+					'mark{background:#FF0;color:#000}', // Addresses styling not present in IE6/7/8/9
 				'</style>'].join('');
 				documentHead.insertBefore(div.lastChild, documentHead.firstChild);
 			}
+
+			// return document (for potential chaining)
+			return scopeDocument;
 		}
 	};
 
