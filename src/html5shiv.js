@@ -1,4 +1,3 @@
-/*! HTML5 Shiv v3 | @jon_neal @afarkas @rem | MIT/GPL2 Licensed */
 (function (win, doc) {
 	// feature detection: whether the browser supports unknown elements
 	var supportsUnknownElements = (function (a) {
@@ -43,7 +42,9 @@
 				// shiv document create element function
 				scopeDocument.createElement = function (nodeName) {
 					var element = documentCreateElement(nodeName);
-					if (element.canHaveChildren) html5.shivDocument(element.document);
+					if (element.canHaveChildren){
+						html5.shivDocument(element.document);
+					} 
 					return element;
 				};
 

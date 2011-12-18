@@ -43,7 +43,9 @@
 				// shiv document create element function
 				scopeDocument.createElement = function (nodeName) {
 					var element = documentCreateElement(nodeName);
-					if (element.canHaveChildren) html5.shivDocument(element.document);
+					if (element.canHaveChildren){
+						html5.shivDocument(element.document);
+					} 
 					return element;
 				};
 
@@ -77,21 +79,22 @@
 	win.html5 = html5;
 
 	// ie print shiv
-	if (supportsUnknownElements || !win.attachEvent) return;
+	if (supportsUnknownElements || !win.attachEvent){return;}
 
 	// replaces an element with a namespace-shived clone (eg. header element becomes shiv:header element)
 	function namespaceShivElement(element) {
+		var elementClone, a, l, i;
 		if (doc.documentMode > 7) {
-			var elementClone = doc.createElement('font');
+			elementClone = doc.createElement('font');
 			elementClone.setAttribute('data-html5shiv', element.nodeName.toLowerCase());
 		}
 		else {
-			var elementClone = doc.createElement('shiv:' + element.nodeName);
+			elementClone = doc.createElement('shiv:' + element.nodeName);
 		}
 		while (element.firstChild) {
 			elementClone.appendChild(element.childNodes[0]);
 		}
-		for (var a = element.attributes, l = a.length, i = 0; i < l; ++i) {
+		for (a = element.attributes, l = a.length, i = 0; i < l; ++i) {
 			if (a[i].specified) {
 				elementClone.setAttribute(a[i].nodeName, a[i].nodeValue);
 			}
@@ -132,7 +135,7 @@
 			styleSheetMediaType = styleSheet.media || mediaType;
 
 			// skip a disabled or non-print style sheet
-			if (styleSheet.disabled || !/print|all/.test(styleSheetMediaType)) {
+			if (styleSheet.disabled || !(/print|all/.test(styleSheetMediaType))) {
 				continue;
 			}
 
