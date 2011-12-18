@@ -203,27 +203,7 @@ test( "globalEval", function() {
 	window.globalEvalTest = undefined;
 });
 
-if ( !isLocal ) {
-test("browser", function() {
-	stop();
 
-	jQuery.get("data/ua.txt", function(data){
-		var uas = data.split("\n");
-		expect( (uas.length - 1) * 2 );
-
-		jQuery.each(uas, function(){
-			var parts = this.split("\t");
-			if ( parts[2] ) {
-				var ua = jQuery.uaMatch( parts[2] );
-				equal( ua.browser, parts[0], "Checking browser for " + parts[2] );
-				equal( ua.version, parts[1], "Checking version string for " + parts[2] );
-			}
-		});
-
-		start();
-	});
-});
-}
 
 test("noConflict", function() {
 	expect(7);
@@ -985,7 +965,8 @@ test("jQuery.each(Object,Function)", function() {
 	jQuery.each(document.styleSheets, function(i){
 		stylesheet_count++;
 	});
-	equal(stylesheet_count, 2, "should not throw an error in IE while looping over document.styleSheets and return proper amount");
+	//html5shiv may add 1-2 stylesheets
+	ok(stylesheet_count > 1 && stylesheet_count < 5, "should not throw an error in IE while looping over document.styleSheets and return proper amount");
 
 });
 

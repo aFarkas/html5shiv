@@ -784,7 +784,7 @@ var testBefore = function(val) {
 	var set = jQuery("<div/>").before("<span>test</span>");
 	equal( set[0].nodeName.toLowerCase(), "span", "Insert the element before the disconnected node." );
 	equal( set.length, 2, "Insert the element before the disconnected node." );
-}
+};
 
 test("before(String|Element|Array&lt;Element&gt;|jQuery)", function() {
 	testBefore(bareObj);
@@ -792,7 +792,7 @@ test("before(String|Element|Array&lt;Element&gt;|jQuery)", function() {
 
 test("before(Function)", function() {
 	testBefore(functionReturningObj);
-})
+});
 
 test("before and after w/ empty object (#10812)", function() {
 	expect(2);
@@ -856,7 +856,7 @@ test("after(String|Element|Array&lt;Element&gt;|jQuery)", function() {
 
 test("after(Function)", function() {
 	testAfter(functionReturningObj);
-})
+});
 
 test("insertAfter(String|Element|Array&lt;Element&gt;|jQuery)", function() {
 	expect(4);
