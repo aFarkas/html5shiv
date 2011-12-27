@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8 />
+	<title>innerShiv Test Page</title>
+	
+	<style type="text/css">
+		body { background:#ffe273; color:#333; font:1em Helvetica,Arial,sans-serif; font-weight:lighter; line-height:1.4; margin:0 auto; max-width:40em; padding:40px 40px 0; }
+		h2 { font:1.6em Myriad Pro, Trebuchet MS, Arial, Sans-Serif; font-weight:lighter; margin:0; }
+		p { margin:0.8em 0; }
+		section { display:block; }
+		
+		.test { background:#f7f7f7; border:2px solid #efd263; display:block; margin-bottom:40px; padding:20px; }
+			.test div { }
+				.test div p { background:#b8292a; color:#fff; padding:10px; }
+				.test div section p { background:#4c9828; }
+				.test .error { background:#b8292a; }
+			.test table { border-collapse:collapse; border-color:#ffd000; border-spacing:0; border-style:solid; border-width:2px 0; width:100%; }
+				.test table td { padding:10px; }
+	</style>
+	<script src="../src/html5shiv-printshiv.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	
+	<script>
+	// Wrapper for timing tests, etc.
+	var testRounds = 10;
+	function test (no, func) {
+		if (testRounds && window.console && console.log) {
+			var el = $('#test-' + no), original = el.clone(), time = new Date(), i = testRounds;
+			while (i--) func();
+			console.log('Test ' + no + ' completed. ' + testRounds + ' rounds took ' + ((new Date() - time) / 1000) + ' seconds.');
+			el.replaceWith(original);
+		}
+		
+		func();
+	}
+	</script>
+	
+</head>
+<body>
+	<article>
+		<section class="test">
+			<h2>Test 1: innerHTML outside DOM (no innerShiv)</h2>
+			<p>This test determines whether your browser requires innerShiv.</p>
+			
+			<div id="test-1"></div>
+			<script>
+				test (1, function () {
+					var s = document.createElement('div');
+					s.innerHTML = "<section><p>If this paragraph's background is green, your browser does not require innerShiv.</p></section>";
+					document.getElementById('test-1').appendChild(s);
+				});
+			</script>
+		</section>
+		
+		<section class="test">
+			<h2>Test 2: jQuery append without innerShiv</h2>
+			<p>At some point, jQuery itself may include innerShiv's functionality. This test determines whether that's the case for the version of jQuery in use.</p>
+			
+			<div id="test-2"></div>
+			<script>
+				test (2, function () {
+					$('#test-2').append("<section><p>If this paragraph's background is green, your browser does not require innerShiv or jQuery includes innerShiv's functionality.</p></section>");
+				});
+			</script>
+		</section>
+		
+		<section class="test">
+			<h2>Test 3: innerShiv outside DOM</h2>
+			<p>This test uses innerShiv with appendChild to add a &lt;section&gt; an element's HTML outside the DOM.</p>
+			
+			<div id="test-3"></div>
+			<script>
+				test (3, function () {
+					var s = document.createElement('div');
+					s.appendChild(html5.innerShiv("<section><p>This paragraph should have a green background.</p></section>"));
+					document.getElementById('test-3').appendChild(s);
+				});
+			</script>
+		</section>
+		
+		<section class="test">
+			<h2>Test 4: jQuery append with innerShiv</h2>
+			<p>This test uses innerShiv with jQuery to append a &lt;section&gt; to an element.</p>
+			
+			<div id="test-4"></div>
+			<script>
+				test (4, function () {
+					$('#test-4').append(html5.innerShiv("<section><p>This paragraph should have a green background.</p></section>"));
+				});
+			</script>
+		</section>
+		
+		<section class="test">
+			<h2>Test 5: jQuery manipulation of innerShiv'd content</h2>
+			<p>This tests innerShiv's jQuery Return Mode, which returns an array of elements instead of a DOM fragment.</p>
+			
+			<div id="test-5"></div>
+			<script>
+				test (5, function () {
+					$('#test-5').append($(html5.innerShiv("<section><p class=\"error\">This paragraph should have a green background.</p></section>", false)).find('p').removeClass('error').end());
+				});
+			</script>
+		</section>
+		
+		<section class="test">
+			<h2>Test 6: edge cases &amp; idiot proofing</h2>
+			<p>This tests innerShiv's ability to cope with elements inside tables, with incorrectly used empty tags, and to strip scripts and whitespace surrounding the HTML.</p>
+			<p>The table below should contain two rows:</p>
+			
+			<table>
+				<tbody id="test-6">
+					<tr><td>George Washington</td><td><time datetime="1789-04-30">April 30, 1789</time></td></tr>
+				</tbody>
+			</table>
+			<script>
+				test (6, function () {
+					document.getElementById('test-6').appendChild(html5.innerShiv("  <tr><td>John Adams<span /><script>alert('You shouldn\'t see this alert!');<\/script></td><td><time datetime=\"1797-03-04\">March 4, 1797</time></td></tr>  "));
+				});
+			</script>
+		</section>
+		
+		<section class="test">
+			<h2>Test 7: corrupt innerShiv outside DOM</h2>
+			<p>This makes sure innerShiv can't be accidentally corrupted in fragment mode by unappended content.</p>
+			
+			<div id="test-7"></div>
+			<script>
+				test (7, function () {
+					var s = document.createElement('div');
+					html5.innerShiv("<p class=\"error\">You should not see this text.</p>");
+					s.appendChild(html5.innerShiv("<section><p>This paragraph should have a green background.</p></section>"));
+					document.getElementById('test-7').appendChild(s);
+				});
+			</script>
+		</section>
+	</article>
+</body>
+</html>

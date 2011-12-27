@@ -1,4 +1,4 @@
-/*! HTML5 Shiv v3 | @jon_neal @afarkas @rem | MIT/GPL2 Licensed */
+/*! HTML5 Shiv v pre3.1 | @jon_neal @afarkas @rem @jdbartlett | MIT/GPL2 Licensed */
 (function (win, doc) {
 	// feature detection: whether the browser supports unknown elements
 	var supportsUnknownElements = (function (a) {
@@ -31,7 +31,6 @@
 			// set local variables
 			var
 			documentCreateElement = scopeDocument.createElement,
-			documentCreateDocumentFragment = scopeDocument.createDocumentFragment,
 			documentHead = scopeDocument.getElementsByTagName('head')[0],
 			documentCreateElementReplaceFunction = function (m) { documentCreateElement(m); };
 
@@ -39,20 +38,6 @@
 			if (!supportsUnknownElements) {
 				// shiv the document
 				html5.elements.join(' ').replace(/\w+/g, documentCreateElementReplaceFunction);
-
-				// shiv document create element function
-				scopeDocument.createElement = function (nodeName) {
-					var element = documentCreateElement(nodeName);
-					if (element.canHaveChildren){
-						html5.shivDocument(element.document);
-					} 
-					return element;
-				};
-
-				// shiv document create element function
-				scopeDocument.createDocumentFragment = function () {
-					return html5.shivDocument(documentCreateDocumentFragment());
-				};
 			}
 
 			// shiv for default html5 styles
@@ -70,11 +55,93 @@
 
 			// return document (for potential chaining)
 			return scopeDocument;
-		}
+		},
+		//http://jdbartlett.github.com/innershiv
+		innerShiv: (function () {
+			var div;
+			var regScript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
+			var regClose = /(<([\w:]+)[^>]*?)\/>/g;
+			var regCloseElements = /^(?:area|br|col|embed|hr|img|input|link|meta|param)$/i;
+			var regTable = /^<(tbody|tr|td|th|col|colgroup|thead|tfoot)[\s\/>]/i;
+			
+			// Used to idiot-proof self-closing tags
+			function fcloseTag(all, front, tag) {
+				return (regCloseElements).test(tag) ? all : front + '></' + tag + '>';
+			}
+			
+			function init(){
+				div = doc.createElement('div');
+					
+				if (!supportsUnknownElements) {
+					// MSIE allows you to create elements in the context of a document
+					// fragment. Jon Neal first discovered this trick and used it in his
+					// own shimprove: http://www.iecss.com/shimprove/
+					var shimmedFrag = doc.createDocumentFragment();
+					var i = html5.elements.length;
+					while (i--) {
+						shimmedFrag.createElement(html5.elements[i]);
+					}
+					
+					shimmedFrag.appendChild(div);
+				}
+			}
+			
+			return function (
+				html, /* string */
+				returnFrag /* optional false bool */
+			) {
+				var tabled, scope, returnedFrag, j;
+				if (!div) {
+					init();
+					
+				}
+				
+				html = html
+					// Trim whitespace to avoid unexpected text nodes in return data:
+					.replace(/^\s\s*/, '').replace(/\s\s*$/, '')
+					// Strip any scripts:
+					.replace(regScript, '')
+					// Fix misuses of self-closing tags:
+					.replace(regClose, fcloseTag)
+					;
+				
+				// Fix for using innerHTML in a table
+				
+				if ((tabled = html.match(regTable))) {
+					div.innerHTML = '<table>' + html + '</table>';
+				} else {
+					div.innerHTML = html;
+				}
+				
+				// Avoid returning the tbody or tr when fixing for table use
+				
+				if (tabled) {
+					scope = div.getElementsByTagName(tabled[1])[0].parentNode;
+				} else {
+					scope = div;
+				}
+				
+				// If not in jQuery return mode, return child nodes array
+				if (returnFrag === false) {
+					return scope.childNodes;
+				}
+				
+				// ...otherwise, build a fragment to return
+				returnedFrag = doc.createDocumentFragment();
+				j = scope.childNodes.length;
+				while (j--) {
+					returnedFrag.appendChild(scope.firstChild);
+				}
+				
+				return returnedFrag;
+			};
+		}())
 	};
 
 	// shiv the document
 	html5.shivDocument(doc);
+	
+	html5.type = 'print';
 
 	win.html5 = html5;
 

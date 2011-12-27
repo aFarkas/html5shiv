@@ -9,8 +9,7 @@
 	<body>
 		<section>This sentence is in a green box <mark>with these words highlighted</mark>.</section>
 		<script id="script">
-		var div = document.createElement('div');
-		div.innerHTML = '<section>This native javascript sentence is in a green box <mark>with these words highlighted</mark>?</section>';
+		var div = html5.innerShiv('<section>This native javascript sentence is in a green box <mark>with these words highlighted</mark>?</section>');
 		document.body.appendChild(div);
 		</script>
 	<body>
