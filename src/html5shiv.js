@@ -77,6 +77,8 @@
 
 	// shiv the document
 	html5.shivDocument(doc);
+	
+	html5.type = 'default';
 
 	win.html5 = html5;
 })(this, document);

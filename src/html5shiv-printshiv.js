@@ -77,6 +77,8 @@
 
 	// shiv the document
 	html5.shivDocument(doc);
+	
+	html5.type = 'print';
 
 	win.html5 = html5;
 
