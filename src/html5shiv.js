@@ -11,13 +11,14 @@
 		docEl.appendChild(nav);
 		return (compStyle = (compStyle ? compStyle(nav) : nav.currentStyle).display) && docEl.removeChild(nav) && compStyle === 'block';
 	})(doc.createElement('nav'), doc.documentElement, win.getComputedStyle);
-
+	
+	
 	// html5 global so that more elements can be shived and also so that existing shiving can be detected on iframes
 	// more elements can be added and shived with the following code: html5.elements.push('element-name'); shivDocument(document);
 	var html5 = {
 		// a list of html5 elements
 		elements: 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
-
+		verboten: {fill: 1},
 		// the shiv function
 		shivDocument: function (scopeDocument) {
 			scopeDocument = scopeDocument || doc;
@@ -45,7 +46,7 @@
 				// shiv document create element function
 				scopeDocument.createElement = function (nodeName) {
 					var element = documentCreateElement(nodeName);
-					if (element.canHaveChildren){
+					if (element.canHaveChildren && html5.verboten[nodeName]){
 						html5.shivDocument(element.document);
 					} 
 					return element;
