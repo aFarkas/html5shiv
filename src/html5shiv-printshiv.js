@@ -33,7 +33,9 @@
 			documentCreateElement = scopeDocument.createElement,
 			documentCreateDocumentFragment = scopeDocument.createDocumentFragment,
 			documentHead = scopeDocument.getElementsByTagName('head')[0],
-			documentCreateElementReplaceFunction = function (m) { documentCreateElement(m); };
+			documentCreateElementReplaceFunction = function (m) {
+				documentCreateElement(m);
+			};
 
 			// shiv for unknown elements
 			if (!supportsUnknownElements) {

@@ -1,3 +1,4 @@
+/*! HTML5 Shiv v3 | @jon_neal @afarkas @rem | MIT/GPL2 Licensed */
 (function (win, doc) {
 	// feature detection: whether the browser supports unknown elements
 	var supportsUnknownElements = (function (a) {
@@ -32,7 +33,9 @@
 			documentCreateElement = scopeDocument.createElement,
 			documentCreateDocumentFragment = scopeDocument.createDocumentFragment,
 			documentHead = scopeDocument.getElementsByTagName('head')[0],
-			documentCreateElementReplaceFunction = function (m) { documentCreateElement(m); };
+			documentCreateElementReplaceFunction = function (m) {
+				documentCreateElement(m);
+			};
 
 			// shiv for unknown elements
 			if (!supportsUnknownElements) {
