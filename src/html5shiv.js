@@ -12,16 +12,18 @@
 		return (compStyle = (compStyle ? compStyle(nav) : nav.currentStyle).display) && docEl.removeChild(nav) && compStyle === 'block';
 	})(doc.createElement('nav'), doc.documentElement, win.getComputedStyle);
 	
+	var vmlNs = 'urn:schemas-microsoft-com:vml';
 	
 	// html5 global so that more elements can be shived and also so that existing shiving can be detected on iframes
 	// more elements can be added and shived with the following code: html5.elements.push('element-name'); shivDocument(document);
 	var html5 = {
 		// a list of html5 elements
 		elements: 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
-		verboten: {fill: 1, path: 1, shape: 1},
 		fixDomMethods: true,
 		shivDom: function(scopeDocument){
-			
+			if (scopeDocument.documentShived) {
+				return;
+			}
 			var
 			documentCreateElement = scopeDocument.createElement,
 			documentCreateDocumentFragment = scopeDocument.createDocumentFragment,
@@ -37,7 +39,7 @@
 			// shiv document create element function
 			scopeDocument.createElement = function (nodeName) {
 				var element = documentCreateElement(nodeName);
-				if (html5.fixDomMethods && element.canHaveChildren && !html5.verboten[nodeName]){
+				if (html5.fixDomMethods && element.canHaveChildren && element.xmlns != vmlNs && element.tagUrn != vmlNs){
 					html5.shivDom(element.document);
 				} 
 				return element;
@@ -60,7 +62,6 @@
 			if (scopeDocument.documentShived) {
 				return;
 			}
-			scopeDocument.documentShived = true;
 
 			// set local variables
 			var
@@ -69,9 +70,9 @@
 			// shiv for unknown elements
 			
 			if (!supportsUnknownElements && html5.fixDomMethods) {
-				
 				html5.shivDom(scopeDocument);
 			}
+			scopeDocument.documentShived = true;
 
 			// shiv for default html5 styles
 			if (!supportsHtml5Styles && documentHead) {
