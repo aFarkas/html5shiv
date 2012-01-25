@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>HTML5 Shiv</title>
+		<script src="../src/html5shiv-printshiv.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js"></script>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<div id="time"></div>
+		<section>This sentence is in a green box <mark>with these words highlighted</mark>.</section>
+		<script>
+			function addDom(){
+				var div, frag, fragDiv, divFrag, divFragDiv;
+				
+				div = document.createElement('div');
+				div.innerHTML = '<section>This native javascript sentence is in a green box <mark>with these words highlighted</mark>?</section>';
+				frag = document.createDocumentFragment();
+				frag.appendChild(div);
+				div.innerHTML += '<section>This native javascript sentence is also in a green box <mark>with these words highlighted</mark>?</section>';
+				document.body.appendChild(frag);
+				
+				frag = document.createDocumentFragment();
+				fragDiv = ('createElement' in frag) ? frag.createElement('div') : frag.appendChild(document.createElement('div'));
+				fragDiv.innerHTML = '<section>This native javascript sentence is in a green box <mark>with these words highlighted</mark>?</section>';
+				document.body.appendChild(fragDiv);
+				
+				div = document.createElement('div');
+				divFrag = (div.document && div.document.createDocumentFragment) ? div.document.createDocumentFragment() : document.createDocumentFragment();
+				divFragDiv = ('createElement' in divFrag) ? divFrag.createElement('div') : divFrag.appendChild(document.createElement('div'));
+				divFragDiv.innerHTML = '<section>This native javascript sentence is also in a green box <mark>with these words highlighted</mark>?</section>';
+				
+				document.body.appendChild(divFragDiv);
+				
+				jQuery(document.body).append('<section>This jQuery 1.6.4 sentence is in a green box <mark>with these words highlighted</mark>?</section><section>This jQuery 1.6.4 sentence is in a green box <mark>with these words highlighted</mark>?</section>');
+			}
+			
+			
+			var time = document.getElementById('time');
+			var cur = new Date().getTime();
+			
+//			html5.fixDomMethods = false;
+			
+			for(var i = 0; i < 1000; i++){
+				addDom();
+			}
+			time.innerHTML = new Date().getTime() - cur;
+		</script>
+	<body>
+</html>
