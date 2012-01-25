@@ -31,15 +31,13 @@
 			
 			// shiv the document
 			for (var i = 0, l = html5.elements.length; i < l; ++i) {
-				
 				documentCreateElement(html5.elements[i]);
 			}
 
 			// shiv document create element function
 			scopeDocument.createElement = function (nodeName) {
-				
 				var element = documentCreateElement(nodeName);
-				if (html5.fixDomMethods && element.canHaveChildren && !html5.verboten[nodeName] && nodeName.indexOf('<') == -1){
+				if (html5.fixDomMethods && element.canHaveChildren && !html5.verboten[nodeName]){
 					html5.shivDom(element.document);
 				} 
 				return element;
