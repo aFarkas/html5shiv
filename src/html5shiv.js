@@ -18,7 +18,42 @@
 	var html5 = {
 		// a list of html5 elements
 		elements: 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
-		verboten: {fill: 1},
+		verboten: {fill: 1, path: 1, shape: 1},
+		fixDomMethods: true,
+		shivDom: function(scopeDocument){
+			
+			var
+			documentCreateElement = scopeDocument.createElement,
+			documentCreateDocumentFragment = scopeDocument.createDocumentFragment,
+			documentCreateElementReplaceFunction = function (m) {
+				documentCreateElement(m);
+			};
+			
+			// shiv the document
+			for (var i = 0, l = html5.elements.length; i < l; ++i) {
+				
+				documentCreateElement(html5.elements[i]);
+			}
+
+			// shiv document create element function
+			scopeDocument.createElement = function (nodeName) {
+				
+				var element = documentCreateElement(nodeName);
+				if (html5.fixDomMethods && element.canHaveChildren && !html5.verboten[nodeName] && nodeName.indexOf('<') == -1){
+					html5.shivDom(element.document);
+				} 
+				return element;
+			};
+
+			// shiv document create document fragment function
+			scopeDocument.createDocumentFragment = function () {
+				var frag = documentCreateDocumentFragment();
+				if(html5.fixDomMethods){
+					html5.shivDom(frag);
+				}
+				return frag;
+			};
+		},
 		// the shiv function
 		shivDocument: function (scopeDocument) {
 			scopeDocument = scopeDocument || doc;
@@ -31,36 +66,18 @@
 
 			// set local variables
 			var
-			documentCreateElement = scopeDocument.createElement,
-			documentCreateDocumentFragment = scopeDocument.createDocumentFragment,
-			documentHead = scopeDocument.getElementsByTagName('head')[0],
-			documentCreateElementReplaceFunction = function (m) {
-				documentCreateElement(m);
-			};
+			documentHead = scopeDocument.getElementsByTagName('head')[0];
 
 			// shiv for unknown elements
-			if (!supportsUnknownElements) {
-				// shiv the document
-				html5.elements.join(' ').replace(/\w+/g, documentCreateElementReplaceFunction);
-
-				// shiv document create element function
-				scopeDocument.createElement = function (nodeName) {
-					var element = documentCreateElement(nodeName);
-					if (element.canHaveChildren && html5.verboten[nodeName]){
-						html5.shivDocument(element.document);
-					} 
-					return element;
-				};
-
-				// shiv document create element function
-				scopeDocument.createDocumentFragment = function () {
-					return html5.shivDocument(documentCreateDocumentFragment());
-				};
+			
+			if (!supportsUnknownElements && html5.fixDomMethods) {
+				
+				html5.shivDom(scopeDocument);
 			}
 
 			// shiv for default html5 styles
 			if (!supportsHtml5Styles && documentHead) {
-				var div = documentCreateElement('div');
+				var div = scopeDocument.createElement('div');
 				div.innerHTML = ['x<style>',
 					'article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block}', // Corrects block display not defined in IE6/7/8/9
 					'audio{display:none}', // Corrects audio display not defined in IE6/7/8/9
