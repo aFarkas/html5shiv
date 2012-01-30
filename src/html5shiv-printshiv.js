@@ -36,7 +36,6 @@
 		'elements': (typeof html5.elements === 'object') ? html5.elements : (html5.elements || defaultHtml5Elements).split(' '),
 		'shivCSS': !(html5.shivCSS === false),
 		'shivMethods': !(html5.shivMethods === false),
-		'type': 'default',
 		'shivDocument': function (scopeDocument) {
 			if (!supportsUnknownElements && !scopeDocument.documentShived) {
 				var documentCreateElement = scopeDocument.createElement, documentCreateDocumentFragment = scopeDocument.createDocumentFragment;
@@ -92,9 +91,12 @@
 		}
 	};
 
+	// expose shiv type
+	html5.type = 'default print';
+
 	// expose html5
 	win.html5 = html5;
-
+	
 	// shiv the document
 	html5.shivDocument(doc);
 
