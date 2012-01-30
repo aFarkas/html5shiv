@@ -37,8 +37,8 @@
 	html5 = {
 		// a list of html5 elements
 		'elements': (typeof html5.elements === 'object') ? html5.elements : (html5.elements || defaultHtml5Elements).split(' '),
-		'shivMethods': !(html5.shivMethods === false),
 		'shivCSS': !(html5.shivCSS === false),
+		'shivMethods': !(html5.shivMethods === false),
 		'type': 'default',
 		'shivDocument': function (scopeDocument) {
 			if (!supportsUnknownElements && !scopeDocument.documentShived) {
