@@ -19,9 +19,9 @@
 	// defaults can be changed before the script is included: html5 = { shivMethods: false, shivCSS: false, elements: 'foo bar' };
 	var html5 = {
 		// a list of html5 elements
-		elements: (html5 && html5.elements ? html5.elements) : 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
-		shivMethods: (html5 && html5.shivMethods === false) ? false : true,
-		shivCSS: (html5 && html5.shivCSS === false) ? false : true,
+		elements: (html5 && html5.elements) ? html5.elements : 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
+		shivMethods: !(html5 && html5.shivMethods === false) ? false : true,
+		shivCSS: !(html5 && html5.shivCSS === false) ? false : true,
 		shivDocument: function (scopeDocument) {
 			if (supportsUnknownElements || scopeDocument.documentShived) {
 				return;
@@ -72,6 +72,7 @@
 				documentHead.insertBefore(div.lastChild, documentHead.firstChild);
 			}
 
+			// 
 			scopeDocument.documentShived = true;
 
 			return scopeDocument;
