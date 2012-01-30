@@ -22,6 +22,7 @@
 		elements: (html5 && html5.elements) ? html5.elements : 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
 		shivMethods: !(html5 && html5.shivMethods === false),
 		shivCSS: !(html5 && html5.shivCSS === false),
+		type: 'default',
 		shivDocument: function (scopeDocument) {
 			if (supportsUnknownElements || scopeDocument.documentShived) {
 				return;
@@ -72,17 +73,16 @@
 				documentHead.insertBefore(div.lastChild, documentHead.firstChild);
 			}
 
-			// 
+			// set document as shivved
 			scopeDocument.documentShived = true;
 
+			// return document
 			return scopeDocument;
 		}
 	};
 
 	// shiv the document
 	html5.shivDocument(doc);
-
-	html5.type = 'default';
 
 	win.html5 = html5;
 })(this, document);
