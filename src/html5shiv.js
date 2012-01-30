@@ -18,15 +18,12 @@
 	// more elements can be added and shived with the following code: html5.elements.push('element-name'); html5.shivDocument(document);
 	var html5 = {
 		// a list of html5 elements
-		elements: 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
-		options: {
-			shivDocument: true,
-			shivMethods: true,
-			shivCSS: true
-		},
+		elements: html5 && html5.elements ? html5.elements : 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
+		shivMethods: html5 && html5.shivMethods ? html5.shivMethods : true,
+		shivCSS: html5 && html5.shivCSS ? html5.shivCSS : true,
 		fixDomMethods: true,
 		shivDocument: function (scopeDocument) {
-			if (!html5.options.shivDocument || supportsUnknownElements || scopeDocument.documentShived) {
+			if (supportsUnknownElements || scopeDocument.documentShived) {
 				return;
 			}
 
@@ -43,7 +40,7 @@
 			scopeDocument.createElement = function (nodeName) {
 				var element = documentCreateElement(nodeName);
 
-				if (html5.options.shivMethods && element.canHaveChildren && !(element.xmlns || element.tagUrn)) {
+				if (html5.shivMethods && element.canHaveChildren && !(element.xmlns || element.tagUrn)) {
 					html5.shivDocument(element.document);
 				}
 
@@ -54,14 +51,14 @@
 			scopeDocument.createDocumentFragment = function () {
 				var frag = documentCreateDocumentFragment();
 
-				return html5.options.shivMethods ? html5.shivDocument(frag) : frag;
+				return html5.shivMethods ? html5.shivDocument(frag) : frag;
 			};
 
 			// set document head as a variable
 			var documentHead = scopeDocument.getElementsByTagName('head')[0];
 
 			// shiv for default html5 styles
-			if (html5.options.shivCSS && !supportsHtml5Styles && documentHead) {
+			if (html5.shivCSS && !supportsHtml5Styles && documentHead) {
 				var div = scopeDocument.createElement('div');
 
 				div.innerHTML = 'x<style>' +
