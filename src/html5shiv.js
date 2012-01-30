@@ -12,8 +12,6 @@
 		return (compStyle = (compStyle ? compStyle(nav) : nav.currentStyle).display) && docEl.removeChild(nav) && compStyle === 'block';
 	})(doc.createElement('nav'), doc.documentElement, win.getComputedStyle);
 	
-	var vmlNs = 'urn:schemas-microsoft-com:vml';
-	
 	// html5 global so that more elements can be shived and also so that existing shiving can be detected on iframes
 	// more elements can be added and shived with the following code: html5.elements.push('element-name'); shivDocument(document);
 	var html5 = {
@@ -39,7 +37,7 @@
 			// shiv document create element function
 			scopeDocument.createElement = function (nodeName) {
 				var element = documentCreateElement(nodeName);
-				if (html5.fixDomMethods && element.canHaveChildren && element.xmlns != vmlNs && element.tagUrn != vmlNs){
+				if (html5.fixDomMethods && element.canHaveChildren && !(element.xmlns || element.tagUrn)) {
 					html5.shivDom(element.document);
 				} 
 				return element;
