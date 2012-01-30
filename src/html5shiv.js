@@ -40,22 +40,22 @@
 			}
 
 			// shiv document create element function
-			if (html5.options.shivMethods) {
-				scopeDocument.createElement = function (nodeName) {
-					var element = documentCreateElement(nodeName);
+			scopeDocument.createElement = function (nodeName) {
+				var element = documentCreateElement(nodeName);
 
-					if (element.canHaveChildren && !(element.xmlns || element.tagUrn)) {
-						html5.shivDocument(element.document);
-					}
+				if (html5.options.shivMethods && element.canHaveChildren && !(element.xmlns || element.tagUrn)) {
+					html5.shivDocument(element.document);
+				}
 
-					return element;
-				};
+				return element;
+			};
 
-				// shiv document create document fragment function
-				scopeDocument.createDocumentFragment = function () {
-					return html5.shivDocument(documentCreateDocumentFragment());
-				};
-			}
+			// shiv document create document fragment function
+			scopeDocument.createDocumentFragment = function () {
+				var frag = documentCreateDocumentFragment();
+
+				return html5.options.shivMethods ? html5.shivDocument(frag) : frag;
+			};
 
 			// set document head as a variable
 			var documentHead = scopeDocument.getElementsByTagName('head')[0];
