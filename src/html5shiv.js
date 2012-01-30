@@ -66,13 +66,13 @@
 			if (html5.options.shivCSS && !supportsHtml5Styles && documentHead) {
 				var div = scopeDocument.createElement('div');
 
-				div.innerHTML = ['x<style>',
-					'article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block}', // Corrects block display not defined in IE6/7/8/9
-					'audio{display:none}', // Corrects audio display not defined in IE6/7/8/9
-					'canvas,video{display:inline-block;*display:inline;*zoom:1}', // Corrects canvas and video display not defined in IE6/7/8/9 (audio[controls] in IE7)
-					'[hidden]{display:none}audio[controls]{display:inline-block;*display:inline;*zoom:1}', // Corrects 'hidden' attribute and audio[controls] display not present in IE7/8/9
-					'mark{background:#FF0;color:#000}', // Addresses styling not present in IE6/7/8/9
-				'</style>'].join('');
+				div.innerHTML = 'x<style>' +
+					'article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block}' + // Corrects block display not defined in IE6/7/8/9
+					'audio{display:none}' + // Corrects audio display not defined in IE6/7/8/9
+					'canvas,video{display:inline-block;*display:inline;*zoom:1}' + // Corrects canvas and video display not defined in IE6/7/8/9 (audio[controls] in IE7)
+					'[hidden]{display:none}audio[controls]{display:inline-block;*display:inline;*zoom:1}' + // Corrects 'hidden' attribute and audio[controls] display not present in IE7/8/9
+					'mark{background:#FF0;color:#000}' + // Addresses styling not present in IE6/7/8/9
+				'</style>';
 
 				documentHead.insertBefore(div.lastChild, documentHead.firstChild);
 			}
