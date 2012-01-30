@@ -2,10 +2,7 @@
 (function (win, doc) {
 	// feature detection: whether the browser supports default html5 styles
 	var supportsHtml5Styles = (function(nav, docEl, compStyle) {
-		var
-		fake,
-		supported,
-		root = doc.body || (fake = docEl.insertBefore(doc.createElement('body'), docEl.firstChild));
+		var fake, supported, root = doc.body || (fake = docEl.insertBefore(doc.createElement('body'), docEl.firstChild));
 
 		root.insertBefore(nav, root.firstChild);
 
@@ -42,9 +39,7 @@
 		'type': 'default',
 		'shivDocument': function (scopeDocument) {
 			if (!supportsUnknownElements && !scopeDocument.documentShived) {
-				var
-				documentCreateElement = scopeDocument.createElement,
-				documentCreateDocumentFragment = scopeDocument.createDocumentFragment;
+				var documentCreateElement = scopeDocument.createElement, documentCreateDocumentFragment = scopeDocument.createDocumentFragment;
 
 				// shiv the document
 				for (var i = 0, elements = html5.elements, l = elements.length; i < l; ++i) {
