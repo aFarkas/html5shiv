@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>HTML5 Shiv</title>
+		<link rel="stylesheet" href="style.css">
+		<script src="../src/html5shiv.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+		<style>
+			.box {
+				position: relative;
+				zoom: 1;
+			}
+			.swf-overlay {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 200px;
+				height: 100px;
+				border: 1px solid #000;
+				
+			}
+		</style>
+		<script type="text/javascript">
+			swfobject.registerObject("static-id", "6.0.0");
+			
+			swfobject.embedSWF("data/paramtracer.swf", "dynamic-id", "480", "420", "6.0.0", null, {aFlashVar: "aFlashVarValue"}, {wmode: "transparent"});
+
+		</script>
+
+	</head>
+	<body>
+		<section>This sentence has 3px solid border <mark>with these words highlighted</mark>.</section>
+		
+		
+		<h1>static swfobject</h1>
+		<div class="box">
+			<object id="static-id" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="480" height="420">
+				<param name="movie" value="data/paramtracer.swf" />
+				<!--[if !IE]>-->
+					<object type="application/x-shockwave-flash" data="data/paramtracer.swf" width="480" height="420">
+					<!--<![endif]-->
+						<param name="flashvars" value="aFlashVar=aFlashVarValue" />
+						<param name="wmode" value="transparent" />
+					<!--[if !IE]>-->
+					</object>
+				<!--<![endif]-->
+			</object>
+			<div class="swf-overlay"></div>
+		</div>
+		
+		
+		<h1>dynamic swfobject</h1>
+		<div class="box">
+			<div id="dynamic-id">
+				
+			</div>
+			<div class="swf-overlay"></div>
+		</div>
+		
+		<h1>pure static object</h1>
+		<div class="box">
+			<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="480" height="420">
+				<param name="movie" value="data/paramtracer.swf" />
+				<!--[if !IE]>-->
+					<object type="application/x-shockwave-flash" data="data/paramtracer.swf" width="480" height="420">
+					<!--<![endif]-->
+						<param name="flashvars" value="aFlashVar=aFlashVarValue" />
+						<param name="wmode" value="transparent" />
+					<!--[if !IE]>-->
+					</object>
+				<!--<![endif]-->
+			</object>
+			<div class="swf-overlay"></div>
+		</div>
+	<body>
+</html>
