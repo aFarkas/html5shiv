@@ -19,9 +19,14 @@
 	var html5 = {
 		// a list of html5 elements
 		elements: 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
+		options: {
+			shivDocument: true,
+			shivMethods: true,
+			shivCSS: true
+		},
 		fixDomMethods: true,
-		shivDom: function (scopeDocument) {
-			if (scopeDocument.documentShived) {
+		shivDocument: function (scopeDocument) {
+			if (!html5.options.shivDocument || scopeDocument.documentShived) {
 				return;
 			}
 
@@ -35,48 +40,30 @@
 			}
 
 			// shiv document create element function
-			scopeDocument.createElement = function (nodeName) {
-				var element = documentCreateElement(nodeName);
+			if (html5.options.shivMethods) {
+				scopeDocument.createElement = function (nodeName) {
+					var element = documentCreateElement(nodeName);
 
-				if (html5.fixDomMethods && element.canHaveChildren && !(element.xmlns || element.tagUrn)) {
-					html5.shivDom(element.document);
-				}
+					if (element.canHaveChildren && !(element.xmlns || element.tagUrn)) {
+						html5.shivDocument(element.document);
+					}
 
-				return element;
-			};
+					return element;
+				};
+			}
 
-			// shiv document create document fragment function
-			scopeDocument.createDocumentFragment = function () {
-				var frag = documentCreateDocumentFragment();
-
-				if (html5.fixDomMethods) {
-					html5.shivDom(frag);
-				}
-
-				return frag;
-			};
-		},
-		// the shiv function
-		shivDocument: function (scopeDocument) {
-			scopeDocument = scopeDocument || doc;
-
-			// test if the document has already been shived
-			if (scopeDocument.documentShived) {
-				return;
+			if (html5.options.shivMethods) {
+				// shiv document create document fragment function
+				scopeDocument.createDocumentFragment = function () {
+					return html5.shivDocument(documentCreateDocumentFragment());
+				};
 			}
 
 			// set document head as a variable
 			var documentHead = scopeDocument.getElementsByTagName('head')[0];
 
-			// shiv for unknown elements
-			if (!supportsUnknownElements && html5.fixDomMethods) {
-				html5.shivDom(scopeDocument);
-			}
-
-			scopeDocument.documentShived = true;
-
 			// shiv for default html5 styles
-			if (!supportsHtml5Styles && documentHead) {
+			if (html5.options.shivCSS && !supportsHtml5Styles && documentHead) {
 				var div = scopeDocument.createElement('div');
 
 				div.innerHTML = ['x<style>',
@@ -90,7 +77,8 @@
 				documentHead.insertBefore(div.lastChild, documentHead.firstChild);
 			}
 
-			// return document (for potential chaining)
+			scopeDocument.documentShived = true;
+
 			return scopeDocument;
 		}
 	};
