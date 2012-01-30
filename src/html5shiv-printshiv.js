@@ -36,11 +36,11 @@
 	// defaults can be changed before the script is included: html5 = { shivMethods: false, shivCSS: false, elements: 'foo bar' };
 	html5 = {
 		// a list of html5 elements
-		elements: (typeof html5.elements === 'object') ? html5.elements : (html5.elements || defaultHtml5Elements).split(' '),
-		shivMethods: !(html5.shivMethods === false),
-		shivCSS: !(html5.shivCSS === false),
-		type: 'default',
-		shivDocument: function (scopeDocument) {
+		'elements': (typeof html5.elements === 'object') ? html5.elements : (html5.elements || defaultHtml5Elements).split(' '),
+		'shivMethods': !(html5.shivMethods === false),
+		'shivCSS': !(html5.shivCSS === false),
+		'type': 'default',
+		'shivDocument': function (scopeDocument) {
 			if (!supportsUnknownElements && !scopeDocument.documentShived) {
 
 				var
