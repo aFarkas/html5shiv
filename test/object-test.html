@@ -58,8 +58,8 @@
 			<div class="swf-overlay"></div>
 		</div>
 		
-		<h1>pure static object</h1>
-		<div class="box">
+		<h1>innerHTML object</h1>
+		<div class="box" id="checkinner">
 			<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="480" height="420">
 				<param name="movie" value="data/paramtracer.swf" />
 				<!--[if !IE]>-->
@@ -73,5 +73,14 @@
 			</object>
 			<div class="swf-overlay"></div>
 		</div>
+		<script>
+			(function(){
+				var box = document.getElementById('checkinner');
+				var box2 = document.createElement('div');
+				box2.innerHTML = box.innerHTML;
+				box.innerHTML = '';
+				box.appendChild(box2);
+			})();
+		</script>
 	<body>
 </html>
