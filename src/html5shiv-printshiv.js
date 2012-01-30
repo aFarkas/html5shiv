@@ -57,7 +57,7 @@
 
 				// don't shiv elements that can't have child nodes or namespaced custom elements to avoid
 				// bugs associated with overwriting `createElement()`
-				if (!html5.shivMethods || !element.canHaveChildren || element.xmlns || element.tagUrn) {
+				if (html5.shivMethods && element.canHaveChildren && !(element.xmlns || element.tagUrn)) {
 					html5.shivDocument(element.document);
 				}
 
