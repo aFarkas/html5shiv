@@ -26,7 +26,7 @@
 		},
 		fixDomMethods: true,
 		shivDocument: function (scopeDocument) {
-			if (!html5.options.shivDocument || scopeDocument.documentShived) {
+			if (!html5.options.shivDocument || supportsUnknownElements || scopeDocument.documentShived) {
 				return;
 			}
 
