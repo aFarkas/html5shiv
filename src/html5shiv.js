@@ -55,7 +55,9 @@
 			scopeDocument.createElement = function (nodeName) {
 				var element = documentCreateElement(nodeName);
 
-				if (html5.shivMethods && element.canHaveChildren && !(element.xmlns || element.tagUrn)) {
+				// don't shiv elements that can't have child nodes or namespaced custom elements to avoid
+				// bugs associated with overwriting `createElement()`
+				if (!html5.shivMethods || !element.canHaveChildren || element.xmlns || element.tagUrn) {
 					html5.shivDocument(element.document);
 				}
 
