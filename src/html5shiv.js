@@ -50,9 +50,7 @@
 
 					return element;
 				};
-			}
 
-			if (html5.options.shivMethods) {
 				// shiv document create document fragment function
 				scopeDocument.createDocumentFragment = function () {
 					return html5.shivDocument(documentCreateDocumentFragment());
