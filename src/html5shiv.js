@@ -22,7 +22,6 @@
 		elements: html5 && html5.elements ? html5.elements : 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
 		shivMethods: html5 && html5.shivMethods ? html5.shivMethods : true,
 		shivCSS: html5 && html5.shivCSS ? html5.shivCSS : true,
-		fixDomMethods: true,
 		shivDocument: function (scopeDocument) {
 			if (supportsUnknownElements || scopeDocument.documentShived) {
 				return;
