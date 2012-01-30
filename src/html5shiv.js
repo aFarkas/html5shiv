@@ -16,6 +16,7 @@
 
 	// html5 global so that more elements can be shived and also so that existing shiving can be detected on iframes
 	// more elements can be added and shived with the following code: html5.elements.push('element-name'); html5.shivDocument(document);
+	// default options can be changed before the script is included: html5 = { shivMethods: false, shivCSS: false, elements: 'foo bar' };
 	var html5 = {
 		// a list of html5 elements
 		elements: html5 && html5.elements ? html5.elements : 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
