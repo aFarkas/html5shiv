@@ -1,12 +1,5 @@
 /*! HTML5 Shiv v3.1 | @jon_neal @afarkas @rem | MIT/GPL2 Licensed */
 (function (win, doc) {
-	// feature detection: whether the browser supports unknown elements
-	var supportsUnknownElements = (function (a) {
-		a.innerHTML = '<x-element></x-element>';
-
-		return a.childNodes.length === 1;
-	})(doc.createElement('a'));
-
 	// feature detection: whether the browser supports default html5 styles
 	var supportsHtml5Styles = (function(nav, docEl, compStyle) {
 		var
@@ -25,12 +18,19 @@
 		return supported;
 	})(doc.createElement('nav'), doc.documentElement, win.getComputedStyle);
 
-	win.html5 = win.html5 || {};
-	
-	var defaultHtml5Elements = 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video';
+	// feature detection: whether the browser supports unknown elements
+	var supportsUnknownElements = (function (a) {
+		a.innerHTML = '<x-element></x-element>';
+
+		return a.childNodes.length === 1;
+	})(doc.createElement('a'));
 
 	var call = Date.call;
 
+	var defaultHtml5Elements = 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video';
+
+	var html5 = win.html5 || {};
+	
 	// html5 global so that more elements can be shived and also so that existing shiving can be detected on iframes
 	// more elements can be added and shived: html5.elements.push('element-name'); html5.shivDocument(document);
 	// defaults can be changed before the script is included: html5 = { shivMethods: false, shivCSS: false, elements: 'foo bar' };
@@ -42,7 +42,6 @@
 		'type': 'default',
 		'shivDocument': function (scopeDocument) {
 			if (!supportsUnknownElements && !scopeDocument.documentShived) {
-
 				var
 				documentCreateElement = scopeDocument.createElement,
 				documentCreateDocumentFragment = scopeDocument.createDocumentFragment;
@@ -97,6 +96,9 @@
 			return scopeDocument;
 		}
 	};
+
+	// expose html5
+	win.html5 = html5;
 
 	// shiv the document
 	html5.shivDocument(doc);
