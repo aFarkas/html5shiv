@@ -36,7 +36,7 @@
 	// defaults can be changed before the script is included: html5 = { shivMethods: false, shivCSS: false, elements: 'foo bar' };
 	html5 = {
 		// a list of html5 elements
-		elements: (html5.elements || defaultHtml5Elements).split(' '),
+		elements: (typeof html5.elements === 'object') ? html5.elements : (html5.elements || defaultHtml5Elements).split(' '),
 		shivMethods: !(html5.shivMethods === false),
 		shivCSS: !(html5.shivCSS === false),
 		type: 'default',
@@ -77,9 +77,9 @@
 
 			// shiv the default html5 styles
 			if (html5.shivCSS && !supportsHtml5Styles && documentHead) {
-				var x = scopeDocument.createElement('x-element');
+				var p = scopeDocument.createElement('p');
 
-				x.innerHTML = 'x<style>' +
+				p.innerHTML = 'x<style>' +
 					'article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block}' + // Corrects block display not defined in IE6/7/8/9
 					'audio{display:none}' + // Corrects audio display not defined in IE6/7/8/9
 					'canvas,video{display:inline-block;*display:inline;*zoom:1}' + // Corrects canvas and video display not defined in IE6/7/8/9
@@ -87,7 +87,7 @@
 					'mark{background:#FF0;color:#000}' + // Addresses styling not present in IE6/7/8/9
 				'</style>';
 
-				documentHead.insertBefore(x.lastChild, documentHead.firstChild);
+				documentHead.insertBefore(p.lastChild, documentHead.firstChild);
 			}
 
 			// set the document as shivved
