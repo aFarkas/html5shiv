@@ -48,8 +48,8 @@
 				documentCreateDocumentFragment = scopeDocument.createDocumentFragment;
 
 				// shiv the document
-				for (var i = 0, l = html5.elements.length; i < l; ++i) {
-					call.call(documentCreateElement, scopeDocument, html5.elements[i]);
+				for (var i = 0, elements = html5.elements, l = elements.length; i < l; ++i) {
+					call.call(documentCreateElement, scopeDocument, elements[i]);
 				}
 
 				// shiv the document create element method
