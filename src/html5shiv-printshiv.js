@@ -181,7 +181,7 @@
 	function shivCssText (cssText) {
 		// set local variables
 		var
-		elementsRegExp = new RegExp('(^|[\\s,{}])(' + elements.join('|') + ')', 'gi'),
+		elementsRegExp = new RegExp('(^|[\\s,{}])(' + html5.elements.join('|') + ')', 'gi'),
 		cssTextSplit = cssText.split('{'),
 		cssTextSplitLength = cssTextSplit.length,
 		i = -1;
@@ -221,7 +221,7 @@
 			// set local variables
 			var
 			i = -1,
-			elementsRegExp = new RegExp('^(' + elements.join('|') + ')$', 'i'),
+			elementsRegExp = new RegExp('^(' + html5.elements.join('|') + ')$', 'i'),
 			nodeList = doc.getElementsByTagName('*'),
 			nodeListLength = nodeList.length,
 			element,
