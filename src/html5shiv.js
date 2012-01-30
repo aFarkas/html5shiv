@@ -25,7 +25,7 @@
 		return supported;
 	})(doc.createElement('nav'), doc.documentElement, win.getComputedStyle);
 
-	var html5 = win.html5 || {};
+	win.html5 = win.html5 || {};
 	
 	var defaultHtml5Elements = 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video';
 
