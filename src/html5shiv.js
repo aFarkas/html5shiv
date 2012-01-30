@@ -27,10 +27,7 @@
 
 			var
 			documentCreateElement = scopeDocument.createElement,
-			documentCreateDocumentFragment = scopeDocument.createDocumentFragment,
-			documentCreateElementReplaceFunction = function (m) {
-				documentCreateElement(m);
-			};
+			documentCreateDocumentFragment = scopeDocument.createDocumentFragment;
 
 			// shiv the document
 			for (var i = 0, l = html5.elements.length; i < l; ++i) {
