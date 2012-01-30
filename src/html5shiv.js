@@ -8,10 +8,21 @@
 	})(doc.createElement('a'));
 
 	// feature detection: whether the browser supports default html5 styles
-	var supportsHtml5Styles = (function (nav, docEl, compStyle) {
-		docEl.appendChild(nav);
+	var supportsHtml5Styles = (function(nav, docEl, compStyle) {
+		var
+		fake,
+		supported,
+		root = doc.body || (fake = docEl.insertBefore(doc.createElement('body'), docEl.firstChild));
 
-		return (compStyle = (compStyle ? compStyle(nav) : nav.currentStyle).display) && docEl.removeChild(nav) && compStyle === 'block';
+		root.insertBefore(nav, root.firstChild);
+
+		supported = (compStyle ? compStyle(nav) : nav.currentStyle).display === 'block';
+
+		root.removeChild(nav);
+
+		fake && docEl.removeChild(fake);
+
+		return supported;
 	})(doc.createElement('nav'), doc.documentElement, win.getComputedStyle);
 
 	// html5 global so that more elements can be shived and also so that existing shiving can be detected on iframes
