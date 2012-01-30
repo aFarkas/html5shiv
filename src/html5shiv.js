@@ -24,15 +24,18 @@
 
 		return supported;
 	})(doc.createElement('nav'), doc.documentElement, win.getComputedStyle);
+	
+	var html5 = window.html5 || {};
+	var elements = html5.element || 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' ');
 
 	// html5 global so that more elements can be shived and also so that existing shiving can be detected on iframes
 	// more elements can be added and shived: html5.elements.push('element-name'); html5.shivDocument(document);
 	// defaults can be changed before the script is included: html5 = { shivMethods: false, shivCSS: false, elements: 'foo bar' };
-	var html5 = {
+	html5 = {
 		// a list of html5 elements
-		elements: (html5 && html5.elements) ? html5.elements : 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
-		shivMethods: !(html5 && html5.shivMethods === false),
-		shivCSS: !(html5 && html5.shivCSS === false),
+		elements: elements,
+		shivMethods: !(html5.shivMethods === false),
+		shivCSS: !(html5.shivCSS === false),
 		type: 'default',
 		shivDocument: function (scopeDocument) {
 			if (supportsUnknownElements || scopeDocument.documentShived) {
@@ -44,8 +47,8 @@
 			documentCreateDocumentFragment = scopeDocument.createDocumentFragment;
 
 			// shiv the document
-			for (var i = 0, l = html5.elements.length; i < l; ++i) {
-				documentCreateElement(html5.elements[i]);
+			for (var i = 0, l = elements.length; i < l; ++i) {
+				documentCreateElement(elements[i]);
 			}
 
 			// shiv document create element function
