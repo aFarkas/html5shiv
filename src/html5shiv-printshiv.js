@@ -1,16 +1,16 @@
 /*! HTML5 Shiv vpre3.2 | @jon_neal @afarkas @rem | MIT/GPL2 Licensed */
 (function (win, doc) {
 	// feature detection: whether the browser supports default html5 styles
-	var supportsHtml5Styles = (function(el, docEl, compStyle) {
+	var supportsHtml5Styles = (function(a, docEl, compStyle) {
 		var fake, supported, root = doc.body || (fake = docEl.insertBefore(doc.createElement('body'), docEl.firstChild));
 
-		root.insertBefore(el, root.firstChild);
+		root.insertBefore(a, root.firstChild);
 
-		el.setAttribute('hidden', 'hidden');
+		a.setAttribute('hidden', 'hidden');
 
-		supported = (compStyle ? compStyle(el, null) : el.currentStyle).display === 'none';
+		supported = (compStyle ? compStyle(a, null) : a.currentStyle).display === 'none';
 
-		root.removeChild(el);
+		root.removeChild(a);
 
 		fake && docEl.removeChild(fake);
 
