@@ -209,7 +209,7 @@
 		'onbeforeprint',
 		function () {
 			// test for scenarios where shiving is unnecessary or unavailable
-			if (win.html5.supportsXElement || !doc.namespaces) {
+			if (!doc.namespaces) {
 				return;
 			}
 
@@ -266,7 +266,7 @@
 		'onafterprint',
 		function() {
 			// test for scenarios where shiving is unnecessary
-			if (win.html5.supportsXElement || !doc.namespaces) {
+			if (!doc.namespaces) {
 				return;
 			}
 
