@@ -1,19 +1,21 @@
 /*! HTML5 Shiv vpre3.2 | @jon_neal @afarkas @rem | MIT/GPL2 Licensed */
 (function (win, doc) {
 	// feature detection: whether the browser supports default html5 styles
-	var supportsHtml5Styles = (function(nav, docEl, compStyle) {
+	var supportsHtml5Styles = (function(el, docEl, compStyle) {
 		var fake, supported, root = doc.body || (fake = docEl.insertBefore(doc.createElement('body'), docEl.firstChild));
 
-		root.insertBefore(nav, root.firstChild);
+		root.insertBefore(el, root.firstChild);
 
-		supported = (compStyle ? compStyle(nav, null) : nav.currentStyle).display === 'block';
+		el.setAttribute('hidden', 'hidden');
 
-		root.removeChild(nav);
+		supported = (compStyle ? compStyle(el, null) : el.currentStyle).display === 'none';
+
+		root.removeChild(el);
 
 		fake && docEl.removeChild(fake);
 
 		return supported;
-	})(doc.createElement('nav'), doc.documentElement, win.getComputedStyle);
+	})(doc.createElement('a'), doc.documentElement, win.getComputedStyle);
 
 	// feature detection: whether the browser supports unknown elements
 	var supportsUnknownElements = (function (a) {
