@@ -6,7 +6,7 @@
 
 		root.insertBefore(a, root.firstChild);
 
-		a.setAttribute('hidden', 'hidden');
+		a.hidden = true;
 
 		supported = (compStyle ? compStyle(a, null) : a.currentStyle).display === 'none';
 
