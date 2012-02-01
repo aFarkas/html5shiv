@@ -1,5 +1,11 @@
 /*! HTML5 Shiv vpre3.3 | @jon_neal @afarkas @rem | MIT/GPL2 Licensed */
 (function (win, doc) {
+	// set local variables
+	var call = Date.call, elements, timestamp;
+
+	// set html5
+	var html5 = win.html5 || {};
+	
 	// feature detection: whether the browser supports default html5 styles
 	var supportsHtml5Styles = (function(a, docEl, compStyle) {
 		var fake, supported, root = doc.body || (fake = docEl.insertBefore(doc.createElement('body'), docEl.firstChild));
@@ -24,46 +30,61 @@
 		return a.childNodes.length === 1;
 	})(doc.createElement('a'));
 
-	var call = Date.call;
+	function getElements() {
+		return elements.slice();
+	}
 
-	var defaultHtml5Elements = 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video';
+	function setElements(els) {
+		timestamp = +(new Date);
 
-	var html5 = win.html5 || {};
-	
+		elements = (typeof els === 'object') ? els : els.split(' ');
+	}
+
+	setElements('abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video');
+
 	// html5 global so that more elements can be shived and also so that existing shiving can be detected on iframes
-	// more elements can be added and shived: html5.elements.push('element-name'); html5.shivDocument(document);
-	// defaults can be changed before the script is included: html5 = { shivMethods: false, shivCSS: false, elements: 'foo bar' };
+	// options can be changed before the script is included: html5 = { shivMethods: false, shivCSS: false }
+	// elements can be changed before or after the script is included: html = { elements: 'foo bar' }
 	html5 = {
 		// a list of html5 elements
-		'elements': (typeof html5.elements === 'object') ? html5.elements : (html5.elements || defaultHtml5Elements).split(' '),
+		'getElements': getElements,
+		'setElements': setElements,
 		'shivCSS': !(html5.shivCSS === false),
 		'shivMethods': !(html5.shivMethods === false),
 		'shivDocument': function (scopeDocument) {
+			var cacheStamp = timestamp, cacheNodes = {};
+
 			if (!supportsUnknownElements && !scopeDocument.documentShived) {
 				var documentCreateElement = scopeDocument.createElement, documentCreateDocumentFragment = scopeDocument.createDocumentFragment;
 
 				// shiv the document
-				for (var i = 0, elements = html5.elements, l = elements.length; i < l; ++i) {
+				for (var i = 0, l = elements.length; i < l; ++i) {
 					call.call(documentCreateElement, scopeDocument, elements[i]);
 				}
 
 				// shiv the document create element method
 				scopeDocument.createElement = function (nodeName) {
-					var element = call.call(documentCreateElement, scopeDocument, nodeName);
-
-					// shiv only supported elements (supporting children, not namespaced)
-					if (html5.shivMethods && element.canHaveChildren && !(element.xmlns || element.tagUrn)) {
-						html5.shivDocument(element.document);
+					if (cacheStamp !== timestamp) {
+						cacheNodes = {};
+						cacheStamp = timstamp;
 					}
 
-					return element;
+					var nodeCached = cacheNodes[nodeName], node = nodeCached ? nodeCached.cloneNode(false) : call.call(documentCreateElement, scopeDocument, nodeName);
+
+					// shiv only non-cached supported elements (supporting children, not namespaced)
+					if (html5.shivMethods && !nodeCached && node.canHaveChildren && !(node.xmlns || node.tagUrn)) {
+						html5.shivDocument(node.document);
+						cacheNodes[nodeName] = node;
+					}
+
+					return node;
 				};
 
 				// shiv the document create document fragment method
 				scopeDocument.createDocumentFragment = function () {
-					var frag = call.call(documentCreateDocumentFragment, scopeDocument);
+					var node = call.call(documentCreateDocumentFragment, scopeDocument);
 
-					return (html5.shivMethods) ? html5.shivDocument(frag) : frag;
+					return (html5.shivMethods) ? html5.shivDocument(node) : node;
 				};
 			}
 
@@ -98,7 +119,7 @@
 
 	// expose html5
 	win.html5 = html5;
-	
+
 	// shiv the document
 	html5.shivDocument(doc);
 
@@ -183,7 +204,7 @@
 	function shivCssText (cssText) {
 		// set local variables
 		var
-		elementsRegExp = new RegExp('(^|[\\s,{}])(' + html5.elements.join('|') + ')', 'gi'),
+		elementsRegExp = new RegExp('(^|[\\s,{}])(' + elements.join('|') + ')', 'gi'),
 		cssTextSplit = cssText.split('{'),
 		cssTextSplitLength = cssTextSplit.length,
 		i = -1;
@@ -223,7 +244,7 @@
 			// set local variables
 			var
 			i = -1,
-			elementsRegExp = new RegExp('^(' + html5.elements.join('|') + ')$', 'i'),
+			elementsRegExp = new RegExp('^(' + elements.join('|') + ')$', 'i'),
 			nodeList = doc.getElementsByTagName('*'),
 			nodeListLength = nodeList.length,
 			element,
