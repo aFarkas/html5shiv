@@ -322,7 +322,7 @@
    * @private
    * @param {Document} ownerDocument The document.
    */
-  function swapToHTML5(ownerDocument) {
+  function swapToHtml5(ownerDocument) {
     var element,
         node,
         index = -1,
@@ -409,7 +409,7 @@
 
     addListener(ownerWindow, 'afterprint', function() {
       // replace printable clones with original elements and remove shived style sheet
-      swapToHTML5(ownerDocument);
+      swapToHtml5(ownerDocument);
       shivedSheet.parentNode.removeChild(shivedSheet);
     });
 
