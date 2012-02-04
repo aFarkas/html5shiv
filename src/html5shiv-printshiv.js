@@ -202,6 +202,9 @@
   /** Used to namespace printable elements */
   var shivNamespace = 'html5shiv';
 
+  /** Used to store elements that have been swapped with printable clones */
+  var swapCache = [];
+
   /** Detect whether the browser supports shivable style sheets */
   var supportsShivableSheets = !supportsUnknownElements && (function() {
     // assign a false negative if unable to shiv
@@ -323,16 +326,9 @@
    * @param {Document} ownerDocument The document.
    */
   function swapToHtml5(ownerDocument) {
-    var element,
-        node,
-        index = -1,
-        nodes = ownerDocument.getElementsByTagName('*'),
-        length = nodes.length;
-
-    while (++index < length) {
-      node = nodes[index];
-      element = node.originalElement;
-      element && swapNode(node, element);
+    var data;
+    while ((data = swapCache.pop())) {
+      swapNode(data.printable, data.html5);
     }
   }
 
@@ -345,16 +341,15 @@
   function swapToPrintable(ownerDocument) {
     var node,
         printable,
-        index = -1,
         nodes = ownerDocument.getElementsByTagName('*'),
-        length = nodes.length,
+        index = nodes.length,
         reElements = RegExp('^(?:' + getElements().join('|') + ')$', 'i');
 
-    while (++index < length) {
+    while (index--) {
       node = nodes[index];
       if (reElements.test(node.nodeName)) {
         printable = createPrintable(ownerDocument, node);
-        printable.originalElement = node;
+        swapCache.push({ 'html5': node, 'printable': printable });
         swapNode(node, printable);
       }
     }
