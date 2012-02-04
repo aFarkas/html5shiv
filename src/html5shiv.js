@@ -5,7 +5,7 @@
   var options = window.html5 || {};
 
   /** Used to skip problem elements */
-  var reSkip = /^<|^(?:button|iframe|input|textarea)$/i;
+  var reSkip = /^<|^(?:button|iframe|input|script|textarea)$/i;
 
   /** Detect whether the browser supports default html5 styles */
   var supportsHtml5Styles;
