@@ -3,16 +3,17 @@
 	<head>
 		<meta charset="utf-8">
 		<title>HTML5 Shiv</title>
-		<script src="../src/html5shiv-printshiv.js"></script>
 		<link rel="stylesheet" href="style.css">
+		<script src="../src/html5shiv-printshiv.js"></script>
 	</head>
 	<body>
 		<section>This sentence is in a green box <mark>with these words highlighted</mark>.</section>
 		<script id="script">
-var frag = document.createDocumentFragment(), fragDiv = ('createElement' in frag) ? frag.createElement('div') : frag.appendChild(document.createElement('div'));
-fragDiv.innerHTML = '<section>This native javascript sentence is in a green box <mark>with these words highlighted</mark>?</section>';
-var fragDivClone = fragDiv.cloneNode(true);
-document.body.appendChild(fragDivClone);
+			var frag = document.createDocumentFragment();
+			var fragDiv = ('createElement' in frag) ? frag.createElement('div') : frag.appendChild(document.createElement('div'));
+			fragDiv.innerHTML = '<section>This native javascript sentence is in a green box <mark>with these words highlighted</mark>?</section>';
+			var fragDivClone = fragDiv.cloneNode(true);
+			document.body.appendChild(fragDivClone);
 		</script>
 	<body>
 </html>
