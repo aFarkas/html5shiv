@@ -51,10 +51,10 @@
    * @private
    * @param {Document} ownerDocument The document.
    * @param {String} cssText The CSS text.
-   * @returns {CSSStyleSheet} The style element.
+   * @returns {StyleSheet} The style element.
    */
   function addStyleSheet(ownerDocument, cssText) {
-    var p = document.createElement('p'),
+    var p = ownerDocument.createElement('p'),
         parent = ownerDocument.getElementsByTagName('head')[0] || ownerDocument.documentElement;
 
     p.innerHTML = 'x<style>' + cssText + '</style>';

@@ -51,10 +51,10 @@
    * @private
    * @param {Document} ownerDocument The document.
    * @param {String} cssText The CSS text.
-   * @returns {CSSStyleSheet} The style element.
+   * @returns {StyleSheet} The style element.
    */
   function addStyleSheet(ownerDocument, cssText) {
-    var p = document.createElement('p'),
+    var p = ownerDocument.createElement('p'),
         parent = ownerDocument.getElementsByTagName('head')[0] || ownerDocument.documentElement;
 
     p.innerHTML = 'x<style>' + cssText + '</style>';
@@ -205,9 +205,6 @@
   /** Used to namespace printable elements */
   var shivNamespace = 'html5shiv';
 
-  /** Used to store elements that have been swapped with printable clones */
-  var swapCache = [];
-
   /** Detect whether the browser supports shivable style sheets */
   var supportsShivableSheets = !supportsUnknownElements && (function() {
     // assign a false negative if unable to shiv
@@ -226,23 +223,19 @@
   /**
    * Creates a printable clone of the given element.
    * @private
-   * @param {Document} ownerDocument The document.
    * @param {Element} element The element to clone.
    * @returns {Element} The printable clone.
    */
-  function createPrintable(ownerDocument, element) {
-    var attr,
-        child,
-        nodeName,
-        attributes = element.attributes,
-        index = attributes.length,
-        nodeName = element.nodeName,
-        printable = ownerDocument.createElement(shivNamespace + ':' + nodeName);
+  function createPrintable(element) {
+    var node,
+        nodes = element.attributes,
+        index = nodes.length,
+        printable = element.ownerDocument.createElement(shivNamespace + ':' + element.nodeName);
 
     // copy attributes to the printable element
     while (index--) {
-      attr = attributes[index];
-      attr.specified && printable.setAttribute(attr.nodeName, attr.nodeValue);
+      node = nodes[index];
+      node.specified && printable.setAttribute(node.nodeName, node.nodeValue);
     }
     // copy styles to the printable element
     printable.style.cssText = element.style.cssText;
@@ -253,16 +246,15 @@
    * Shivs the given CSS text.
    * (eg. header{} becomes html5shiv\:header{})
    * @private
-   * @param {Document} ownerDocument The document.
    * @param {String} cssText The CSS text to shiv.
    * @returns {String} The shived CSS text.
    */
-  function shivCssText(ownerDocument, cssText) {
+  function shivCssText(cssText) {
     var pair,
         parts = cssText.split('{'),
+        index = parts.length,
         reElements = RegExp('(^|[\\s,])(' + getElements().join('|') + ')\\b', 'gi'),
-        replacement = '$1' + shivNamespace + '\\:$2',
-        index = parts.length;
+        replacement = '$1' + shivNamespace + '\\:$2';
 
     while (index--) {
       pair = parts[index] = parts[index].split('}');
@@ -275,8 +267,8 @@
   /**
    * Swaps a node with a replacement node, transferring the node's children
    * to the replacement node.
-   * @param {Element} element The element to swap.
-   * @param {Element} replacment The element to swap with.
+   * @param {Element} element The element to remove.
+   * @param {Element} replacment The replacement element.
    */
   function swapNode(element, replacement) {
     element.applyElement(replacement);
@@ -287,11 +279,11 @@
    * Replaces printable clones with their original HTML5 elements.
    * (eg. html5shiv:header element becomes header element)
    * @private
-   * @param {Document} ownerDocument The document.
+   * @params {Array} swapData The array returned by `swapToPrintable()`.
    */
-  function swapToHtml5(ownerDocument) {
+  function swapToHtml5(swapData) {
     var data;
-    while ((data = swapCache.pop())) {
+    while ((data = swapData.pop())) {
       swapNode(data.printable, data.html5);
     }
   }
@@ -301,22 +293,26 @@
    * (eg. header element becomes html5shiv:header element)
    * @private
    * @param {Document} ownerDocument The document.
+   * @returns {Array} An array of objects each containing a swapped element and
+   * corresponding printable clone.
    */
   function swapToPrintable(ownerDocument) {
     var node,
         printable,
         nodes = ownerDocument.getElementsByTagName('*'),
         index = nodes.length,
-        reElements = RegExp('^(?:' + getElements().join('|') + ')$', 'i');
+        reElements = RegExp('^(?:' + getElements().join('|') + ')$', 'i'),
+        result = [];
 
     while (index--) {
       node = nodes[index];
       if (reElements.test(node.nodeName)) {
-        printable = createPrintable(ownerDocument, node);
-        swapCache.push({ 'html5': node, 'printable': printable });
+        printable = createPrintable(node);
+        result.push({ 'html5': node, 'printable': printable });
         swapNode(node, printable);
       }
     }
+    return result;
   }
 
   /*--------------------------------------------------------------------------*/
@@ -329,8 +325,9 @@
    */
   function shivPrint(ownerDocument) {
     var shivedSheet,
-        ownerWindow = ownerDocument.parentWindow,
-        namespaces = ownerDocument.namespaces;
+        swapped,
+        namespaces = ownerDocument.namespaces,
+        ownerWindow = ownerDocument.parentWindow;
 
     if (!supportsShivableSheets || ownerDocument.printShived) {
       return ownerDocument;
@@ -363,15 +360,15 @@
         }
       }
       // replace HTML5 elements with printable clones and add shived style sheet
-      cssText = shivCssText(ownerDocument, cssText.reverse().join(''));
-      swapToPrintable(ownerDocument);
+      cssText = shivCssText(cssText.reverse().join(''));
+      swapped = swapToPrintable(ownerDocument);
       shivedSheet = addStyleSheet(ownerDocument, cssText);
     });
 
     ownerWindow.attachEvent('onafterprint', function() {
       // replace printable clones with original elements and remove shived style sheet
-      swapToHtml5(ownerDocument);
-      shivedSheet.parentNode.removeChild(shivedSheet);
+      swapToHtml5(swapped);
+      shivedSheet.removeNode(true);
     });
 
     ownerDocument.printShived = true;
