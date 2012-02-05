@@ -211,10 +211,12 @@
   /** Detect whether the browser supports shivable style sheets */
   var supportsShivableSheets = !supportsUnknownElements && (function() {
     // assign a false negative if unable to shiv
+    var docEl = document.documentElement;
     return !(
       typeof document.namespaces == 'undefined' ||
       typeof document.parentWindow == 'undefined' ||
-      typeof document.swapNode == 'undefined'
+      typeof docEl.applyElement == 'undefined' ||
+      typeof docEl.removeNode == 'undefined'
     );
   }());
 
@@ -266,8 +268,8 @@
    * (eg. header{} becomes html5shiv\:header{})
    * @private
    * @param {Document} ownerDocument The document.
-   * @param {String} cssText The style text to shiv.
-   * @returns {String} The shived style text.
+   * @param {String} cssText The CSS text to shiv.
+   * @returns {String} The shived CSS text.
    */
   function shivCssText(ownerDocument, cssText) {
     var pair,
@@ -291,11 +293,8 @@
    * @param {Element} replacment The element to swap with.
    */
   function swapNode(element, replacement) {
-    var child;
-    while ((child = element.firstChild)) {
-      replacement.appendChild(child);
-    }
-    element.swapNode(replacement);
+    element.applyElement(replacement);
+    element.removeNode();
   }
 
   /**
@@ -358,9 +357,9 @@
           length,
           sheet,
           collection = ownerDocument.styleSheets,
-          index = collection.length,
           cssText = [],
-          sheets = [];
+          index = collection.length,
+          sheets = Array(index);
 
       // convert styleSheets collection to an array
       while (index--) {
