@@ -50,7 +50,7 @@
    * Creates a style sheet with the given CSS text and adds it to the document.
    * @private
    * @param {Document} ownerDocument The document.
-   * @param {String} cssText The style text.
+   * @param {String} cssText The CSS text.
    * @returns {CSSStyleSheet} The style element.
    */
   function addStyleSheet(ownerDocument, cssText) {
@@ -212,7 +212,6 @@
   var supportsShivableSheets = !supportsUnknownElements && (function() {
     // assign a false negative if unable to shiv
     return !(
-      typeof document.documentElement.sourceIndex == 'undefined' ||
       typeof document.namespaces == 'undefined' ||
       typeof document.parentWindow == 'undefined' ||
       typeof document.swapNode == 'undefined'
