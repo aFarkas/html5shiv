@@ -253,7 +253,7 @@
     var pair,
         parts = cssText.split('{'),
         index = parts.length,
-        reElements = RegExp('(^|[\\s,])(' + getElements().join('|') + ')\\b', 'gi'),
+        reElements = RegExp('(^|[\\s,>+~])(' + getElements().join('|') + ')(?=[[\\s,>+~#.:]|$)', 'gi'),
         replacement = '$1' + shivNamespace + '\\:$2';
 
     while (index--) {
