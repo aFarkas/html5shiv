@@ -216,26 +216,12 @@
       typeof document.namespaces == 'undefined' ||
       typeof document.parentWindow == 'undefined' ||
       typeof docEl.applyElement == 'undefined' ||
-      typeof docEl.removeNode == 'undefined'
+      typeof docEl.removeNode == 'undefined' ||
+      typeof window.attachEvent == 'undefined'
     );
   }());
 
   /*--------------------------------------------------------------------------*/
-
-  /**
-   * Registers an event listener on an element or window object.
-   * @private
-   * @param {Object} object The element/window object.
-   * @param {String} eventName The name of the event.
-   * @param {Function} handler The event handler.
-   */
-  function addListener(element, eventName, handler) {
-    if (typeof element.addEventListener != 'undefined') {
-      element.addEventListener(eventName, handler, false);
-    } else if (typeof element.attachEvent != 'undefined') {
-      element.attachEvent('on' + eventName, handler);
-    }
-  }
 
   /**
    * Creates a printable clone of the given element.
@@ -352,7 +338,8 @@
     if (typeof namespaces[shivNamespace] == 'undefined') {
       namespaces.add(shivNamespace);
     }
-    addListener(ownerWindow, 'beforeprint', function() {
+
+    ownerWindow.attachEvent('onbeforeprint', function() {
       var imports,
           length,
           sheet,
@@ -381,7 +368,7 @@
       shivedSheet = addStyleSheet(ownerDocument, cssText);
     });
 
-    addListener(ownerWindow, 'afterprint', function() {
+    ownerWindow.attachEvent('onafterprint', function() {
       // replace printable clones with original elements and remove shived style sheet
       swapToHtml5(ownerDocument);
       shivedSheet.parentNode.removeChild(shivedSheet);
