@@ -32,6 +32,9 @@
 			section[data-article="article"] {
 				border: 5px dotted #000;
 			}
+			p+article {
+				text-decoration: underline;
+			}
 		</style>
 		<script src="../src/html5shiv-printshiv.js"></script>
 	</head>
@@ -42,7 +45,7 @@
 		<p>You should see dotted broders in print.</p>
 		<article class="inline-mixed-media">
 			<p>
-				1. Lorem ipsum dolor sit amet, consetetur sadipscing elitr,  sed diam non inline-mixed-media
+				1. This text should be underlined.
 			</p>
 		</article>
 		<article class="inline-print-media">
