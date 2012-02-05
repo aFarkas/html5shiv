@@ -116,11 +116,12 @@
    * @returns {Document} The shived document.
    */
   function shivDocument(ownerDocument) {
+    var shived;
     if (ownerDocument.documentShived) {
       return ownerDocument;
     }
     if (html5.shivCSS && !supportsHtml5Styles) {
-      addStyleSheet(ownerDocument,
+      shived = !!addStyleSheet(ownerDocument,
         // corrects block display not defined in IE6/7/8/9
         'article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block}' +
         // corrects audio display not defined in IE6/7/8/9
@@ -134,9 +135,11 @@
       );
     }
     if (html5.shivMethods && !supportsUnknownElements) {
-      shivMethods(ownerDocument);
+      shived = !shivMethods(ownerDocument);
     }
-    ownerDocument.documentShived = true;
+    if (shived) {
+      ownerDocument.documentShived = shived;
+    }
     return ownerDocument;
   }
 

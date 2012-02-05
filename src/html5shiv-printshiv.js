@@ -116,11 +116,12 @@
    * @returns {Document} The shived document.
    */
   function shivDocument(ownerDocument) {
+    var shived;
     if (ownerDocument.documentShived) {
       return ownerDocument;
     }
     if (html5.shivCSS && !supportsHtml5Styles) {
-      addStyleSheet(ownerDocument,
+      shived = !!addStyleSheet(ownerDocument,
         // corrects block display not defined in IE6/7/8/9
         'article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block}' +
         // corrects audio display not defined in IE6/7/8/9
@@ -134,9 +135,11 @@
       );
     }
     if (html5.shivMethods && !supportsUnknownElements) {
-      shivMethods(ownerDocument);
+      shived = !shivMethods(ownerDocument);
     }
-    ownerDocument.documentShived = true;
+    if (shived) {
+      ownerDocument.documentShived = shived;
+    }
     return ownerDocument;
   }
 
@@ -197,7 +200,7 @@
   /*------------------------------- Print Shiv -------------------------------*/
 
   /** Used to filter media types */
-  var reMedia = /\b(?:all|print)\b/;
+  var reMedia = /^$|\b(?:all|print)\b/;
 
   /** Used to namespace printable elements */
   var shivNamespace = 'html5shiv';
@@ -260,29 +263,6 @@
   }
 
   /**
-   * Returns an array of style sheet elements found in the document.
-   * @private
-   * @param {Document} ownerDocument The document.
-   * @returns {Array} An array of style sheet elements.
-   */
-  function getStyleSheets(ownerDocument) {
-    var elements,
-        nodeName,
-        nodeNames = ['link', 'style'],
-        result = [];
-
-    while ((nodeName = nodeNames.pop())) {
-      elements = ownerDocument.getElementsByTagName(nodeName);
-      for (var index = 0, length = elements.length; index < length; index++) {
-        result.push(elements[index]);
-      }
-    }
-    return result.sort(function(a, b) {
-      return a.sourceIndex - b.sourceIndex;
-    });
-  }
-
-  /**
    * Shivs the given CSS text.
    * (eg. header{} becomes html5shiv\:header{})
    * @private
@@ -291,16 +271,16 @@
    * @returns {String} The shived style text.
    */
   function shivCssText(ownerDocument, cssText) {
-    var part,
+    var pair,
         parts = cssText.split('{'),
         reElements = RegExp('(^|[\\s,])(' + getElements().join('|') + ')\\b', 'gi'),
         replacement = '$1' + shivNamespace + '\\:$2',
         index = parts.length;
 
     while (index--) {
-      part = parts[index] = parts[index].split('}');
-      part[part.length - 1] = part[part.length - 1].replace(reElements, replacement);
-      parts[index] = part.join('}');
+      pair = parts[index] = parts[index].split('}');
+      pair[pair.length - 1] = pair[pair.length - 1].replace(reElements, replacement);
+      parts[index] = pair.join('}');
     }
     return parts.join('{');
   }
@@ -375,26 +355,27 @@
       namespaces.add(shivNamespace);
     }
     addListener(ownerWindow, 'beforeprint', function() {
-      var index,
-          imports,
+      var imports,
           length,
-          media,
           sheet,
+          collection = ownerDocument.styleSheets,
+          index = collection.length,
           cssText = [],
-          sheets = getStyleSheets(ownerDocument);
+          sheets = [];
 
+      // convert styleSheets collection to an array
+      while (index--) {
+        sheets[index] = collection[index];
+      }
       // concat all style sheet CSS text
       while ((sheet = sheets.pop())) {
-        try {
-          sheet = sheet.styleSheet;
-          media = sheet.media || 'all';
-          if (!sheet.disabled && reMedia.test(media)) {
-            for (imports = sheet.imports, index = 0, length = imports.length; index < length; index++) {
-              sheets.push({ 'styleSheet': imports[index], 'media': media });
-            }
-            cssText.push(sheet.cssText);
+        // IE does not enforce a same origin policy for external style sheets
+        if (!sheet.disabled && reMedia.test(sheet.media)) {
+          for (imports = sheet.imports, index = 0, length = imports.length; index < length; index++) {
+            sheets.push(imports[index]);
           }
-        } catch(e) { }
+          cssText.push(sheet.cssText);
+        }
       }
       // replace HTML5 elements with printable clones and add shived style sheet
       cssText = shivCssText(ownerDocument, cssText.reverse().join(''));
