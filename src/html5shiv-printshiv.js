@@ -221,25 +221,48 @@
   /*--------------------------------------------------------------------------*/
 
   /**
-   * Creates a printable clone of the given element.
+   * Wraps all HTML5 elements in the given document with printable elements.
+   * (eg. the "header" element is wrapped with the "html5shiv:header" element)
    * @private
-   * @param {Element} element The element to clone.
-   * @returns {Element} The printable clone.
+   * @param {Document} ownerDocument The document.
+   * @returns {Array} An array wrappers added.
    */
-  function createPrintable(element) {
+  function addWrappers(ownerDocument) {
+    var node,
+        nodes = ownerDocument.getElementsByTagName('*'),
+        index = nodes.length,
+        reElements = RegExp('^(?:' + getElements().join('|') + ')$', 'i'),
+        result = [];
+
+    while (index--) {
+      node = nodes[index];
+      if (reElements.test(node.nodeName)) {
+        result.push(node.applyElement(createWrapper(node)));
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Creates a printable wrapper for the given element.
+   * @private
+   * @param {Element} element The element.
+   * @returns {Element} The wrapper.
+   */
+  function createWrapper(element) {
     var node,
         nodes = element.attributes,
         index = nodes.length,
-        printable = element.ownerDocument.createElement(shivNamespace + ':' + element.nodeName);
+        wrapper = element.ownerDocument.createElement(shivNamespace + ':' + element.nodeName);
 
-    // copy attributes to the printable element
+    // copy element attributes to the wrapper
     while (index--) {
       node = nodes[index];
-      node.specified && printable.setAttribute(node.nodeName, node.nodeValue);
+      node.specified && wrapper.setAttribute(node.nodeName, node.nodeValue);
     }
-    // copy styles to the printable element
-    printable.style.cssText = element.style.cssText;
-    return printable;
+    // copy element styles to the wrapper
+    wrapper.style.cssText = element.style.cssText;
+    return wrapper;
   }
 
   /**
@@ -265,54 +288,15 @@
   }
 
   /**
-   * Swaps a node with a replacement node, transferring the node's children
-   * to the replacement node.
-   * @param {Element} element The element to remove.
-   * @param {Element} replacment The replacement element.
-   */
-  function swapNode(element, replacement) {
-    element.applyElement(replacement);
-    element.removeNode();
-  }
-
-  /**
-   * Replaces printable clones with their original HTML5 elements.
-   * (eg. html5shiv:header element becomes header element)
+   * Removes the given wrappers, leaving the original elements.
    * @private
-   * @params {Array} swapData The array returned by `swapToPrintable()`.
+   * @params {Array} wrappers An array of printable wrappers.
    */
-  function swapToHtml5(swapData) {
-    var data;
-    while ((data = swapData.pop())) {
-      swapNode(data.printable, data.html5);
-    }
-  }
-
-  /**
-   * Replaces HTML5 elements with printable clones.
-   * (eg. header element becomes html5shiv:header element)
-   * @private
-   * @param {Document} ownerDocument The document.
-   * @returns {Array} An array of objects each containing a swapped element and
-   * corresponding printable clone.
-   */
-  function swapToPrintable(ownerDocument) {
-    var node,
-        printable,
-        nodes = ownerDocument.getElementsByTagName('*'),
-        index = nodes.length,
-        reElements = RegExp('^(?:' + getElements().join('|') + ')$', 'i'),
-        result = [];
-
+  function removeWrappers(wrappers) {
+    var index = wrappers.length;
     while (index--) {
-      node = nodes[index];
-      if (reElements.test(node.nodeName)) {
-        printable = createPrintable(node);
-        result.push({ 'html5': node, 'printable': printable });
-        swapNode(node, printable);
-      }
+      wrappers[index].removeNode();
     }
-    return result;
   }
 
   /*--------------------------------------------------------------------------*/
@@ -325,7 +309,7 @@
    */
   function shivPrint(ownerDocument) {
     var shivedSheet,
-        swapped,
+        wrappers,
         namespaces = ownerDocument.namespaces,
         ownerWindow = ownerDocument.parentWindow;
 
@@ -359,15 +343,15 @@
           cssText.push(sheet.cssText);
         }
       }
-      // replace HTML5 elements with printable clones and add shived style sheet
+      // wrap all HTML5 elements with printable elements and add the shived style sheet
       cssText = shivCssText(cssText.reverse().join(''));
-      swapped = swapToPrintable(ownerDocument);
+      wrappers = addWrappers(ownerDocument);
       shivedSheet = addStyleSheet(ownerDocument, cssText);
     });
 
     ownerWindow.attachEvent('onafterprint', function() {
-      // replace printable clones with original elements and remove shived style sheet
-      swapToHtml5(swapped);
+      // remove wrappers, leaving the original elements, and remove the shived style sheet
+      removeWrappers(wrappers);
       shivedSheet.removeNode(true);
     });
 
