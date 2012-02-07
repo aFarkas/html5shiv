@@ -1,4 +1,4 @@
-/*! HTML5 Shiv v3.3RC1 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed */
+/*! HTML5 Shiv v3.3 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed */
 ;(function(window, document) {
 
   /** Preset options */
