@@ -1,11 +1,11 @@
-/*! HTML5 Shiv v3.3 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed */
+/*! HTML5 Shiv vpre3.4 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed */
 ;(function(window, document) {
 
   /** Preset options */
   var options = window.html5 || {};
 
   /** Used to skip problem elements */
-  var reSkip = /^<|^(?:button|iframe|input|script|textarea)$/i;
+  var reSkip = /^<|^(?:button|iframe|input|script|textarea|link|style|param|iframe|object)$/i;
 
   /** Detect whether the browser supports default html5 styles */
   var supportsHtml5Styles;
@@ -95,7 +95,7 @@
       // because IE < 9 cannot set the `name` or `type` attributes of an
       // element once it's inserted into a document
       var node = (cache[nodeName] || (cache[nodeName] = docCreateElement(nodeName))).cloneNode(false);
-      return html5.shivMethods && !reSkip.test(nodeName) ? frag.appendChild(node) : node;
+      return html5.shivMethods && !reSkip.test(nodeName) && node.canHaveChildren && !(node.xmlns || node.tagUrn) ? frag.appendChild(node) : node;
     }
 
     while (index--) {
