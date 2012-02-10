@@ -5,7 +5,7 @@
   var options = window.html5 || {};
 
   /** Used to skip problem elements */
-  var reSkip = /^<|^(?:button|iframe|input|script|textarea|link|style|param|iframe|object)$/i;
+  var reSkip = /^<|^(?:button|form|map|select|textarea)$/i;
 
   /** Detect whether the browser supports default html5 styles */
   var supportsHtml5Styles;
@@ -91,11 +91,15 @@
     }
 
     function createElement(nodeName) {
-      // avoid shiving elements like button, iframe, input, and textarea
-      // because IE < 9 cannot set the `name` or `type` attributes of an
-      // element once it's inserted into a document
+      // Avoid adding some elements to fragments in IE < 9 because
+      // * Attributes like `name` or `type` cannot be set/changed once an element
+      //   is inserted into a document/fragment
+      // * Link elements with `src` attributes that are inccessible, as with
+      //   a 403 response, will cause the tab/window to crash
+      // * Script elements appended to fragments will execute when their `src`
+      //   or `text` property is set
       var node = (cache[nodeName] || (cache[nodeName] = docCreateElement(nodeName))).cloneNode(false);
-      return html5.shivMethods && !reSkip.test(nodeName) && node.canHaveChildren && !(node.xmlns || node.tagUrn) ? frag.appendChild(node) : node;
+      return html5.shivMethods && node.canHaveChildren && !reSkip.test(nodeName) ? frag.appendChild(node) : node;
     }
 
     while (index--) {
