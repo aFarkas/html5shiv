@@ -1,6 +1,12 @@
 /*! HTML5 Shiv vpre3.4 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed */
 ;(function(window, document) {
 
+  /** A compile function to unroll the `ownerDocument.createElement` calls */
+  var compiledCreates;
+
+  /** Used to check if `compiledCreates` needs to be recompiled */
+  var elementsString;
+
   /** Preset options */
   var options = window.html5 || {};
 
@@ -62,28 +68,20 @@
   }
 
   /**
-   * Returns the value of `html5.elements` as an array.
-   * @private
-   * @returns {Array} An array of shived element node names.
-   */
-  function getElements() {
-    var elements = html5.elements;
-    return typeof elements == 'string' ? elements.split(' ') : elements;
-  }
-
-  /**
    * Shivs the `createElement` and `createDocumentFragment` methods of the document.
    * @private
    * @param {Document|DocumentFragment} ownerDocument The document.
    */
   function shivMethods(ownerDocument) {
-    var nodeName,
+    var changed,
+        index,
+        nodeName,
         cache = {},
+        code = '',
         docCreateElement = ownerDocument.createElement,
         docCreateFragment = ownerDocument.createDocumentFragment,
-        elements = getElements(),
-        frag = docCreateFragment(),
-        index = elements.length;
+        elements = elements = html5.elements,
+        frag = docCreateFragment();
 
     function createDocumentFragment() {
       var node = frag.cloneNode(false);
@@ -102,11 +100,24 @@
       return html5.shivMethods && node.canHaveChildren && !reSkip.test(nodeName) ? frag.appendChild(node) : node;
     }
 
-    while (index--) {
-      nodeName = elements[index];
-      cache[nodeName] = docCreateElement(nodeName);
-      frag.createElement(nodeName);
+    if (typeof elements == 'string') {
+      changed = elements != elementsString;
+      elementsString = elements;
+      elements = elements.split(' ');
+    } else {
+      if ((changed = elements.join(' ') != elementsString)) {
+        elementsString = elements.join(' ');
+      }
     }
+    if (changed) {
+      index = elements.length;
+      while (index--) {
+        nodeName = elements[index];
+        code += 'c.' + nodeName + '=ce("' + nodeName + '");f.createElement("' + nodeName + '");';
+      }
+      compiledCreates = Function('c,ce,f', code);
+    }
+    compiledCreates(cache, docCreateElement, frag);
     ownerDocument.createElement = createElement;
     ownerDocument.createDocumentFragment = createDocumentFragment;
   }
@@ -267,6 +278,16 @@
     // copy element styles to the wrapper
     wrapper.style.cssText = element.style.cssText;
     return wrapper;
+  }
+
+  /**
+   * Returns the value of `html5.elements` as an array.
+   * @private
+   * @returns {Array} An array of shived element node names.
+   */
+  function getElements() {
+    var elements = html5.elements;
+    return typeof elements == 'string' ? elements.split(' ') : elements;
   }
 
   /**
