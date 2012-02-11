@@ -73,14 +73,10 @@
    * @param {Document|DocumentFragment} ownerDocument The document.
    */
   function shivMethods(ownerDocument) {
-    var changed,
-        index,
-        nodeName,
-        cache = {},
-        code = '',
+    var cache = {},
         docCreateElement = ownerDocument.createElement,
         docCreateFragment = ownerDocument.createDocumentFragment,
-        elements = elements = html5.elements,
+        elements = html5.elements,
         frag = docCreateFragment();
 
     function createDocumentFragment() {
@@ -92,7 +88,7 @@
       // Avoid adding some elements to fragments in IE < 9 because
       // * Attributes like `name` or `type` cannot be set/changed once an element
       //   is inserted into a document/fragment
-      // * Link elements with `src` attributes that are inccessible, as with
+      // * Link elements with `src` attributes that are inaccessible, as with
       //   a 403 response, will cause the tab/window to crash
       // * Script elements appended to fragments will execute when their `src`
       //   or `text` property is set
@@ -100,24 +96,11 @@
       return html5.shivMethods && node.canHaveChildren && !reSkip.test(nodeName) ? frag.appendChild(node) : node;
     }
 
-    if (typeof elements == 'string') {
-      changed = elements != elementsString;
-      elementsString = elements;
-      elements = elements.split(' ');
-    } else {
-      if ((changed = elements.join(' ') != elementsString)) {
-        elementsString = elements.join(' ');
-      }
+    if (elements != elementsString) {
+      elementsString = typeof elements == 'string' ? elements : elements.join();
+      compiledCreates = Function('c,ec,fc', elementsString.replace(/[^ ,]+/g, 'c.$&=ec("$&");fc("$&");'));
     }
-    if (changed) {
-      index = elements.length;
-      while (index--) {
-        nodeName = elements[index];
-        code += 'c.' + nodeName + '=ce("' + nodeName + '");f.createElement("' + nodeName + '");';
-      }
-      compiledCreates = Function('c,ce,f', code);
-    }
-    compiledCreates(cache, docCreateElement, frag);
+    compiledCreates(cache, docCreateElement, frag.createElement);
     ownerDocument.createElement = createElement;
     ownerDocument.createDocumentFragment = createDocumentFragment;
   }
@@ -176,7 +159,7 @@
      * @memberOf html5
      * @type Array|String
      */
-    'elements': options.elements || 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
+    'elements': options.elements || 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video',
 
     /**
      * A flag to indicate that the HTML5 style sheet should be inserted.
