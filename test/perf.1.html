@@ -22,7 +22,7 @@
 				document.body.appendChild(frag);
 
 				frag = document.createDocumentFragment();
-				fragDiv = ('createElement' in frag) ? frag.createElement('div') : frag.appendChild(document.createElement('div'));
+				fragDiv = frag.appendChild(document.createElement('div'));
 				fragDiv.innerHTML = '<section>This native javascript sentence is in a green box <mark>with these words highlighted</mark>?</section>';
 				document.body.appendChild(fragDiv);
 
