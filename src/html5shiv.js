@@ -77,38 +77,34 @@
    * @param {Document|DocumentFragment} ownerDocument The document.
    */
   function shivMethods(ownerDocument) {
-    var nodeName,
-        cache = {},
+    var cache = {},
         docCreateElement = ownerDocument.createElement,
         docCreateFragment = ownerDocument.createDocumentFragment,
         elements = getElements(),
-        frag = docCreateFragment(),
-        index = elements.length;
+        frag = docCreateFragment();
 
-    function createDocumentFragment() {
-      var node = frag.cloneNode(false);
-      return html5.shivMethods ? (shivMethods(node), node) : node;
-    }
-
-    function createElement(nodeName) {
-      // Avoid adding some elements to fragments in IE < 9 because
-      // * Attributes like `name` or `type` cannot be set/changed once an element
-      //   is inserted into a document/fragment
-      // * Link elements with `src` attributes that are inaccessible, as with
-      //   a 403 response, will cause the tab/window to crash
-      // * Script elements appended to fragments will execute when their `src`
-      //   or `text` property is set
-      var node = (cache[nodeName] || (cache[nodeName] = docCreateElement(nodeName))).cloneNode(false);
+    // Avoid adding some elements to fragments in IE < 9 because
+    // * Attributes like `name` or `type` cannot be set/changed once an element
+    //   is inserted into a document/fragment
+    // * Link elements with `src` attributes that are inaccessible, as with
+    //   a 403 response, will cause the tab/window to crash
+    // * Script elements appended to fragments will execute when their `src`
+    //   or `text` property is set
+    ownerDocument.createElement = function(nodeName) {
+      var node = (cache[nodeName] || (cache[nodeName] = docCreateElement(nodeName))).cloneNode();
       return html5.shivMethods && node.canHaveChildren && !reSkip.test(nodeName) ? frag.appendChild(node) : node;
-    }
+    };
 
-    while (index--) {
-      nodeName = elements[index];
-      cache[nodeName] = docCreateElement(nodeName);
-      frag.createElement(nodeName);
-    }
-    ownerDocument.createElement = createElement;
-    ownerDocument.createDocumentFragment = createDocumentFragment;
+    ownerDocument.createDocumentFragment = Function('h,f', 'return function(){' +
+      'var n=f.cloneNode(),c=n.createElement;' +
+      'h.shivMethods&&(' +
+        elements.join().replace(/\w+/g, function(nodeName) {
+          cache[nodeName] = docCreateElement(nodeName);
+          frag.createElement(nodeName);
+          return 'c("' + nodeName + '")';
+        }) +
+      ');return n}'
+    )(html5, frag);
   }
 
   /*--------------------------------------------------------------------------*/
@@ -165,7 +161,7 @@
      * @memberOf html5
      * @type Array|String
      */
-    'elements': options.elements || 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
+    'elements': options.elements || 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video',
 
     /**
      * A flag to indicate that the HTML5 style sheet should be inserted.
