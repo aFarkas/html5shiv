@@ -77,8 +77,7 @@
    * @param {Document|DocumentFragment} ownerDocument The document.
    */
   function shivMethods(ownerDocument) {
-    var nodeName,
-        cache = {},
+    var cache = {},
         docCreateElement = ownerDocument.createElement,
         docCreateFragment = ownerDocument.createDocumentFragment,
         elements = getElements(),
@@ -92,20 +91,20 @@
     // * Script elements appended to fragments will execute when their `src`
     //   or `text` property is set
     ownerDocument.createElement = function(nodeName) {
-      var node = (cache[nodeName] || (cache[nodeName] = docCreateElement(nodeName))).cloneNode(false);
+      var node = (cache[nodeName] || (cache[nodeName] = docCreateElement(nodeName))).cloneNode();
       return html5.shivMethods && node.canHaveChildren && !reSkip.test(nodeName) ? frag.appendChild(node) : node;
     };
 
     ownerDocument.createDocumentFragment = Function('h,f', 'return function(){' +
-      'var n=f.cloneNode(false),ce=n.createElement;' +
-      'h.shivMethods&&(' + elements.join().replace(/[^,]+/g, 'ce("$&")') +
+      'var n=f.cloneNode(),c=n.createElement;' +
+      'h.shivMethods&&(' +
+        elements.join().replace(/\w+/g, function(nodeName) {
+          cache[nodeName] = docCreateElement(nodeName);
+          frag.createElement(nodeName);
+          return 'c("' + nodeName + '")';
+        }) +
       ');return n}'
     )(html5, frag);
-
-    while ((nodeName = elements.pop())) {
-      cache[nodeName] = docCreateElement(nodeName);
-      frag.createElement(nodeName);
-    }
   }
 
   /*--------------------------------------------------------------------------*/
