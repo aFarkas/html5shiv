@@ -134,7 +134,7 @@
         'mark{background:#FF0;color:#000}'
       );
     }
-    if (html5.shivMethods && !supportsUnknownElements) {
+    if (!supportsUnknownElements) {
       shived = !shivMethods(ownerDocument);
     }
     if (shived) {
