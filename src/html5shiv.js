@@ -14,17 +14,12 @@
   var supportsUnknownElements;
 
   (function() {
-    var fake,
-        a = document.createElement('a'),
-        compStyle = window.getComputedStyle,
-        docEl = document.documentElement,
-        body = document.body || (fake = docEl.insertBefore(document.createElement('body'), docEl.firstChild));
+    var a = document.createElement('a');
 
-    body.insertBefore(a, body.firstChild);
-    a.hidden = true;
     a.innerHTML = '<xyz></xyz>';
 
-    supportsHtml5Styles = (a.currentStyle || compStyle(a, null)).display == 'none';
+    //if the hidden property is implemented we can assume, that the browser supports HTML5 Styles
+    supportsHtml5Styles = ('hidden' in a);
     supportsUnknownElements = a.childNodes.length == 1 || (function() {
       // assign a false positive if unable to shiv
       try {
@@ -40,8 +35,6 @@
       );
     }());
 
-    body.removeChild(a);
-    fake && docEl.removeChild(fake);
   }());
 
   /*--------------------------------------------------------------------------*/
