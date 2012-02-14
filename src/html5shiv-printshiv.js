@@ -333,7 +333,9 @@
           for (imports = sheet.imports, index = 0, length = imports.length; index < length; index++) {
             sheets.push(imports[index]);
           }
-          cssText.push(sheet.cssText);
+          try {
+            cssText.push(sheet.cssText);
+          } catch(er){}
         }
       }
       // wrap all HTML5 elements with printable elements and add the shived style sheet
