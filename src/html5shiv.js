@@ -7,11 +7,20 @@
   /** Used to skip problem elements */
   var reSkip = /^<|^(?:button|form|map|select|textarea)$/i;
 
-  /** Cache of document methods and created elements */
+  /** Cache of created elements, document methods, and shiv state */
   var shivCache = {};
 
   /** A list of HTML5 node names to shiv support for */
   var shivNames = 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video';
+
+  /** Used to namespace printable elements and define `shivExpando` */
+  var shivNamespace = 'html5shiv';
+
+  /** Used to store an elements `shivUID` if `element.uniqueNumber` is not supported */
+  var shivExpando = shivNamespace + /\d+$/.exec(Math.random());
+
+  /** Used as a fallback for `element.uniqueNumber` */
+  var shivUID = 1;
 
   /** Detect whether the browser supports default html5 styles */
   var supportsHtml5Styles;
@@ -72,13 +81,13 @@
   /**
    * Gets the shiv cache object for the given document.
    * @private
-   * @param {Document} [ownerDocument=document] The document.
+   * @param {Document} ownerDocument The document.
    * @returns {Object} The shiv cache object.
    */
   function getCache(ownerDocument) {
-    ownerDocument || (ownerDocument = document);
     var nodes,
-        id = ownerDocument.documentElement.uniqueNumber;
+        docEl = ownerDocument.documentElement,
+        id = docEl.uniqueNumber || docEl[shivExpando] || (docEl[shivExpando] = shivUID++);
 
     return shivCache[id] || (nodes = {}, shivCache[id] = {
       'shived': {
@@ -167,9 +176,10 @@
    * @returns {Element} The new shived element.
    */
   function createElement(nodeName, ownerDocument) {
-    var cache = getCache(ownerDocument),
-        node = (cache.nodes[nodeName] || (cache.nodes[nodeName] = cache.create(nodeName))).cloneNode();
-
+    ownerDocument || (ownerDocument = document);
+    if (supportsUnknownElements) {
+      return ownerDocument.createElement(nodeName);
+    }
     // Avoid adding some elements to fragments in IE < 9 because
     // * attributes like `name` or `type` cannot be set/changed once an element
     //   is inserted into a document/fragment
@@ -177,6 +187,9 @@
     //   a 403 response, will cause the tab/window to crash
     // * script elements appended to fragments will execute when their `src`
     //   or `text` property is set
+    var cache = getCache(ownerDocument),
+        node = (cache.nodes[nodeName] || (cache.nodes[nodeName] = cache.create(nodeName))).cloneNode();
+
     return node.canHaveChildren && !reSkip.test(nodeName) ? cache.frag.appendChild(node) : node;
   }
 
@@ -187,7 +200,10 @@
    * @returns {Fragment} The new shived document fragment.
    */
   function createDocumentFragment(ownerDocument) {
-    return shivElements(getCache(ownerDocument).frag.cloneNode());
+    ownerDocument || (ownerDocument = document);
+    return supportsUnknownElements
+      ? ownerDocument.createDocumentFragment()
+      : shivElements(getCache(ownerDocument).frag.cloneNode());
   }
 
   /**
