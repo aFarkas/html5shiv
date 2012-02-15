@@ -7,8 +7,10 @@
 		<script src="../src/html5shiv-printshiv.js"></script>
 	</head>
 	<body>
-		<section>This sentence is in a green box <mark>with these words highlighted</mark>.</section>
-		<script id="script">
+		<section>
+			This sentence is in a green box <mark>with these words highlighted</mark>.
+		</section>
+		<script>
 			var frag = document.createDocumentFragment();
 			var fragDiv = frag.appendChild(document.createElement('div'));
 			fragDiv.innerHTML = '<section>This native javascript sentence is in a green box <mark>with these words highlighted</mark>?</section>';

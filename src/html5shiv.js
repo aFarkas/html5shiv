@@ -2,10 +2,16 @@
 ;(function(window, document) {
 
   /** Preset options */
-  var options = window.html5 || {};
+  var presets = window.html5 || {};
 
   /** Used to skip problem elements */
   var reSkip = /^<|^(?:button|form|map|select|textarea)$/i;
+
+  /** Cache of document methods and created elements */
+  var shivCache = {};
+
+  /** A list of HTML5 node names to shiv support for */
+  var shivNames = 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video';
 
   /** Detect whether the browser supports default html5 styles */
   var supportsHtml5Styles;
@@ -14,27 +20,36 @@
   var supportsUnknownElements;
 
   (function() {
-    var a = document.createElement('a');
+    var fake,
+        docEl = document.documentElement,
+        body = document.body || (fake = docEl.insertBefore(document.createElement('body'), docEl.firstChild)),
+        compStyle = window.getComputedStyle,
+        p = document.createElement('p');
 
-    a.innerHTML = '<xyz></xyz>';
+    // avoid crashing the tab in IE8 if the detached body is styled with a background image
+    fake && (fake.style.background = '');
 
-    //if the hidden property is implemented we can assume, that the browser supports HTML5 Styles
-    supportsHtml5Styles = ('hidden' in a);
-    supportsUnknownElements = a.childNodes.length == 1 || (function() {
+    body.insertBefore(p, body.firstChild);
+    p.hidden = true;
+    p.innerHTML = '<xyz></xyz>';
+
+    supportsHtml5Styles = (p.currentStyle || compStyle(p, null)).display == 'none';
+    supportsUnknownElements = p.childNodes.length == 1 || (function() {
       // assign a false positive if unable to shiv
       try {
-        (document.createElement)('a');
+        (document.createElement)('p');
       } catch(e) {
         return true;
       }
       var frag = document.createDocumentFragment();
       return (
-        typeof frag.cloneNode == 'undefined' ||
-        typeof frag.createDocumentFragment == 'undefined' ||
-        typeof frag.createElement == 'undefined'
+        typeof frag.createElement == 'undefined' ||
+        typeof p.uniqueNumber == 'undefined'
       );
     }());
 
+    body.removeChild(p);
+    fake && docEl.removeChild(fake);
   }());
 
   /*--------------------------------------------------------------------------*/
@@ -55,83 +70,147 @@
   }
 
   /**
-   * Returns the value of `html5.elements` as an array.
+   * Gets the shiv cache object for the given document.
    * @private
-   * @returns {Array} An array of shived element node names.
+   * @param {Document} [ownerDocument=document] The document.
+   * @returns {Object} The shiv cache object.
    */
-  function getElements() {
-    var elements = html5.elements;
-    return typeof elements == 'string' ? elements.split(' ') : elements;
+  function getCache(ownerDocument) {
+    ownerDocument || (ownerDocument = document);
+    var nodes,
+        id = ownerDocument.documentElement.uniqueNumber;
+
+    return shivCache[id] || (nodes = {}, shivCache[id] = {
+      'shived': {
+        'css': supportsHtml5Styles,
+        'elements': supportsUnknownElements,
+        'methods': supportsUnknownElements
+      },
+      'create': !supportsUnknownElements && shivElements(ownerDocument, nodes).createElement,
+      'frag': !supportsUnknownElements && shivElements(ownerDocument.createDocumentFragment()),
+      'nodes': nodes
+    });
+  }
+
+  /**
+   * Adds a style sheet with default styles for HTML5 elements to the given document.
+   * @private
+   * @param {Document} ownerDocument The document.
+   */
+  function shivCSS(ownerDocument) {
+    addStyleSheet(ownerDocument,
+      // corrects block display not defined in IE6/7/8/9
+      'article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block}' +
+      // corrects audio display not defined in IE6/7/8/9
+      'audio{display:none}' +
+      // corrects canvas and video display not defined in IE6/7/8/9
+      'canvas,video{display:inline-block;*display:inline;*zoom:1}' +
+      // corrects 'hidden' attribute and audio[controls] display not present in IE7/8/9
+      '[hidden]{display:none}audio[controls]{display:inline-block;*display:inline;*zoom:1}' +
+      // adds styling not present in IE6/7/8/9
+      'mark{background:#FF0;color:#000}'
+    );
+  }
+
+  /**
+   * Creates HTML5 elements using the given document enabling the document to
+   * parse them correctly.
+   * @private
+   * @param {Document|Fragment} ownerDocument The document.
+   * @param {Object} cache An optional object used to store the elements created.
+   * @returns {Document|Fragment} The document.
+   */
+  function shivElements(ownerDocument, cache) {
+    var create = ownerDocument.createElement,
+        index = shivNames.length;
+
+    if (cache) {
+      while (index--) {
+        cache[shivNames[index]] = create(shivNames[index]);
+      }
+    } else while (index--) create(shivNames[index]);
+    return ownerDocument;
   }
 
   /**
    * Shivs the `createElement` and `createDocumentFragment` methods of the document.
    * @private
-   * @param {Document|DocumentFragment} ownerDocument The document.
+   * @param {Document} ownerDocument The document.
    */
   function shivMethods(ownerDocument) {
-    var cache = {},
-        docCreateElement = ownerDocument.createElement,
-        docCreateFragment = ownerDocument.createDocumentFragment,
-        frag = docCreateFragment();
+    var cache = getCache(ownerDocument),
+        create = cache.create,
+        frag = cache.frag,
+        nodes = cache.nodes;
 
+    // allow a small amount of repeated code for better performance
     ownerDocument.createElement = function(nodeName) {
-      // Avoid adding some elements to fragments in IE < 9 because
-      // * Attributes like `name` or `type` cannot be set/changed once an element
-      //   is inserted into a document/fragment
-      // * Link elements with `src` attributes that are inaccessible, as with
-      //   a 403 response, will cause the tab/window to crash
-      // * Script elements appended to fragments will execute when their `src`
-      //   or `text` property is set
-      var node = (cache[nodeName] || (cache[nodeName] = docCreateElement(nodeName))).cloneNode();
-      return html5.shivMethods && node.canHaveChildren && !reSkip.test(nodeName) ? frag.appendChild(node) : node;
+      var node = (nodes[nodeName] || (nodes[nodeName] = create(nodeName))).cloneNode();
+      return node.canHaveChildren && !reSkip.test(nodeName) ? frag.appendChild(node) : node;
     };
 
-    ownerDocument.createDocumentFragment = Function('h,f', 'return function(){' +
-      'var n=f.cloneNode(),c=n.createElement;' +
-      'h.shivMethods&&(' +
-        // unroll the `createElement` calls
-        getElements().join().replace(/\w+/g, function(nodeName) {
-          cache[nodeName] = docCreateElement(nodeName);
-          frag.createElement(nodeName);
-          return 'c("' + nodeName + '")';
-        }) +
-      ');return n}'
-    )(html5, frag);
+    // compile unrolled `createElement` calls for better performance
+    ownerDocument.createDocumentFragment = Function('f',
+      'return function(){var n=f.cloneNode(),c=n.createElement;' +
+      ('' + shivNames).replace(/\w+/g, 'c("$&")') +
+      ';return n}'
+    )(frag);
   }
 
   /*--------------------------------------------------------------------------*/
 
   /**
+   * Creates a new shived element of the given node name.
+   * @memberOf html5
+   * @param {String} nodeName The node name of the element to create.
+   * @param {Document} [ownerDocument=document] The context document.
+   * @returns {Element} The new shived element.
+   */
+  function createElement(nodeName, ownerDocument) {
+    var cache = getCache(ownerDocument),
+        node = (cache.nodes[nodeName] || (cache.nodes[nodeName] = cache.create(nodeName))).cloneNode();
+
+    // Avoid adding some elements to fragments in IE < 9 because
+    // * attributes like `name` or `type` cannot be set/changed once an element
+    //   is inserted into a document/fragment
+    // * link elements with `src` attributes that are inaccessible, as with
+    //   a 403 response, will cause the tab/window to crash
+    // * script elements appended to fragments will execute when their `src`
+    //   or `text` property is set
+    return node.canHaveChildren && !reSkip.test(nodeName) ? cache.frag.appendChild(node) : node;
+  }
+
+  /**
+   * Creates a new shived document fragment.
+   * @memberOf html5
+   * @param {Document} [ownerDocument=document] The context document.
+   * @returns {Fragment} The new shived document fragment.
+   */
+  function createDocumentFragment(ownerDocuemnt) {
+    return shivElements(getCache(ownerDocument).frag.cloneNode());
+  }
+
+  /**
    * Shivs the given document.
    * @memberOf html5
-   * @param {Document} ownerDocument The document to shiv.
+   * @param {Document} [ownerDocument=document] The document to shiv.
    * @returns {Document} The shived document.
    */
-  function shivDocument(ownerDocument) {
-    var shived;
-    if (ownerDocument.documentShived) {
-      return ownerDocument;
+  function shivDocument(ownerDocument, options) {
+    options || (options = {});
+    ownerDocument || (ownerDocument = document);
+
+    // juggle arguments
+    if (ownerDocument && !ownerDocument.nodeType) {
+      options = ownerDocument;
+      ownerDocument = document;
     }
-    if (html5.shivCSS && !supportsHtml5Styles) {
-      shived = !!addStyleSheet(ownerDocument,
-        // corrects block display not defined in IE6/7/8/9
-        'article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block}' +
-        // corrects audio display not defined in IE6/7/8/9
-        'audio{display:none}' +
-        // corrects canvas and video display not defined in IE6/7/8/9
-        'canvas,video{display:inline-block;*display:inline;*zoom:1}' +
-        // corrects 'hidden' attribute and audio[controls] display not present in IE7/8/9
-        '[hidden]{display:none}audio[controls]{display:inline-block;*display:inline;*zoom:1}' +
-        // adds styling not present in IE6/7/8/9
-        'mark{background:#FF0;color:#000}'
-      );
+    var shived = getCache(ownerDocument).shived;
+    if (!shived.css && options.shivCSS !== false) {
+      shived.css = !shivCSS(ownerDocument);
     }
-    if (!supportsUnknownElements) {
-      shived = !shivMethods(ownerDocument);
-    }
-    if (shived) {
-      ownerDocument.documentShived = shived;
+    if (!shived.methods && options.shivMethods !== false) {
+      shived.methods = !shivMethods(ownerDocument);
     }
     return ownerDocument;
   }
@@ -150,44 +229,32 @@
   var html5 = {
 
     /**
-     * An array or space separated string of node names of the elements to shiv.
-     * @memberOf html5
-     * @type Array|String
-     */
-    'elements': options.elements || 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video',
-
-    /**
-     * A flag to indicate that the HTML5 style sheet should be inserted.
-     * @memberOf html5
-     * @type Boolean
-     */
-    'shivCSS': !(options.shivCSS === false),
-
-    /**
-     * A flag to indicate that the document's `createElement` and `createDocumentFragment`
-     * methods should be overwritten.
-     * @memberOf html5
-     * @type Boolean
-     */
-    'shivMethods': !(options.shivMethods === false),
-
-    /**
      * A string to describe the type of `html5` object ("default" or "default print").
      * @memberOf html5
      * @type String
      */
     'type': 'default',
 
-    // shivs the document according to the specified `html5` object options
+    // creates shived document fragments
+    'createDocumentFragment': createDocumentFragment,
+
+    // creates shived elements
+    'createElement': createElement,
+
+    // shivs the document according to the specified options
     'shivDocument': shivDocument
   };
 
   /*--------------------------------------------------------------------------*/
 
-  // expose html5
-  window.html5 = html5;
+  // ensure `shivNames` is an array
+  shivNames = typeof (shivNames = presets.elements || shivNames)  == 'string' ? shivNames.split(' ') : shivNames;
 
-  // shiv the document
-  shivDocument(document);
+  // expose html5
+  // use square bracket notation so Closure Compiler won't munge `html5`
+  window['html5'] = html5;
+
+  // shiv the primary document
+  shivDocument(presets);
 
 }(this, document));
