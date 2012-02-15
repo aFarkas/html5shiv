@@ -7,14 +7,15 @@
 		<link rel="stylesheet" media="print" href="style.print.css">
 		<script>
 			// set options for html5shiv
-			if(!window.html5){
-				window.html5 = {}; 
-			}
-			window.html5.shivMethods = false;
+			var html5 = {
+				'shivMethods': false
+			};
 		</script>
-		<script src="../src/html5shiv.js"></script>
+		<script src="../src/html5shiv-printshiv.js"></script>
 	</head>
 	<body>
-		<section>This sentence is in a green box <mark>with these words highlighted</mark>.</section>
+		<section>
+			This sentence is in a green box <mark>with these words highlighted</mark>.
+		</section>
 	<body>
 </html>
