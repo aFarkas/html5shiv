@@ -186,7 +186,7 @@
    * @param {Document} [ownerDocument=document] The context document.
    * @returns {Fragment} The new shived document fragment.
    */
-  function createDocumentFragment(ownerDocuemnt) {
+  function createDocumentFragment(ownerDocument) {
     return shivElements(getCache(ownerDocument).frag.cloneNode());
   }
 
