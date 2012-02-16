@@ -9,7 +9,9 @@
 	</head>
 	<body>
 		<div id="time"></div>
-		<section>This sentence is in a green box <mark>with these words highlighted</mark>.</section>
+		<section>
+			This sentence is in a green box <mark>with these words highlighted</mark>.
+		</section>
 		<script>
 			function addDom(){
 				var div, frag, fragDiv, divFrag, divFragDiv;
@@ -30,12 +32,12 @@
 			}
 
 			var time = document.getElementById('time');
-			var cur = new Date().getTime();
+			var cur = new Date;
 
 			for(var i = 0; i < 1000; i++){
 				addDom();
 			}
-			time.innerHTML = new Date().getTime() - cur;
+			time.innerHTML = new Date - cur;
 		</script>
 	<body>
 </html>

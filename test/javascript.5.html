@@ -14,7 +14,9 @@
 			var frag = document.createDocumentFragment();
 			var fragDiv = frag.appendChild(document.createElement('div'));
 			fragDiv.innerHTML = '<section>This native javascript sentence is in a green box <mark>with these words highlighted</mark>?</section>';
-			document.body.appendChild(fragDiv);
+
+			var fragDivClone = fragDiv.cloneNode(true);
+			document.body.appendChild(fragDivClone);
 		</script>
 	<body>
 </html>
