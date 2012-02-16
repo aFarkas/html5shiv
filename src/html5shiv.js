@@ -29,20 +29,38 @@
   var supportsUnknownElements;
 
   (function() {
-    var fake,
+    var p,
+        fake,
+        sandbox,
+        activex = location.protocol != 'file:' && window.ActiveXObject,
         docEl = document.documentElement,
-        body = document.body || (fake = docEl.insertBefore(document.createElement('body'), docEl.firstChild)),
-        compStyle = window.getComputedStyle,
-        p = document.createElement('p');
+        body = document.body || (fake = docEl.insertBefore(document.createElement('body'), docEl.firstChild));
 
     // avoid crashing the tab in IE8 if the detached body is styled with a background image
     fake && (fake.style.background = '');
 
-    body.insertBefore(p, body.firstChild);
-    p.hidden = true;
-    p.innerHTML = '<xyz></xyz>';
+    // create a new document used to get untainted styles
+    if (activex) {
+      // avoid https: protocol issues with IE
+      sandbox = new activex('htmlfile');
+    } else {
+      sandbox = document.createElement('iframe');
+      sandbox.frameBorder = sandbox.height = sandbox.width = 0;
+      sandbox.name = shivExpando;
+      body.insertBefore(sandbox, body.firstChild);
+      sandbox = frames[shivExpando].document;
+    }
 
-    supportsHtml5Styles = (p.currentStyle || compStyle(p, null)).display == 'none';
+    sandbox.write('<!doctype html><html><body><script>document.w=this</script>');
+    sandbox.close();
+
+    p = sandbox.body.appendChild(sandbox.createElement('p'));
+    p.innerHTML = '<xyz></xyz>';
+    p.hidden = true;
+
+    supportsHtml5Styles = (p.currentStyle ||
+      sandbox.w.getComputedStyle(p, null)).display == 'none';
+
     supportsUnknownElements = p.childNodes.length == 1 || (function() {
       // assign a false positive if unable to shiv
       try {
@@ -57,7 +75,7 @@
       );
     }());
 
-    body.removeChild(p);
+    activex || body.removeChild(sandbox.w.frameElement);
     fake && docEl.removeChild(fake);
   }());
 
