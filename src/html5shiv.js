@@ -83,6 +83,13 @@
    * @returns {StyleSheet} The style element.
    */
   function addStyleSheet(ownerDocument, cssText) {
+    // IE7 only respects `[hidden]` rules when created with `document.createStyleSheet`
+    if (document.createStyleSheet && !/\\:/.test(cssText)) {
+      var sheet = document.createStyleSheet();
+      sheet.cssText = cssText;
+      return sheet.owningElement;
+    }
+    // IE8 only respects namespace prefixs when created with `innerHTML`
     var p = ownerDocument.createElement('p'),
         parent = ownerDocument.getElementsByTagName('head')[0] || ownerDocument.documentElement;
 
