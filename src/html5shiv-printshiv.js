@@ -30,28 +30,26 @@
 
   (function() {
     var p,
-        fake,
         sandbox,
         activex = location.protocol != 'file:' && window.ActiveXObject,
-        docEl = document.documentElement,
-        body = document.body || (fake = docEl.insertBefore(document.createElement('body'), docEl.firstChild));
-
-    // avoid crashing the tab in IE8 if the detached body is styled with a background image
-    fake && (fake.style.background = '');
+        parent = document.body || document.documentElement;
 
     // create a new document used to get untainted styles
     if (activex) {
       // avoid https: protocol issues with IE
       sandbox = new activex('htmlfile');
     } else {
-      sandbox = document.createElement('iframe');
+      try {
+        sandbox = document.createElement('<iframe name="' + shivExpando + '">');
+      } catch(e) {
+        (sandbox = document.createElement('iframe')).name = shivExpando;
+      }
       sandbox.frameBorder = sandbox.height = sandbox.width = 0;
-      sandbox.name = shivExpando;
-      body.insertBefore(sandbox, body.firstChild);
+      parent.insertBefore(sandbox, parent.firstChild);
       sandbox = frames[shivExpando].document;
     }
 
-    sandbox.write('<!doctype html><html><body><script>document.w=this</script>');
+    sandbox.write('<!doctype html><html><body><script>document.w=this<\/script>');
     sandbox.close();
 
     p = sandbox.body.appendChild(sandbox.createElement('p'));
@@ -75,8 +73,7 @@
       );
     }());
 
-    activex || body.removeChild(sandbox.w.frameElement);
-    fake && docEl.removeChild(fake);
+    activex || parent.removeChild(sandbox.w.frameElement);
   }());
 
   /*--------------------------------------------------------------------------*/
