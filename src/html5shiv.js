@@ -39,17 +39,14 @@
       // avoid https: protocol issues with IE
       sandbox = new activex('htmlfile');
     } else {
-      try {
-        sandbox = document.createElement('<iframe name="' + shivExpando + '">');
-      } catch(e) {
-        (sandbox = document.createElement('iframe')).name = shivExpando;
-      }
+      // http://xkr.us/articles/dom/iframe-document/
+      (sandbox = document.createElement('iframe')).name = shivExpando;
       sandbox.frameBorder = sandbox.height = sandbox.width = 0;
       parent.insertBefore(sandbox, parent.firstChild);
-      sandbox = frames[shivExpando].document;
+      sandbox = (sandbox = sandbox.contentWindow || sandbox.contentDocument || frames[shivExpando]).document || sandbox;
     }
 
-    sandbox.write('<!doctype html><html><body><script>document.w=this<\/script>');
+    sandbox.write('<!doctype html><title></title><body><script>document.w=this<\/script>');
     sandbox.close();
 
     p = sandbox.body.appendChild(sandbox.createElement('p'));
