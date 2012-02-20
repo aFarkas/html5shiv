@@ -18,8 +18,18 @@
 
     a.innerHTML = '<xyz></xyz>';
 
-    //if the hidden property is implemented we can assume, that the browser supports HTML5 Styles
+    //if the hidden property is implemented we can assume, that the browser supports HTML5 Styles | this fails in Chrome 8
     supportsHtml5Styles = ('hidden' in a);
+    //if we are part of Modernizr, we do an additional test to solve the Chrome 8 fail
+    if(supportsHtml5Styles && typeof injectElementWithStyles == 'function'){
+        injectElementWithStyles('#modernizr{}', function(node){
+            node.hidden = true;
+            supportsHtml5Styles = (window.getComputedStyle ?
+                  getComputedStyle(node, null) :
+                  node.currentStyle).display == 'none';
+        });
+    }
+
     supportsUnknownElements = a.childNodes.length == 1 || (function() {
       // assign a false positive if unable to shiv
       try {
