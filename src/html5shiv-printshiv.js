@@ -356,11 +356,21 @@
       }
       // concat all style sheet CSS text
       while ((sheet = sheets.pop())) {
-        // IE does not enforce a same origin policy for external style sheets
+        // IE does not enforce a same origin policy for external style sheets...
+        // but has trouble with some dynamically created stylesheets
         if (!sheet.disabled && reMedia.test(sheet.media)) {
-          for (imports = sheet.imports, index = 0, length = imports.length; index < length; index++) {
+
+          try {
+            imports = sheet.imports;
+            length = imports.length;
+          } catch(er){
+            length = 0;
+          }
+
+          for (index = 0; index < length; index++) {
             sheets.push(imports[index]);
           }
+
           try {
             cssText.push(sheet.cssText);
           } catch(er){}
