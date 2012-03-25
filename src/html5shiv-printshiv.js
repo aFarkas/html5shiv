@@ -6,7 +6,7 @@
 
   /** Used to skip problem elements */
   var reSkip = /^<|^(?:button|form|map|select|textarea|object|iframe)$/i;
-  
+
   /** Not all elements can be cloned in IE (this list can be shortend) **/
   var saveClones = /^<|^(?:a|b|button|code|div|fieldset|form|h1|h2|h3|h4|h5|h6|i|iframe|img|input|label|li|link|ol|option|p|param|q|script|select|span|strong|style|table|tbody|td|textarea|tfoot|th|thead|tr|ul)$/i;
 
@@ -93,7 +93,7 @@
       if(!html5.shivMethods){
           docCreateElement(nodeName);
       }
-      
+
       var node;
       
       if(cache[nodeName]){
@@ -103,7 +103,7 @@
       } else {
           node = docCreateElement(nodeName);
       }
-      
+
       // Avoid adding some elements to fragments in IE < 9 because
       // * Attributes like `name` or `type` cannot be set/changed once an element
       //   is inserted into a document/fragment
@@ -111,7 +111,7 @@
       //   a 403 response, will cause the tab/window to crash
       // * Script elements appended to fragments will execute when their `src`
       //   or `text` property is set
-      
+
       return node.canHaveChildren && !reSkip.test(nodeName) ? frag.appendChild(node) : node;
     };
 
@@ -120,7 +120,7 @@
       'h.shivMethods&&(' +
         // unroll the `createElement` calls
         getElements().join().replace(/\w+/g, function(nodeName) {
-          cache[nodeName] = docCreateElement(nodeName);
+          docCreateElement(nodeName);
           frag.createElement(nodeName);
           return 'c("' + nodeName + '")';
         }) +
