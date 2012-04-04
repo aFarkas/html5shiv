@@ -91,7 +91,7 @@
     ownerDocument.createElement = function(nodeName) {
       //abort shiv
       if(!html5.shivMethods){
-          docCreateElement(nodeName);
+          return docCreateElement(nodeName);
       }
 
       var node;
