@@ -21,17 +21,8 @@
 
     a.innerHTML = '<xyz></xyz>';
 
-    //if the hidden property is implemented we can assume, that the browser supports HTML5 Styles | this fails in Chrome 8
+    //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
     supportsHtml5Styles = ('hidden' in a);
-    //if we are part of Modernizr, we do an additional test to solve the Chrome 8 fail
-    if(supportsHtml5Styles && typeof injectElementWithStyles == 'function'){
-        injectElementWithStyles('#modernizr{}', function(node){
-            node.hidden = true;
-            supportsHtml5Styles = (window.getComputedStyle ?
-                  getComputedStyle(node, null) :
-                  node.currentStyle).display == 'none';
-        });
-    }
 
     supportsUnknownElements = a.childNodes.length == 1 || (function() {
       // assign a false positive if unable to shiv
@@ -95,7 +86,7 @@
       }
 
       var node;
-      
+
       if(cache[nodeName]){
           node = cache[nodeName].cloneNode();
       } else if(saveClones.test(nodeName)){
@@ -111,7 +102,6 @@
       //   a 403 response, will cause the tab/window to crash
       // * Script elements appended to fragments will execute when their `src`
       //   or `text` property is set
-
       return node.canHaveChildren && !reSkip.test(nodeName) ? frag.appendChild(node) : node;
     };
 
@@ -144,13 +134,7 @@
     if (html5.shivCSS && !supportsHtml5Styles) {
       shived = !!addStyleSheet(ownerDocument,
         // corrects block display not defined in IE6/7/8/9
-        'article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block}' +
-        // corrects audio display not defined in IE6/7/8/9
-        'audio{display:none}' +
-        // corrects canvas and video display not defined in IE6/7/8/9
-        'canvas,video{display:inline-block;*display:inline;*zoom:1}' +
-        // corrects 'hidden' attribute and audio[controls] display not present in IE7/8/9
-        '[hidden]{display:none}audio[controls]{display:inline-block;*display:inline;*zoom:1}' +
+        'article,aside,figcaption,figure,footer,header,hgroup,nav,section{display:block}' +
         // adds styling not present in IE6/7/8/9
         'mark{background:#FF0;color:#000}'
       );
