@@ -2,7 +2,6 @@
 
 module("html5shiv tests");
 var blockElements  = "article,aside,figcaption,figure,footer,header,hgroup,nav,section".split(',');
-var supportsHtml5 = document.createElement("nav").cloneNode( true ).outerHTML !== "<:nav></:nav>";
 
 var testEnv = [
 	{
@@ -23,6 +22,7 @@ var shivTests = function(fn, env){
 };
 
 var envTest = function(fn){
+	initIframes();
 	$.each(testEnv, function(i, env){
 		fn(env);
 	});
@@ -36,26 +36,56 @@ QUnit.reset = function() {
 
 
 var initIframes = function(){
-	
+	if(testEnv.length > 1){return;}
 	testEnv[0].fixture = $('#qunit-fixture').html();
 	
 	$('iframe.test-frame').each(function(){
-		testEnv.push({
-			doc: this.contentDocument,
-			html5: this.contentWindow.html5,
-			initialShivMethods: this.contentWindow.html5.shivMethods,
-			fixture: $('#qunit-fixture', this.contentDocument).html()
-		});
+		var win = this.contentWindow;
+		if(win.html5 && $('#qunit-fixture', win.document).html()){
+			testEnv.push({
+				doc: win.document,
+				html5: win.html5,
+				initialShivMethods: win.html5.shivMethods,
+				fixture: $('#qunit-fixture', win.document).html()
+			});
+		}
 	});
+	if(testEnv.length > 1){
+		start();
+	} else {
+		setTimeout(initIframes, 30);
+	}
 };
 
+
+
+asyncTest("block", function() {
+	$(initIframes);
+});
+
 test("display block tests", function() {
-	initIframes();
-	
 	envTest(function(env){
 		$.each(blockElements, function(i, elem){
 			equals($(elem, env.doc).css('display'), 'block', elem +" has display: block");
 		});
+	});
+});
+
+if(!html5.supportsUnknownElements){
+	test("config shivMethods test", function() {
+		envTest(function(env){
+			var div = $('<div/>', env.doc).html('<section><article><mark></mark>?</section></section>').appendTo('#qunit-fixture');
+			equals($('section article > mark', div).length, (env.html5.shivMethods) ? 1 : 0, "found/no found mark in section > article");
+		});
+	});
+	
+}
+
+test("config add elements test", function() {
+	envTest(function(env){
+		var value = $.trim($('abcxyz', env.doc).html());
+		console.log($('abcxyz', env.doc), env.doc, testEnv)
+		ok((html5.supportsUnknownElements || env.html5.elements.indexOf('abcxyz') !== -1) ? value : !value, "unknownelement has one/none div inside: "+ value);
 	});
 });
 
@@ -80,7 +110,7 @@ test("createElement/innerHTML test", function() {
 		shivTests(
 			function(){
 				var div = env.doc.createElement('div');
-				var text = "This native javascript sentence is in a green box <mark>with these words highlighted</mark>?"
+				var text = "This native javascript sentence is in a green box <mark>with these words highlighted</mark>?";
 				div.innerHTML = '<section id="section">'+ text +'</section>';
 				env.doc.getElementById('qunit-fixture').appendChild(div);
 				equals($('#section', env.doc).html(), text, "innerHTML getter equals innerHTML setter");

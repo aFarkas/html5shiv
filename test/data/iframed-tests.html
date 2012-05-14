@@ -38,7 +38,7 @@
 				if(!window.html5){
 					window.html5 = {};
 				}
-				window.html5.elements = 'unknownelement abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video';
+				window.html5.elements = 'abcxyz abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video';
 			}
 		</script>
 		<script src="../../src/html5shiv-printshiv.js"></script>
@@ -46,15 +46,19 @@
 			if(querys.disableMethodsAfter){
 				window.html5.shivMethods = false;
 			}
-			//todo
+			
 			if(querys.addUnknownAfter){
-				window.html5.elements = 'unknownelement abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video';
+				window.html5.elements = 'abcxyz abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video';
+				html5.shivDocument(document);
 			}
 		</script>
 		
 	</head>
 	<body>
 		<div id="qunit-fixture">
+			<abcxyz>
+				<div class="inside"></div>
+			</abcxyz>
 			<article>
 				<div class="inside"></div>
 			</article>
@@ -82,9 +86,7 @@
 			<section>
 				<div class="inside"></div>
 			</section>
-			<unknownelement>
-				<div class="inside"></div>
-			</unknownelement>
+			
 		</div>
 	</body>
 </html>
