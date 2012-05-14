@@ -176,6 +176,13 @@
     'shivCSS': !(options.shivCSS === false),
 
     /**
+     * Is equal to true if a browser supports creating unknown/HTML5 elements
+     * @memberOf html5
+     * @type boolean
+     */
+    'supportsUnknownElements': supportsUnknownElements,
+
+    /**
      * A flag to indicate that the document's `createElement` and `createDocumentFragment`
      * methods should be overwritten.
      * @memberOf html5
