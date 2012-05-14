@@ -13,11 +13,8 @@
 		</style>
 		<link rel="stylesheet" media="screen" href="qunit/qunit.css">
 		<script src="../src/html5shiv-printshiv.js"></script>
-		<script src="//use.typekit.com/fbz1vwc.js"></script>
-		<script>
-			Typekit.load();
-		</script>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js"></script>
+		
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js"></script>
 		
 		<script src="qunit/qunit.js"></script>
 		
@@ -29,7 +26,10 @@
 		<div id="qunit-testrunner-toolbar"></div>
 		<h2 id="qunit-userAgent"></h2>
 		<ol id="qunit-tests"></ol>
-
+		
+		<iframe class="test-frame" src="data/iframed-tests.html?disableMethodsBefore"></iframe>
+		<iframe class="test-frame" src="data/iframed-tests.html?disableMethodsAfter"></iframe>
+		<iframe class="test-frame unknown-before" src="data/iframed-tests.html?addUnknownBefore"></iframe>
 		
 		<div id="qunit-fixture">
 			<article>
