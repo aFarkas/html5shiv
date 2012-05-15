@@ -34,15 +34,26 @@
 				}
 				window.html5.shivMethods = false;
 			}
+			if(querys.disableCSS){
+				if(!window.html5){
+					window.html5 = {};
+				}
+				window.html5.shivCSS = false;
+			}
 			if(querys.addUnknownBefore){
 				if(!window.html5){
 					window.html5 = {};
 				}
 				window.html5.elements = 'abcxyz abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video';
 			}
+			
+			
+			if(!querys.noEmbed){
+				document.write('<script src="..\/..\/src\/html5shiv-printshiv.js"><\/script>');
+			}
 		</script>
-		<script src="../../src/html5shiv-printshiv.js"></script>
 		<script>
+		
 			if(querys.disableMethodsAfter){
 				window.html5.shivMethods = false;
 			}

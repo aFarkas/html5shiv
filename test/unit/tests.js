@@ -7,7 +7,8 @@ var testEnv = [
 	{
 		doc: document,
 		initialShivMethods: html5.shivMethods,
-		html5: html5
+		html5: html5,
+		name: 'default'
 	}
 ];
 
@@ -21,11 +22,23 @@ var shivTests = function(fn, env){
 	env.html5.shivMethods = env.initialShivMethods;
 };
 
-var envTest = function(fn){
-	initIframes();
-	$.each(testEnv, function(i, env){
-		fn(env);
+var envTest = function(name, fn, frames){
+	if(!frames){
+		frames = ['default'];
+	}
+	asyncTest(name, function(){
+		$.each(testEnv, function(i, env){
+			if($.inArray(env.name, frames) != -1){
+				fn(env);
+			}
+		});
+		if(testEnv.length > 1){
+			start();
+		} else {
+			initIframes();
+		}
 	});
+	
 };
 
 QUnit.reset = function() {
@@ -41,12 +54,13 @@ var initIframes = function(){
 	
 	$('iframe.test-frame').each(function(){
 		var win = this.contentWindow;
-		if(win.html5 && $('#qunit-fixture', win.document).html()){
+		if($('#qunit-fixture', win.document).length){
 			testEnv.push({
 				doc: win.document,
 				html5: win.html5,
-				initialShivMethods: win.html5.shivMethods,
-				fixture: $('#qunit-fixture', win.document).html()
+				initialShivMethods: (win.html5 || {}).shivMethods,
+				fixture: $('#qunit-fixture', win.document).html(),
+				name: this.src.split('?')[1]
 			});
 		}
 	});
@@ -58,108 +72,114 @@ var initIframes = function(){
 };
 
 
+$(initIframes);
 
-asyncTest("block", function() {
-	$(initIframes);
-});
 
-test("display block tests", function() {
-	envTest(function(env){
-		$.each(blockElements, function(i, elem){
-			equals($(elem, env.doc).css('display'), 'block', elem +" has display: block");
-		});
+envTest("display block tests", function(env){
+	$.each(blockElements, function(i, elem){
+		equals($(elem, env.doc).css('display'), 'block', elem +" has display: block");
 	});
-});
+
+}, ['default', 'disableMethodsBefore']);
 
 if(!html5.supportsUnknownElements){
-	test("config shivMethods test", function() {
-		envTest(function(env){
-			var div = $('<div/>', env.doc).html('<section><article><mark></mark>?</section></section>').appendTo('#qunit-fixture');
-			equals($('section article > mark', div).length, (env.html5.shivMethods) ? 1 : 0, "found/no found mark in section > article");
-		});
-	});
 	
+	envTest("config shivMethods test", function(env){
+		var div = $('<div/>', env.doc).html('<section><article><mark></mark>?</section></section>').appendTo('#qunit-fixture');
+		equals($('section article > mark', div).length, (env.html5.shivMethods) ? 1 : 0, "found/no found mark in section > article");
+	}, ['default', 'disableMethodsBefore', 'disableMethodsAfter']);
+	
+	envTest("config shivCSS test", function(env){
+		$.each(blockElements, function(i, elem){
+			equals($(elem, env.doc).css('display'), 'inline', elem +" has display: inline if unshived");
+		});
+		env.html5.shivCSS = true;
+		env.html5.shivDocument();
+		$.each(blockElements, function(i, elem){
+			equals($(elem, env.doc).css('display'), 'block', elem +" has display: block. after reshiving");
+		});
+	}, ['disableCSS']);
 }
 
-test("config add elements test", function() {
-	envTest(function(env){
-		var value = $.trim($('abcxyz', env.doc).html());
-		console.log($('abcxyz', env.doc), env.doc, testEnv)
-		ok((html5.supportsUnknownElements || env.html5.elements.indexOf('abcxyz') !== -1) ? value : !value, "unknownelement has one/none div inside: "+ value);
-	});
-});
+envTest("config add elements test", function(env){
+	var value = $.trim($('abcxyz', env.doc).html());
+	ok((html5.supportsUnknownElements || env.html5.elements.indexOf('abcxyz') !== -1) ? value : !value, "unknownelement has one/none div inside: "+ value);
+}, ['default', 'disableMethodsBefore', 'addUnknownBefore', 'addUnknownAfter']);
 
-test("parsing tests", function() {
-	envTest(function(env){
-		$.each(blockElements, function(i, elem){
-			equals($(elem +' div.inside', env.doc).length, 1, elem +" has a div inside");
-		});
-	});
-});
+envTest("parsing tests", function(env){
+	$.each(blockElements, function(i, elem){
+		equals($(elem +' div.inside', env.doc).length, 1, elem +" has a div inside");
+	});	
+}, ['default', 'disableMethodsBefore']);
 
-test("style test", function() {
-	envTest(function(env){
-		var article = $('article', env.doc);
-		equals(article.css('borderTopWidth'), '2px', "article has a 2px border");
-	});
-});
+envTest("style test", function(env){
+	var article = $('article', env.doc);
+	equals(article.css('borderTopWidth'), '2px', "article has a 2px border");
+}, ['default', 'disableMethodsBefore']);
+
+if (!html5.supportsUnknownElements) {
+	envTest("shiv different document", function(env){
+		var markText = "with these words highlighted3";
+		var div = $('<div/>', env.doc).html('<section><article>This jQuery 1.6.4 sentence is in a green box <mark>' + markText + '</mark>?</section></section>').appendTo('#qunit-fixture');
+		equals($('section article > mark', div).length, 0, "document is not shived");
+		html5.shivDocument(env.doc);
+		
+		div = $('<div/>', env.doc).html('<section><article>This jQuery 1.6.4 sentence is in a green box <mark>' + markText + '</mark>?</section></section>').appendTo('#qunit-fixture');
+		equals($('section article > mark', div).length, 1, "document is shived");
+		equals($('article', div).css('borderTopWidth'), '2px', "article has a 2px border");
+		
+	}, ['noEmbed']);
+}
 
 	
-test("createElement/innerHTML test", function() {
-	envTest(function(env){
-		shivTests(
-			function(){
-				var div = env.doc.createElement('div');
-				var text = "This native javascript sentence is in a green box <mark>with these words highlighted</mark>?";
-				div.innerHTML = '<section id="section">'+ text +'</section>';
-				env.doc.getElementById('qunit-fixture').appendChild(div);
-				equals($('#section', env.doc).html(), text, "innerHTML getter equals innerHTML setter");
-				equals($('#section mark', env.doc).length, 1, "section has a mark element inside");
-			},
-			env
-		);
-	});
-	
-});
+envTest("createElement/innerHTML test", function(env){
+	shivTests(
+		function(){
+			var div = env.doc.createElement('div');
+			var text = "This native javascript sentence is in a green box <mark>with these words highlighted</mark>?";
+			div.innerHTML = '<section id="section">'+ text +'</section>';
+			env.doc.getElementById('qunit-fixture').appendChild(div);
+			equals($('#section', env.doc).html(), text, "innerHTML getter equals innerHTML setter");
+			equals($('#section mark', env.doc).length, 1, "section has a mark element inside");
+		},
+		env
+	);
+}, ['default', 'disableMethodsBefore']);
 
-test("createElement/createDocumentFragment/innerHTML test", function() {
-	envTest(function(env){
-		shivTests(
-			function(){
-				var div = env.doc.createElement('div');
-				var frag = env.doc.createDocumentFragment();
-				var markText = "with these words highlighted";
-				div.innerHTML = '<section>This native javascript sentence is in a green box <mark>'+markText+'</mark>?</section>';
-				frag.appendChild(div);
-				div.innerHTML += '<article>This native javascript sentence is also in a green box <mark>'+markText+'</mark>?</article>';
-				env.doc.getElementById('qunit-fixture').appendChild(frag);
-				equals($('section > mark', div).html(), markText, "innerHTML getter equals innerHTML setter");
-				equals($('article', div).css('borderTopWidth'), '2px', "article has a 2px border");
-			},
-			env
-		);
-	});
-});
+envTest("createElement/createDocumentFragment/innerHTML test", function(env){
+	shivTests(
+		function(){
+			var div = env.doc.createElement('div');
+			var frag = env.doc.createDocumentFragment();
+			var markText = "with these words highlighted";
+			div.innerHTML = '<section>This native javascript sentence is in a green box <mark>'+markText+'</mark>?</section>';
+			frag.appendChild(div);
+			div.innerHTML += '<article>This native javascript sentence is also in a green box <mark>'+markText+'</mark>?</article>';
+			env.doc.getElementById('qunit-fixture').appendChild(frag);
+			equals($('section > mark', div).html(), markText, "innerHTML getter equals innerHTML setter");
+			equals($('article', div).css('borderTopWidth'), '2px', "article has a 2px border");
+		},
+		env
+	);
+}, ['default', 'disableMethodsBefore']);
 
 
-test("createDocumentFragment/cloneNode/innerHTML test", function() {
-	envTest(function(env){
-		shivTests(
-			function(){
-				var frag = env.doc.createDocumentFragment();
-				var fragDiv = frag.appendChild(env.doc.createElement('div'));
-				var markText = "with these words highlighted2";
-				var fragDivClone;
-				fragDiv.innerHTML = '<article>This native javascript sentence is also in a green box <mark>'+markText+'</mark>?</article>';
-				fragDivClone = fragDiv.cloneNode(true);
-				env.doc.getElementById('qunit-fixture').appendChild(fragDivClone);
-				equals($('article > mark', fragDivClone).html(), markText, "innerHTML getter equals innerHTML setter");
-				equals($('article', fragDivClone).css('borderTopWidth'), '2px', "article has a 2px border");
-			},
-			env
-		);
-	});
-});
+envTest("createDocumentFragment/cloneNode/innerHTML test", function(env){
+	shivTests(
+		function(){
+			var frag = env.doc.createDocumentFragment();
+			var fragDiv = frag.appendChild(env.doc.createElement('div'));
+			var markText = "with these words highlighted2";
+			var fragDivClone;
+			fragDiv.innerHTML = '<article>This native javascript sentence is also in a green box <mark>'+markText+'</mark>?</article>';
+			fragDivClone = fragDiv.cloneNode(true);
+			env.doc.getElementById('qunit-fixture').appendChild(fragDivClone);
+			equals($('article > mark', fragDivClone).html(), markText, "innerHTML getter equals innerHTML setter");
+			equals($('article', fragDivClone).css('borderTopWidth'), '2px', "article has a 2px border");
+		},
+		env
+	);
+}, ['default', 'addUnknownAfter']);
 
 test("form test", function() {
 	shivTests(
@@ -196,18 +216,16 @@ test("form test", function() {
 	);
 });
 
-test("jQuery test", function() {
-	envTest(function(env){
-		shivTests(
-			function(){
-				var markText = "with these words highlighted3";
-				var div = $('<div/>', env.doc).html('<section><article>This jQuery 1.6.4 sentence is in a green box <mark>'+markText+'</mark>?</section></section>').appendTo('#qunit-fixture');
-				equals($('section article > mark', div).html(), markText, "innerHTML getter equals innerHTML setter");
-				equals($('article', div).css('borderTopWidth'), '2px', "article has a 2px border");
-			},
-			env
-		);
-	});
+envTest("jQuery test", function(env){
+	shivTests(
+		function(){
+			var markText = "with these words highlighted3";
+			var div = $('<div/>', env.doc).html('<section><article>This jQuery 1.6.4 sentence is in a green box <mark>'+markText+'</mark>?</section></section>').appendTo('#qunit-fixture');
+			equals($('section article > mark', div).html(), markText, "innerHTML getter equals innerHTML setter");
+			equals($('article', div).css('borderTopWidth'), '2px', "article has a 2px border");
+		},
+		env
+	);
 });
 
 
