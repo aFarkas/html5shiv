@@ -13,6 +13,15 @@
   /** Detect whether the browser supports default html5 styles */
   var supportsHtml5Styles;
 
+  /** Name of the expando, to work with multiple documents or to re-shiv one document */
+  var expando = '_html5shiv';
+
+  /** The id for the the documents expando */
+  var expanID = 0;
+
+  /** Cached data for each document */
+  var expandoData = {};
+
   /** Detect whether the browser supports unknown elements */
   var supportsUnknownElements;
 
@@ -67,32 +76,51 @@
     var elements = html5.elements;
     return typeof elements == 'string' ? elements.split(' ') : elements;
   }
+  
+    /**
+   * Returns the value of `html5.elements` as an array.
+   * @private
+   * @param {Document} ownerDocument The document.
+   * @returns {Object} An object of shived element node names.
+   */
+  function getExpandoData(ownerDocument) {
+    var data = expandoData[ownerDocument[expando]];
+    if(!data){
+        data = {};
+        expanID++;
+        ownerDocument[expando] = expanID;
+        expandoData[expanID] = data;
+    }
+    return data;
+  }
 
   /**
    * Shivs the `createElement` and `createDocumentFragment` methods of the document.
    * @private
    * @param {Document|DocumentFragment} ownerDocument The document.
+   * @param {Object} expando data of the document.
    */
-  function shivMethods(ownerDocument) {
-    var cache = {},
-        docCreateElement = ownerDocument.createElement,
-        docCreateFragment = ownerDocument.createDocumentFragment,
-        frag = docCreateFragment();
+  function shivMethods(ownerDocument, data) {
+    if (!data.cache) {
+        data.cache = {};
+        data.createElem = ownerDocument.createElement;
+        data.createFrag = ownerDocument.createDocumentFragment;
+    }
+    var frag = data.createFrag();
+    var node;
 
     ownerDocument.createElement = function(nodeName) {
       //abort shiv
       if(!html5.shivMethods){
-          return docCreateElement(nodeName);
+          return data.createElem(nodeName);
       }
 
-      var node;
-
-      if(cache[nodeName]){
-          node = cache[nodeName].cloneNode();
+      if(data.cache[nodeName]){
+          node = data.cache[nodeName].cloneNode();
       } else if(saveClones.test(nodeName)){
-           node = (cache[nodeName] = docCreateElement(nodeName)).cloneNode();
+           node = (data.cache[nodeName] = data.createElem(nodeName)).cloneNode();
       } else {
-          node = docCreateElement(nodeName);
+          node = data.createElem(nodeName);
       }
 
       // Avoid adding some elements to fragments in IE < 9 because
@@ -110,7 +138,7 @@
       'h.shivMethods&&(' +
         // unroll the `createElement` calls
         getElements().join().replace(/\w+/g, function(nodeName) {
-          docCreateElement(nodeName);
+          data.createElem(nodeName);
           frag.createElement(nodeName);
           return 'c("' + nodeName + '")';
         }) +
@@ -127,12 +155,13 @@
    * @returns {Document} The shived document.
    */
   function shivDocument(ownerDocument) {
-    var shived;
-    if (ownerDocument.documentShived) {
-      return ownerDocument;
+    if (!ownerDocument) {
+        ownerDocument = document;
     }
-    if (html5.shivCSS && !supportsHtml5Styles) {
-      shived = !!addStyleSheet(ownerDocument,
+    var data = getExpandoData(ownerDocument);
+
+    if (html5.shivCSS && !supportsHtml5Styles && !data.hasCSS) {
+      data.hasCSS = !!addStyleSheet(ownerDocument,
         // corrects block display not defined in IE6/7/8/9
         'article,aside,figcaption,figure,footer,header,hgroup,nav,section{display:block}' +
         // adds styling not present in IE6/7/8/9
@@ -140,10 +169,7 @@
       );
     }
     if (!supportsUnknownElements) {
-      shived = !shivMethods(ownerDocument);
-    }
-    if (shived) {
-      ownerDocument.documentShived = shived;
+      shivMethods(ownerDocument, data);
     }
     return ownerDocument;
   }
