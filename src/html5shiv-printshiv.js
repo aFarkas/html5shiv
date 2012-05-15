@@ -78,14 +78,14 @@
   }
   
     /**
-   * Returns the value of `html5.elements` as an array.
+   * Returns the data associated to the given document
    * @private
    * @param {Document} ownerDocument The document.
-   * @returns {Object} An object of shived element node names.
+   * @returns {Object} An object of data.
    */
   function getExpandoData(ownerDocument) {
     var data = expandoData[ownerDocument[expando]];
-    if(!data){
+    if (!data) {
         data = {};
         expanID++;
         ownerDocument[expando] = expanID;
@@ -95,42 +95,85 @@
   }
 
   /**
+   * returns a shived element for the given nodeName and document
+   * @memberOf html5
+   * @param {String} nodeName name of the element
+   * @param {Document} ownerDocument The context document.
+   * @returns {Object} The shived element.
+   */
+  function createElement(nodeName, ownerDocument, data){
+    if (!ownerDocument) {
+        ownerDocument = document;
+    }
+    if(supportsUnknownElements){
+        return ownerDocument.createElement(nodeName);
+    }
+    data = data || getExpandoData(ownerDocument);
+    var node;
+
+    if (data.cache[nodeName]) {
+        node = data.cache[nodeName].cloneNode();
+    } else if (saveClones.test(nodeName)) {
+        node = (data.cache[nodeName] = data.createElem(nodeName)).cloneNode();
+    } else {
+        node = data.createElem(nodeName);
+    }
+
+    // Avoid adding some elements to fragments in IE < 9 because
+    // * Attributes like `name` or `type` cannot be set/changed once an element
+    //   is inserted into a document/fragment
+    // * Link elements with `src` attributes that are inaccessible, as with
+    //   a 403 response, will cause the tab/window to crash
+    // * Script elements appended to fragments will execute when their `src`
+    //   or `text` property is set
+    return node.canHaveChildren && !reSkip.test(nodeName) ? data.frag.appendChild(node) : node;
+  }
+
+  /**
+   * returns a shived DocumentFragment for the given document
+   * @memberOf html5
+   * @param {Document} ownerDocument The context document.
+   * @returns {Object} The shived DocumentFragment.
+   */
+  function createDocumentFragment(ownerDocument, data){
+    if (!ownerDocument) {
+        ownerDocument = document;
+    }
+    if(supportsUnknownElements){
+        return ownerDocument.createDocumentFragment();
+    }
+    data = data || getExpandoData(ownerDocument);
+    var clone = data.frag.cloneNode(),
+        i = 0,
+        elems = getElements(),
+        l = elems.length;
+    for(;i<l;i++){
+        clone.createElement(elems[i]);
+    }
+    return clone;
+  }
+
+  /**
    * Shivs the `createElement` and `createDocumentFragment` methods of the document.
    * @private
    * @param {Document|DocumentFragment} ownerDocument The document.
-   * @param {Object} expando data of the document.
+   * @param {Object} data of the document.
    */
   function shivMethods(ownerDocument, data) {
     if (!data.cache) {
         data.cache = {};
         data.createElem = ownerDocument.createElement;
         data.createFrag = ownerDocument.createDocumentFragment;
+        data.frag = data.createFrag();
     }
-    var frag = data.createFrag();
-    var node;
+
 
     ownerDocument.createElement = function(nodeName) {
       //abort shiv
-      if(!html5.shivMethods){
+      if (!html5.shivMethods) {
           return data.createElem(nodeName);
       }
-
-      if(data.cache[nodeName]){
-          node = data.cache[nodeName].cloneNode();
-      } else if(saveClones.test(nodeName)){
-           node = (data.cache[nodeName] = data.createElem(nodeName)).cloneNode();
-      } else {
-          node = data.createElem(nodeName);
-      }
-
-      // Avoid adding some elements to fragments in IE < 9 because
-      // * Attributes like `name` or `type` cannot be set/changed once an element
-      //   is inserted into a document/fragment
-      // * Link elements with `src` attributes that are inaccessible, as with
-      //   a 403 response, will cause the tab/window to crash
-      // * Script elements appended to fragments will execute when their `src`
-      //   or `text` property is set
-      return node.canHaveChildren && !reSkip.test(nodeName) ? frag.appendChild(node) : node;
+      return createElement(nodeName);
     };
 
     ownerDocument.createDocumentFragment = Function('h,f', 'return function(){' +
@@ -139,11 +182,11 @@
         // unroll the `createElement` calls
         getElements().join().replace(/\w+/g, function(nodeName) {
           data.createElem(nodeName);
-          frag.createElement(nodeName);
+          data.frag.createElement(nodeName);
           return 'c("' + nodeName + '")';
         }) +
       ');return n}'
-    )(html5, frag);
+    )(html5, data.frag);
   }
 
   /*--------------------------------------------------------------------------*/
@@ -224,7 +267,13 @@
     'type': 'default',
 
     // shivs the document according to the specified `html5` object options
-    'shivDocument': shivDocument
+    'shivDocument': shivDocument,
+
+    //creates a shived element
+    createElement: createElement,
+
+    //creates a shived documentFragment
+    createDocumentFragment: createDocumentFragment
   };
 
   /*--------------------------------------------------------------------------*/

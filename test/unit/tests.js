@@ -82,8 +82,34 @@ envTest("display block tests", function(env){
 
 }, ['default', 'disableMethodsBefore']);
 
-if(!html5.supportsUnknownElements){
+envTest("test html5.createElement/html5.createDocumentFragment", function(env){
+	if(env.html5){
+		env.html5.shivMethods = false;
+	}
+	html5.shivMethods = false;
+	var fragDiv =  html5.createElement('div', env.doc);
+	var frag = html5.createDocumentFragment(env.doc);
+	var markText = "with these words highlighted";
+	var div = $( html5.createElement('div', env.doc) ).html('<section><article><mark></mark>?</section></section>').appendTo('#qunit-fixture');
 	
+	fragDiv.innerHTML = '<section>This native javascript sentence is in a green box <mark>'+markText+'</mark>?</section>';
+	frag.appendChild(fragDiv);
+	fragDiv.innerHTML += '<article>This native javascript sentence is also in a green box <mark>'+markText+'</mark>?</article>';
+	env.doc.getElementById('qunit-fixture').appendChild(frag);
+	
+	equals($('section article > mark', div).length, 1, "found mark in section > article");
+	equals($('section > mark', fragDiv).html(), markText, "innerHTML getter equals innerHTML setter");
+	equals($('article', fragDiv).css('borderTopWidth'), '2px', "article has a 2px border");
+	
+	if(env.html5){
+		env.html5.shivMethods = env.initialShivMethods;
+	}
+	html5.shivMethods = true;
+}, ['default', 'disableMethodsBefore', 'disableMethodsAfter']);
+
+
+if(!html5.supportsUnknownElements){
+
 	envTest("config shivMethods test", function(env){
 		var div = $('<div/>', env.doc).html('<section><article><mark></mark>?</section></section>').appendTo('#qunit-fixture');
 		equals($('section article > mark', div).length, (env.html5.shivMethods) ? 1 : 0, "found/no found mark in section > article");
