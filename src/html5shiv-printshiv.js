@@ -33,7 +33,7 @@
     //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
     supportsHtml5Styles = ('hidden' in a);
 
-    supportsUnknownElements = a.childNodes.length == 1 || (function() {
+    supportsUnknownElements = a.childNodes.length === 1 || (function() {
       // assign a false positive if unable to shiv
       try {
         (document.createElement)('a');
@@ -42,9 +42,9 @@
       }
       var frag = document.createDocumentFragment();
       return (
-        typeof frag.cloneNode == 'undefined' ||
-        typeof frag.createDocumentFragment == 'undefined' ||
-        typeof frag.createElement == 'undefined'
+        typeof frag.cloneNode === 'undefined' ||
+        typeof frag.createDocumentFragment === 'undefined' ||
+        typeof frag.createElement === 'undefined'
       );
     }());
 
@@ -74,7 +74,7 @@
    */
   function getElements() {
     var elements = html5.elements;
-    return typeof elements == 'string' ? elements.split(' ') : elements;
+    return typeof elements === 'string' ? elements.split(' ') : elements;
   }
   
     /**
@@ -297,11 +297,11 @@
     // assign a false negative if unable to shiv
     var docEl = document.documentElement;
     return !(
-      typeof document.namespaces == 'undefined' ||
-      typeof document.parentWindow == 'undefined' ||
-      typeof docEl.applyElement == 'undefined' ||
-      typeof docEl.removeNode == 'undefined' ||
-      typeof window.attachEvent == 'undefined'
+      typeof document.namespaces === 'undefined' ||
+      typeof document.parentWindow === 'undefined' ||
+      typeof docEl.applyElement === 'undefined' ||
+      typeof docEl.removeNode === 'undefined' ||
+      typeof window.attachEvent === 'undefined'
     );
   }());
 
@@ -403,7 +403,7 @@
     if (!supportsShivableSheets || ownerDocument.printShived) {
       return ownerDocument;
     }
-    if (typeof namespaces[shivNamespace] == 'undefined') {
+    if (typeof namespaces[shivNamespace] === 'undefined') {
       namespaces.add(shivNamespace);
     }
 
