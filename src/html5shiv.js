@@ -1,6 +1,6 @@
 /*! HTML5 Shiv vpre3.6 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed */
 ;(function(window, document) {
-
+/*jshint evil:true */
   /** Preset options */
   var options = window.html5 || {};
 
@@ -241,7 +241,7 @@
      * @memberOf html5
      * @type Boolean
      */
-    'shivCSS': !(options.shivCSS === false),
+    'shivCSS': (options.shivCSS !== false),
 
     /**
      * Is equal to true if a browser supports creating unknown/HTML5 elements
@@ -256,7 +256,7 @@
      * @memberOf html5
      * @type Boolean
      */
-    'shivMethods': !(options.shivMethods === false),
+    'shivMethods': (options.shivMethods !== false),
 
     /**
      * A string to describe the type of `html5` object ("default" or "default print").
