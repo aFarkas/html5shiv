@@ -26,27 +26,26 @@
   var supportsUnknownElements;
 
   (function() {
-    var a = document.createElement('a');
+    try {
+        var a = document.createElement('a');
+        a.innerHTML = '<xyz></xyz>';
+        //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
+        supportsHtml5Styles = ('hidden' in a);
 
-    a.innerHTML = '<xyz></xyz>';
-
-    //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
-    supportsHtml5Styles = ('hidden' in a);
-
-    supportsUnknownElements = a.childNodes.length == 1 || (function() {
-      // assign a false positive if unable to shiv
-      try {
-        (document.createElement)('a');
-      } catch(e) {
-        return true;
-      }
-      var frag = document.createDocumentFragment();
-      return (
-        typeof frag.cloneNode == 'undefined' ||
-        typeof frag.createDocumentFragment == 'undefined' ||
-        typeof frag.createElement == 'undefined'
-      );
-    }());
+        supportsUnknownElements = a.childNodes.length == 1 || (function() {
+          // assign a false positive if unable to shiv
+          (document.createElement)('a');
+          var frag = document.createDocumentFragment();
+          return (
+            typeof frag.cloneNode == 'undefined' ||
+            typeof frag.createDocumentFragment == 'undefined' ||
+            typeof frag.createElement == 'undefined'
+          );
+        }());
+    } catch(e) {
+      supportsHtml5Styles = true;
+      supportsUnknownElements = true;
+    }
 
   }());
 
