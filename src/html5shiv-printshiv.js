@@ -396,6 +396,7 @@
   function shivPrint(ownerDocument) {
     var shivedSheet,
         wrappers,
+        data = getExpandoData(ownerDocument),
         namespaces = ownerDocument.namespaces,
         ownerWindow = ownerDocument.parentWindow;
 
@@ -406,7 +407,18 @@
       namespaces.add(shivNamespace);
     }
 
+    function removeSheet() {
+      clearTimeout(data._removeSheetTimer);
+      if (shivedSheet) {
+          shivedSheet.removeNode(true);
+      }
+      shivedSheet= null;
+    }
+
     ownerWindow.attachEvent('onbeforeprint', function() {
+
+      removeSheet();
+
       var imports,
           length,
           sheet,
@@ -441,16 +453,19 @@
           } catch(er){}
         }
       }
+
       // wrap all HTML5 elements with printable elements and add the shived style sheet
       cssText = shivCssText(cssText.reverse().join(''));
       wrappers = addWrappers(ownerDocument);
       shivedSheet = addStyleSheet(ownerDocument, cssText);
+
     });
 
     ownerWindow.attachEvent('onafterprint', function() {
       // remove wrappers, leaving the original elements, and remove the shived style sheet
       removeWrappers(wrappers);
-      shivedSheet.removeNode(true);
+      clearTimeout(data._removeSheetTimer);
+      data._removeSheetTimer = setTimeout(removeSheet, 500);
     });
 
     ownerDocument.printShived = true;
