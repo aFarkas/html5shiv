@@ -107,7 +107,9 @@
     if(supportsUnknownElements){
         return ownerDocument.createElement(nodeName);
     }
-    data = data || getExpandoData(ownerDocument);
+    if (!data) {
+        data = getExpandoData(ownerDocument);
+    }
     var node;
 
     if (data.cache[nodeName]) {
@@ -172,7 +174,7 @@
       if (!html5.shivMethods) {
           return data.createElem(nodeName);
       }
-      return createElement(nodeName);
+      return createElement(nodeName, ownerDocument, data);
     };
 
     ownerDocument.createDocumentFragment = Function('h,f', 'return function(){' +
