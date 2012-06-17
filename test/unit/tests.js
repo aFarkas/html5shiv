@@ -83,18 +83,23 @@ envTest("display block tests", function(env){
 }, ['default', 'disableMethodsBefore']);
 
 envTest("test html5.createElement/html5.createDocumentFragment", function(env){
+	var doc5 = html5;
 	if(env.html5){
+		doc5 = env.html5;
 		env.html5.shivMethods = false;
 	}
 	html5.shivMethods = false;
-	var fragDiv =  html5.createElement('div', env.doc);
-	var frag = html5.createDocumentFragment(env.doc);
+	
+	var fragDiv =  doc5.createElement('div', env.doc);
+	var frag = doc5.createDocumentFragment(env.doc);
 	var markText = "with these words highlighted";
-	var div = $( html5.createElement('div', env.doc) ).html('<section><article><mark></mark>?</section></section>').appendTo('#qunit-fixture');
+	var div = $( doc5.createElement('div', env.doc) ).html('<section><article><mark>s</mark></article>?</section>').appendTo(env.doc.getElementById('qunit-fixture'));
 	
 	fragDiv.innerHTML = '<section>This native javascript sentence is in a green box <mark>'+markText+'</mark>?</section>';
+	
 	frag.appendChild(fragDiv);
 	fragDiv.innerHTML += '<article>This native javascript sentence is also in a green box <mark>'+markText+'</mark>?</article>';
+	
 	env.doc.getElementById('qunit-fixture').appendChild(frag);
 	
 	equals($('section article > mark', div).length, 1, "found mark in section > article");
@@ -105,13 +110,13 @@ envTest("test html5.createElement/html5.createDocumentFragment", function(env){
 		env.html5.shivMethods = env.initialShivMethods;
 	}
 	html5.shivMethods = true;
-}, ['default', 'disableMethodsBefore', 'disableMethodsAfter']);
+}, ['disableMethodsBefore', 'disableMethodsAfter']);
 
 
 if(!html5.supportsUnknownElements){
 
 	envTest("config shivMethods test", function(env){
-		var div = $('<div/>', env.doc).html('<section><article><mark></mark>?</section></section>').appendTo('#qunit-fixture');
+		var div = $('<div/>', env.doc).html('<section><article><mark></mark></article>?</section>').appendTo(env.doc.getElementById('qunit-fixture'));
 		equals($('section article > mark', div).length, (env.html5.shivMethods) ? 1 : 0, "found/no found mark in section > article");
 	}, ['default', 'disableMethodsBefore', 'disableMethodsAfter']);
 	
@@ -146,17 +151,19 @@ envTest("style test", function(env){
 if (!html5.supportsUnknownElements) {
 	envTest("shiv different document", function(env){
 		var markText = "with these words highlighted3";
-		var div = $('<div/>', env.doc).html('<section><article>This jQuery 1.6.4 sentence is in a green box <mark>' + markText + '</mark>?</section></section>').appendTo('#qunit-fixture');
+		var markup = '<section><article>This jQuery 1.6.4 sentence is in a green box <mark>' + markText + '</mark></article>?</section>';
+		
+		var div = $('<div/>', env.doc).html(markup).appendTo(env.doc.getElementById('qunit-fixture'));
 		equals($('section article > mark', div).length, 0, "document is not shived");
+		
 		html5.shivDocument(env.doc);
 		
-		div = $('<div/>', env.doc).html('<section><article>This jQuery 1.6.4 sentence is in a green box <mark>' + markText + '</mark>?</section></section>').appendTo('#qunit-fixture');
+		div = $('<div/>', env.doc).html(markup).appendTo(env.doc.getElementById('qunit-fixture'));
 		equals($('section article > mark', div).length, 1, "document is shived");
 		equals($('article', div).css('borderTopWidth'), '2px', "article has a 2px border");
 		
 	}, ['noEmbed']);
 }
-
 	
 envTest("createElement/innerHTML test", function(env){
 	shivTests(
@@ -194,14 +201,18 @@ envTest("createDocumentFragment/cloneNode/innerHTML test", function(env){
 	shivTests(
 		function(){
 			var frag = env.doc.createDocumentFragment();
-			var fragDiv = frag.appendChild(env.doc.createElement('div'));
+			var fragDiv = env.doc.createElement('div');
+			
 			var markText = "with these words highlighted2";
 			var fragDivClone;
-			fragDiv.innerHTML = '<article>This native javascript sentence is also in a green box <mark>'+markText+'</mark>?</article>';
+			frag.appendChild(fragDiv);
+			
+			fragDiv.innerHTML = '<div><article>This native javascript sentence is also in a green box <mark>'+markText+'</mark>?</article></div>';
+			
 			fragDivClone = fragDiv.cloneNode(true);
+			
 			env.doc.getElementById('qunit-fixture').appendChild(fragDivClone);
-			equals($('article > mark', fragDivClone).html(), markText, "innerHTML getter equals innerHTML setter");
-			equals($('article', fragDivClone).css('borderTopWidth'), '2px', "article has a 2px border");
+			equals($('mark', env.doc).html(), markText, "innerHTML getter equals innerHTML setter");
 		},
 		env
 	);
@@ -212,6 +223,8 @@ test("form test", function() {
 		function(){
 			var form = document.createElement('form');
 			var select = document.createElement('select');
+			var input = document.createElement('input');
+			var button = document.createElement('button');
 			var option = document.createElement('option');
 			var markText = "with these words highlighted2";
 			
@@ -220,11 +233,15 @@ test("form test", function() {
 			form.target = '_blank';
 			select.name = 'selectName';
 			option.value = '1.value';
+			button.setAttribute('type', 'submit');
+			input.type = 'submit';
 			
 			form.innerHTML = '<article>This native javascript sentence is also in a green box <mark>'+markText+'</mark>?</article>';
 			
 			
 			form.appendChild(select);
+			form.appendChild(button);
+			form.appendChild(input);
 			
 			
 			
@@ -246,8 +263,8 @@ envTest("jQuery test", function(env){
 	shivTests(
 		function(){
 			var markText = "with these words highlighted3";
-			var div = $('<div/>', env.doc).html('<section><article>This jQuery 1.6.4 sentence is in a green box <mark>'+markText+'</mark>?</section></section>').appendTo('#qunit-fixture');
-			equals($('section article > mark', div).html(), markText, "innerHTML getter equals innerHTML setter");
+			var div = $('<div/>', env.doc).html('<section><article>This jQuery 1.6.4 sentence is in a green box <mark>'+markText+'</mark></article>?</section>').appendTo(env.doc.getElementById('qunit-fixture'));
+			equals($('article > mark', div).html(), markText, "innerHTML getter equals innerHTML setter");
 			equals($('article', div).css('borderTopWidth'), '2px', "article has a 2px border");
 		},
 		env
