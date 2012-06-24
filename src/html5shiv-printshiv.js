@@ -1,14 +1,8 @@
-/*! HTML5 Shiv v3.6RC1 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed */
+/*! HTML5 Shiv v3.6IE8specialRC1 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed */
 ;(function(window, document) {
 /*jshint evil:true */
   /** Preset options */
   var options = window.html5 || {};
-
-  /** Used to skip problem elements */
-  var reSkip = /^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i;
-
-  /** Not all elements can be cloned in IE (this list can be shortend) **/
-  var saveClones = /^<|^(?:a|b|button|code|div|fieldset|form|h1|h2|h3|h4|h5|h6|i|iframe|img|input|label|li|link|ol|option|p|param|q|script|select|span|strong|style|table|tbody|td|textarea|tfoot|th|thead|tr|ul)$/i;
 
   /** Detect whether the browser supports default html5 styles */
   var supportsHtml5Styles;
@@ -31,17 +25,8 @@
         a.innerHTML = '<xyz></xyz>';
         //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
         supportsHtml5Styles = ('hidden' in a);
-
-        supportsUnknownElements = a.childNodes.length == 1 || (function() {
-          // assign a false positive if unable to shiv
-          (document.createElement)('a');
-          var frag = document.createDocumentFragment();
-          return (
-            typeof frag.cloneNode == 'undefined' ||
-            typeof frag.createDocumentFragment == 'undefined' ||
-            typeof frag.createElement == 'undefined'
-          );
-        }());
+        // assign a false positive if unable to shiv
+        supportsUnknownElements = a.childNodes.length == 1 || !a.document || !Object.defineProperty;
     } catch(e) {
       supportsHtml5Styles = true;
       supportsUnknownElements = true;
@@ -93,65 +78,14 @@
     return data;
   }
 
-  /**
-   * returns a shived element for the given nodeName and document
-   * @memberOf html5
-   * @param {String} nodeName name of the element
-   * @param {Document} ownerDocument The context document.
-   * @returns {Object} The shived element.
-   */
-  function createElement(nodeName, ownerDocument, data){
-    if (!ownerDocument) {
-        ownerDocument = document;
-    }
-    if(supportsUnknownElements){
-        return ownerDocument.createElement(nodeName);
-    }
-    if (!data) {
-        data = getExpandoData(ownerDocument);
-    }
-    var node;
 
-    if (data.cache[nodeName]) {
-        node = data.cache[nodeName].cloneNode();
-    } else if (saveClones.test(nodeName)) {
-        node = (data.cache[nodeName] = data.createElem(nodeName)).cloneNode();
-    } else {
-        node = data.createElem(nodeName);
-    }
-
-    // Avoid adding some elements to fragments in IE < 9 because
-    // * Attributes like `name` or `type` cannot be set/changed once an element
-    //   is inserted into a document/fragment
-    // * Link elements with `src` attributes that are inaccessible, as with
-    //   a 403 response, will cause the tab/window to crash
-    // * Script elements appended to fragments will execute when their `src`
-    //   or `text` property is set
-    return node.canHaveChildren && !reSkip.test(nodeName) ? data.frag.appendChild(node) : node;
-  }
-
-  /**
-   * returns a shived DocumentFragment for the given document
-   * @memberOf html5
-   * @param {Document} ownerDocument The context document.
-   * @returns {Object} The shived DocumentFragment.
-   */
-  function createDocumentFragment(ownerDocument, data){
-    if (!ownerDocument) {
-        ownerDocument = document;
-    }
-    if(supportsUnknownElements){
-        return ownerDocument.createDocumentFragment();
-    }
-    data = data || getExpandoData(ownerDocument);
-    var clone = data.frag.cloneNode(),
-        i = 0,
-        elems = getElements(),
-        l = elems.length;
-    for(;i<l;i++){
-        clone.createElement(elems[i]);
-    }
-    return clone;
+  function defineProperty(obj, prop, desc){
+    var ret;
+    try {
+        ret = Object.getOwnPropertyDescriptor(obj, prop);
+        Object.defineProperty(obj, prop, desc);
+    } catch(er){}
+    return ret;
   }
 
   /**
@@ -161,33 +95,34 @@
    * @param {Object} data of the document.
    */
   function shivMethods(ownerDocument, data) {
-    if (!data.cache) {
-        data.cache = {};
-        data.createElem = ownerDocument.createElement;
-        data.createFrag = ownerDocument.createDocumentFragment;
-        data.frag = data.createFrag();
+    var win = ownerDocument.parentWindow || ownerDocument.defaultView;
+    var elements = getElements();
+    var innerDesc;
+
+    for(var i = 0, len = elements.length; i < len; i++){
+        ownerDocument.createElement(elements[i]);
+    } 
+
+    if (win && win.Element && !data.shivedInner && html5.shivMethods) {
+        data.shivedInner = true;
+        innerDesc = defineProperty(win.Element.prototype, 'innerHTML', {
+            set: function(content){
+                var elem = this;
+                var shived;
+                if (!elem.canHaveChildren || elem.document == ownerDocument || !html5.shivMethods) {
+                    return innerDesc.set.apply(elem, arguments);
+                }
+                shived = {};
+                innerDesc.set.call(elem, content.replace(/<(\w+)/g, function (m, m1) {
+                    if (!shived[m1]) {
+                        shived[m1] = true;
+                        elem.document.createElement(m1);
+                    }
+                    return m;
+                 }));
+            }
+        });
     }
-
-
-    ownerDocument.createElement = function(nodeName) {
-      //abort shiv
-      if (!html5.shivMethods) {
-          return data.createElem(nodeName);
-      }
-      return createElement(nodeName, ownerDocument, data);
-    };
-
-    ownerDocument.createDocumentFragment = Function('h,f', 'return function(){' +
-      'var n=f.cloneNode(),c=n.createElement;' +
-      'h.shivMethods&&(' +
-        // unroll the `createElement` calls
-        getElements().join().replace(/\w+/g, function(nodeName) {
-          data.createElem(nodeName);
-          data.frag.createElement(nodeName);
-          return 'c("' + nodeName + '")';
-        }) +
-      ');return n}'
-    )(html5, data.frag);
   }
 
   /*--------------------------------------------------------------------------*/
@@ -269,12 +204,8 @@
 
     // shivs the document according to the specified `html5` object options
     'shivDocument': shivDocument,
-
-    //creates a shived element
-    createElement: createElement,
-
-    //creates a shived documentFragment
-    createDocumentFragment: createDocumentFragment
+    
+    'defineProperty': defineProperty
   };
 
   /*--------------------------------------------------------------------------*/
