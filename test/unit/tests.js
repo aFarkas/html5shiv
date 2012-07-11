@@ -246,7 +246,11 @@ test("form test", function() {
 			
 			
 			if(select.add){
-				select.add(option);
+				try {
+					select.add(option);
+				} catch(er){
+					select.appendChild(option);
+				}
 			} else {
 				select.appendChild(option);
 			}
