@@ -1,6 +1,11 @@
-/*! HTML5 Shiv v3.6.1 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed */
+/**
+* @preserve HTML5 Shiv v3.6.2pre | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed
+*/
 ;(function(window, document) {
 /*jshint evil:true */
+  /** version */
+  var version = '3.6.2pre';
+
   /** Preset options */
   var options = window.html5 || {};
 
@@ -237,6 +242,11 @@
      * @type Array|String
      */
     'elements': options.elements || 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video',
+
+    /**
+     * current version of html5shiv
+     */
+    'version': version,
 
     /**
      * A flag to indicate that the HTML5 style sheet should be inserted.
