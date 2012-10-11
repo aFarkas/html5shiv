@@ -1,4 +1,4 @@
-IEPP
+html5shiv (htc version)
 ================================
 
 How To Use
@@ -8,8 +8,8 @@ How To Use
 
 ---------------
 	- js
-	-	iepp.js
-	-	iepp.htc
+	-	html5shiv.js
+	-	html5shiv.htc
 	- 	jquery.js
 	- index.html
 ---------------
@@ -18,7 +18,7 @@ How To Use
 
 ---------------
 	<!--[if lt IE 9]>
-		<script src="js/iepp.js"></script>
+		<script src="js/html5shiv.js"></script>
 	<![endif]-->
 ---------------
 
@@ -33,4 +33,4 @@ Limitations
 ------------------
 
 **Same domain/same origin policy**
-iepp.js and iepp.htc has to be served from the same domain as the HTML, which uses iepp.
+html5shiv.js and html5shiv.htc has to be served from the same domain as the HTML, which uses html5shiv.
