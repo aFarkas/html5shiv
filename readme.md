@@ -4,6 +4,7 @@
 
 ### `html5shiv.js`
 *  contains the basic `createElement()` shiv technique, along with monkeypatches for `document.createElement` and `document.createDocumentFragment`. It also applies very [basic `display:block` styling](https://github.com/aFarkas/html5shiv/blob/4525162dd10e6fff7b83d06b28b562586e9fb058/src/html5shiv.js#L214-L217) for HTML5 elements.
+
 ### `html5shiv-printshiv.js` 
 *  contains all the above plus a mechanism to allow HTML5 elements to be styled and contain children while being printed in IE6-8.
 
