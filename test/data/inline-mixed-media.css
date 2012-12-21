@@ -1,0 +1,11 @@
+@media screen, handheld {
+	article.inline-mixed-media {
+		border: 5px solid #000;
+	}
+}
+
+@media print  {
+	article.inline-mixed-media {
+		border: 5px dotted #000;
+	}
+}
