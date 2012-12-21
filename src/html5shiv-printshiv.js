@@ -303,7 +303,7 @@
 
         //todo: test if same origin test works fine
         if(path.indexOf('//') < 1 || path.indexOf(location.protocol +'//'+ location.host) === 0){
-            document.createStyleSheet().addRule('head', 'behavior: url('+ path +'html5shiv.htc);');
+            document.createStyleSheet().addRule('body', 'behavior: url('+ path +'html5shiv.htc);');
         }
     }
   })();
