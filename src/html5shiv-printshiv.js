@@ -48,6 +48,7 @@
           );
         }());
     } catch(e) {
+      // assign a false positive if detection fails => unable to shiv
       supportsHtml5Styles = true;
       supportsUnknownElements = true;
     }
