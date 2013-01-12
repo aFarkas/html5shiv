@@ -103,7 +103,7 @@ container.innerHTML = '<section>This is a section</section>';
 ## HTML5 Shiv Known Issues and Limitations
 
 - The `shivMethods` option (overriding `document.createElement`) and the `html5.createElement` method create elements, which are not disconnected and have a parentNode (see also issue #64)
-- The cloneNode problem is currently not addressed by HTML5 Shiv. HTML5 elements can by dynamically created, but can't be cloned in all cases.
+- The cloneNode problem is currently not addressed by HTML5 Shiv. HTML5 elements can be dynamically created, but can't be cloned in all cases.
 - The printshiv version of HTML5 Shiv has to alter the print styles and the hole DOM for printing. In case of complex websites and or a lot of print styles this might cause performance and/or styling issues. A possible solution could be the [htc-branch](https://github.com/aFarkas/html5shiv/tree/iepp-htc) of HTML5 Shiv, which uses another technique to implement print styles for IE8.
 
 ### What about the other HTML5 element projects?
