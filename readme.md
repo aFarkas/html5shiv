@@ -28,7 +28,7 @@ The `elements` option is a space seprated string or array, which describes the *
 
 **Configuring `elements` before `html5shiv.js` is included.**
 
-```
+```js
 //create a global html5 options object
 window.html5 = {
   'elements': 'mark section customelement' 
@@ -36,7 +36,7 @@ window.html5 = {
 ```
 **Configuring `elements` after `html5shiv.js` is included.**
 
-```
+```js
 //change the html5shiv options object 
 window.html5.elements = 'mark section customelement';
 //and re-invoke the `shivDocument` method
@@ -49,7 +49,7 @@ If `shivCSS` is set to `true` HTML5 Shiv will add basic styles (mostly display: 
 
 The `shivCSS` is true by default and can be set false, only before html5shiv.js is included: 
 
-```
+```js
 //create a global html5 options object
 window.html5 = {
 	'shivCSS': false
@@ -65,7 +65,7 @@ Note: jQuery 1.7+ has implemented his own HTML5 DOM creation fix for IE8-. If al
 
 **Configuring `shivMethods` before `html5shiv.js` is included.**
 
-```
+```js
 //create a global html5 options object
 window.html5 = {
 	'shivMethods': false
@@ -73,7 +73,7 @@ window.html5 = {
 ```
 **Configuring `elements` after `html5shiv.js` is included.**
 
-```
+```js
 //change the html5shiv options object 
 window.html5.shivMethods = false;
 ```
@@ -82,7 +82,7 @@ window.html5.shivMethods = false;
 
 The `html5.createElement` method creates a shived element, even if `shivMethods` is set to false.
 
-```
+```js
 var container = html5.createElement('div');
 //container is shived so we can add HTML5 elements using `innerHTML`
 container.innerHTML = '<section>This is a section</section>';
@@ -92,7 +92,7 @@ container.innerHTML = '<section>This is a section</section>';
 
 The `html5.createDocumentFragment` method creates a shived document fragment, even if `shivMethods` is set to false.
 
-```
+```js
 var fragment = html5.createDocumentFragment();
 var container = document.createElement('div');
 fragment.appendChild(container);
