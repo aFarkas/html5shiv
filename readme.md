@@ -106,6 +106,18 @@ container.innerHTML = '<section>This is a section</section>';
 - The cloneNode problem is currently not addressed by HTML5 Shiv. HTML5 elements can by dynamically created, but can't be cloned in all cases.
 - The printshiv version of HTML5 Shiv has to alter the print styles and the hole DOM for printing. In case of complex websites and or a lot of print styles this might cause performance and/or styling issues. A possible solution could be the [htc-branch](https://github.com/aFarkas/html5shiv/tree/iepp-htc) of HTML5 Shiv, which uses another technique to implement print styles for IE8.
 
+### What about the other HTML5 element projects?
+
+- The orignal conception and community collaboration story of the project is descibed at [The History of the HTML5 Shiv](http://paulirish.com/2011/the-history-of-the-html5-shiv/). 
+- [IEPP](https://code.google.com/p/ie-print-protector), by Jon Neal, addressed the printing fault of the original `html5shiv`. It was merged into `html5shiv`.
+- **Shimprove**, in April 2010, patched `cloneNode` and `createElement` was later merged into `html5shiv`
+- **innerShiv**, introduced in August 2010 by JD Barlett, addressed dynamically adding new HTML5 elements into the DOM. [jQuery added support](http://blog.jquery.com/2011/11/03/jquery-1-7-released/) that made innerShiv redundant and `html5shiv` addressed the same issues as well, so the project was completed.
+- The **html5shim** and **html5shiv** sites on Google Code are maintained by Remy Sharp and are identical distribution points of this `html5shiv` project.
+- **Modernizr** is developed by the same people as `html5shiv` and can include the latest version in any custom builds created at modernizr.com
+- This `html5shiv` repo now contains tests for all the edge cases pursued by the above libraries and has been extensively tested, both in development and production. 
+
+A [detailed changelog of html5shiv](https://github.com/aFarkas/html5shiv/wiki) is available.
+
 ### Why is it called a *shiv*?
 
 The term shiv originates from [John Resig](//github.com/jeresig), who used the term for its slang meaning, *a sharp object used as a knife-like weapon*, intended for Internet Explorer. Now, there's a small chance that John was having [an etymological seizure](//www.google.com/search?q=etymological+seizure), and that he actually intended to use the word [shim](http://en.wikipedia.org/wiki/Shim_(computing), which, in computing means *an application compatibility workaround*. As reasonable as the later explanation may seem, [John is actually a well known homie](http://html5homi.es). 
