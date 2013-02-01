@@ -81,7 +81,7 @@
     var elements = html5.elements;
     return typeof elements == 'string' ? elements.split(' ') : elements;
   }
-  
+
     /**
    * Returns the data associated to the given document
    * @private
@@ -213,7 +213,7 @@
     if (html5.shivCSS && !supportsHtml5Styles && !data.hasCSS) {
       data.hasCSS = !!addStyleSheet(ownerDocument,
         // corrects block display not defined in IE6/7/8/9
-        'article,aside,figcaption,figure,footer,header,hgroup,nav,section{display:block}' +
+        'article,aside,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}' +
         // adds styling not present in IE6/7/8/9
         'mark{background:#FF0;color:#000}'
       );
