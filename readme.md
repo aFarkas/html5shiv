@@ -12,7 +12,7 @@ The HTML5 Shiv enables use of HTML5 sectioning elements in legacy Internet Explo
 
 ### Who can I get mad at now?
 
-HTML5 Shiv is maintained by [Alexander Farkas](//github.com/aFarkas/), [Jonathan Neal](//twitter.com/jon_neal) and [Paul Irish](//twitter.com/paul_irish), with many contributions from [John-David Dalton](//twitter.com/jdalton). It is also distributed with [Modernizr](http://modernizr.com/), and the two google code projects, [html5shiv](//code.google.com/p/html5shiv/) and [html5shim](//code.google.com/p/html5shim/), maintained by [Remy Sharp](//twitter.com/rem).
+HTML5 Shiv is maintained by [Alexander Farkas](https://github.com/aFarkas/), [Jonathan Neal](https://twitter.com/jon_neal) and [Paul Irish](https://twitter.com/paul_irish), with many contributions from [John-David Dalton](https://twitter.com/jdalton). It is also distributed with [Modernizr](http://modernizr.com/), and the two google code projects, [html5shiv](https://code.google.com/p/html5shiv/) and [html5shim](https://code.google.com/p/html5shim/), maintained by [Remy Sharp](https://twitter.com/rem).
 
 If you have any issues in these implementations, you can report them here! :)
 
@@ -120,4 +120,4 @@ A [detailed changelog of html5shiv](https://github.com/aFarkas/html5shiv/wiki) i
 
 ### Why is it called a *shiv*?
 
-The term shiv originates from [John Resig](//github.com/jeresig), who used the term for its slang meaning, *a sharp object used as a knife-like weapon*, intended for Internet Explorer. Now, there's a small chance that John was having [an etymological seizure](//www.google.com/search?q=etymological+seizure), and that he actually intended to use the word [shim](http://en.wikipedia.org/wiki/Shim_(computing), which, in computing means *an application compatibility workaround*. As reasonable as the later explanation may seem, [John is actually a well known homie](http://html5homi.es). 
+The term shiv originates from [John Resig](https://github.com/jeresig), who used the term for its slang meaning, *a sharp object used as a knife-like weapon*, intended for Internet Explorer. Now, there's a small chance that John was having [an etymological seizure](https://www.google.com/search?q=etymological+seizure), and that he actually intended to use the word [shim](http://en.wikipedia.org/wiki/Shim_(computing\)), which, in computing means *an application compatibility workaround*. As reasonable as the later explanation may seem, [John is actually a well known homie](http://html5homi.es). 
