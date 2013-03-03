@@ -24,7 +24,7 @@ HTML5 Shiv works as a simple drop-in solution. In most cases there is no need to
 
 ### `html5.elements` option
 
-The `elements` option is a space seprated string or array, which describes the **full** list of the elements to shiv. 
+The `elements` option is a space separated string or array, which describes the **full** list of the elements to shiv. 
 
 **Configuring `elements` before `html5shiv.js` is included.**
 
