@@ -18,9 +18,15 @@ If you have any issues in these implementations, you can report them here! :)
 
 For the full story of HTML5 Shiv and all of the people involved in making it, read [The Story of the HTML5 Shiv](http://paulirish.com/2011/the-history-of-the-html5-shiv/).
 
+## Usage
+
+To use this script it must be included before the `<body>` element (i.e. in the `<head>`), It doesn't matter if it 
+appears before or after the CSS - but for the sake of performance, it would make better sense to include the CSS first 
+then this script.
+
 ## HTML5 Shiv API
 
-HTML5 Shiv works as a simple drop-in solution. In most cases there is no need to configure HTML5 Shiv or use methods provided by HTML5 Shiv.
+HTML5 Shiv works as a simple drop-in solution as described above. In most cases there is no need to configure HTML5 Shiv or use methods provided by HTML5 Shiv.
 
 ### `html5.elements` option
 
