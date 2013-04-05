@@ -9,5 +9,12 @@
   ],
   "require": {
     "robloach/component-installer": "*"
+  },
+  "extra": {
+    "component": {
+      "scripts": [
+        "dist/html5shiv.js"
+      ]
+    }
   }
 }
