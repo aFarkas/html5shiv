@@ -1,0 +1,12 @@
+{
+  "name": "html5shiv",
+  "version": "3.6.2",
+  "main": [
+  	"src/html5shiv.js",
+  	"src/html5shiv-printshiv.js"
+  ],
+  "ignore": [
+    "**/.*",
+    "test"
+  ]
+}
