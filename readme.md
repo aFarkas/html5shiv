@@ -36,7 +36,7 @@ Include the HTML5 shiv at the top of your `<head>` in a conditional comment befo
 
 ###Manual instalation
 
-Download and extract the [latest zip package](https://github.com/aFarkas/html5shiv/archive/master.zip) from this repositiory and copy the two files `dist/html5shiv.js` and `dist/html5shiv-printshiv.js` into your project. Then include them into your `<head>` as above
+Download and extract the [latest zip package](https://github.com/aFarkas/html5shiv/archive/master.zip) from this repositiory and copy the two files `dist/html5shiv.js` and `dist/html5shiv-printshiv.js` into your project. Then include one of them into your `<head>` as above. 
 
 ## HTML5 Shiv API
 
