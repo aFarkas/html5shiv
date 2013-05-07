@@ -18,6 +18,26 @@ If you have any issues in these implementations, you can report them here! :)
 
 For the full story of HTML5 Shiv and all of the people involved in making it, read [The Story of the HTML5 Shiv](http://paulirish.com/2011/the-history-of-the-html5-shiv/).
 
+## Installation
+
+###Using [Bower](http://bower.io/)
+
+`bower install html5shiv --save-dev`
+
+This will clone the latest version of the HTML5 shiv into the `components` directory at the root of your project and also create or update the file `bower.json` which specifies your projects dependencies.
+
+Include the HTML5 shiv at the top of your `<head>` in a conditional comment before any stylesheets.
+
+```html
+<!--[if lt IE 9]>
+	<script src="components/html5shiv/html5shiv.js"></script>
+<![endif]-->
+```
+
+###Manual instalation
+
+Download and extract the [latest zip package](https://github.com/aFarkas/html5shiv/archive/master.zip) from this repositiory and copy the two files `dist/html5shiv.js` and `dist/html5shiv-printshiv.js` into your project. Then include them into your `<head>` as above
+
 ## HTML5 Shiv API
 
 HTML5 Shiv works as a simple drop-in solution. In most cases there is no need to configure HTML5 Shiv or use methods provided by HTML5 Shiv.
