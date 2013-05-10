@@ -112,6 +112,9 @@
                 if (!elem.canHaveChildren || elem.document == ownerDocument || !html5.shivMethods) {
                     return innerDesc.set.apply(elem, arguments);
                 }
+                if((typeof content).toLowerCase() === "number"){
+                  content = content.toString()
+                }
                 shived = {};
                 innerDesc.set.call(elem, content.replace(/<(\w+)/g, function (m, m1) {
                     if (!shived[m1]) {

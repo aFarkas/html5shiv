@@ -113,6 +113,9 @@
                     return innerDesc.set.apply(elem, arguments);
                 }
                 shived = {};
+                if((typeof content).toLowerCase() === "number"){
+                  content = content.toString()
+                }
                 innerDesc.set.call(elem, content.replace(/<(\w+)/g, function (m, m1) {
                     if (!shived[m1]) {
                         shived[m1] = true;
