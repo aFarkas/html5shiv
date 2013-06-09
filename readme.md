@@ -5,7 +5,7 @@ The HTML5 Shiv enables use of HTML5 sectioning elements in legacy Internet Explo
 ### What do these files do?
 
 #### `html5shiv.js`
-*  This includes the basic `createElement()` shiv technique, along with monkeypatches for `document.createElement` and `document.createDocumentFragment`. It also applies [basic styling](https://github.com/aFarkas/html5shiv/blob/4525162dd10e6fff7b83d06b28b562586e9fb058/src/html5shiv.js#L214-L217) for HTML5 elements.
+*  This includes the basic `createElement()` shiv technique, along with monkeypatches for `document.createElement` and `document.createDocumentFragment` for IE6-8. It also applies [basic styling](https://github.com/aFarkas/html5shiv/blob/51da98dabd3c537891b7fe6114633fb10de52473/src/html5shiv.js#L216-220) for HTML5 elements for IE9, Safari 4.x and FF 3.x.
 
 ####`html5shiv-printshiv.js` 
 *  This includes all of the above, as well as a mechanism allowing HTML5 elements to be styled and contain children while being printed in IE 6-8.
@@ -26,7 +26,7 @@ For the full story of HTML5 Shiv and all of the people involved in making it, re
 
 This will clone the latest version of the HTML5 shiv into the `components` directory at the root of your project and also create or update the file `bower.json` which specifies your projects dependencies.
 
-Include the HTML5 shiv at the top of your `<head>` in a conditional comment before any stylesheets.
+Include the HTML5 shiv at the top of your `<head>` in a conditional comment after any stylesheets.
 
 ```html
 <!--[if lt IE 9]>
@@ -78,10 +78,10 @@ window.html5 = {
 
 ### `html5.shivMethods`
 
-If the `shivMethods` option is set to `true` (by default) HTML5 Shiv will override `document.createElement`/`document.createDocumentFragment` in IE8- to allow dynamic DOM creation of HTML5 elements. 
+If the `shivMethods` option is set to `true` (by default) HTML5 Shiv will override `document.createElement`/`document.createDocumentFragment` in Internet Explorer 6-8 to allow dynamic DOM creation of HTML5 elements. 
 
 Known issue: If an element is created using the overridden `createElement` method this element returns a document fragment as its `parentNode`, but should be normally `null`. If a script relays on this behavior, `shivMethods`should be set to `false`.
-Note: jQuery 1.7+ has implemented his own HTML5 DOM creation fix for IE8-. If all your scripts (including Third party scripts) are using jQuery's manipulation and DOM creation methods, you might want to set this option to `false`.
+Note: jQuery 1.7+ has implemented his own HTML5 DOM creation fix for Internet Explorer 6-8. If all your scripts (including Third party scripts) are using jQuery's manipulation and DOM creation methods, you might want to set this option to `false`.
 
 **Configuring `shivMethods` before `html5shiv.js` is included.**
 
@@ -124,7 +124,7 @@ container.innerHTML = '<section>This is a section</section>';
 
 - The `shivMethods` option (overriding `document.createElement`) and the `html5.createElement` method create elements, which are not disconnected and have a parentNode (see also issue #64)
 - The cloneNode problem is currently not addressed by HTML5 Shiv. HTML5 elements can be dynamically created, but can't be cloned in all cases.
-- The printshiv version of HTML5 Shiv has to alter the print styles and the whole DOM for printing. In case of complex websites and or a lot of print styles this might cause performance and/or styling issues. A possible solution could be the [htc-branch](https://github.com/aFarkas/html5shiv/tree/iepp-htc) of HTML5 Shiv, which uses another technique to implement print styles for IE8.
+- The printshiv version of HTML5 Shiv has to alter the print styles and the whole DOM for printing. In case of complex websites and or a lot of print styles this might cause performance and/or styling issues. A possible solution could be the [htc-branch](https://github.com/aFarkas/html5shiv/tree/iepp-htc) of HTML5 Shiv, which uses another technique to implement print styles for Internet Explorer 6-8.
 
 ### What about the other HTML5 element projects?
 
