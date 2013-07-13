@@ -29,7 +29,7 @@ This will clone the latest version of the HTML5 shiv into the `components` direc
 Include the HTML5 shiv at the top of your `<head>` in a conditional comment after any stylesheets.
 
 ```html
-<!--[if lt IE 9]>
+<!--[if IE]>
 	<script src="components/html5shiv/html5shiv.js"></script>
 <![endif]-->
 ```

@@ -217,7 +217,7 @@
         // adds styling not present in IE6/7/8/9
         'mark{background:#FF0;color:#000}' +
         // hides non-rendered elements
-        'template{display:none}'
+        '[hidden],template{display:none}'
       );
     }
     if (!supportsUnknownElements) {
