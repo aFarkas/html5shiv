@@ -20,6 +20,8 @@ For the full story of HTML5 Shiv and all of the people involved in making it, re
 
 ## Installation
 
+**Note:** HTML5 Shiv must be included in the page *before* any HTML5 element can be used in the DOM. Therefore it is necessary, not just recommended, to include it in the `head`.
+
 ###Using [Bower](http://bower.io/)
 
 `bower install html5shiv --save-dev`
