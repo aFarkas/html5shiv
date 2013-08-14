@@ -26,7 +26,7 @@ For the full story of HTML5 Shiv and all of the people involved in making it, re
 
 This will clone the latest version of the HTML5 shiv into the `components` directory at the root of your project and also create or update the file `bower.json` which specifies your projects dependencies.
 
-Include the HTML5 shiv at the top of your `<head>` in a conditional comment after any stylesheets.
+Include the HTML5 shiv into your `<head>` in a conditional comment right after the last stylesheet.
 
 ```html
 <!--[if lt IE 9]>
