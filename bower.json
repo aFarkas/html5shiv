@@ -7,7 +7,7 @@
   ],
   "ignore": [
     "**/.*",
-    "*.json",
+    "composer.json",
     "test",
     "build",
     "src",
