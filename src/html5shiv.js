@@ -187,7 +187,7 @@
       'var n=f.cloneNode(),c=n.createElement;' +
       'h.shivMethods&&(' +
         // unroll the `createElement` calls
-        getElements().join().replace(/[\w\-]+/g, function(nodeName) {
+        getElements().join().replace(/[\w\-:]+/g, function(nodeName) {
           data.createElem(nodeName);
           data.frag.createElement(nodeName);
           return 'c("' + nodeName + '")';
