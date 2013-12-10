@@ -22,7 +22,7 @@ For the full story of HTML5 Shiv and all of the people involved in making it, re
 
 ###Using [Bower](http://bower.io/)
 
-`bower install html5shiv --save-dev`
+`bower install html5shiv --save`
 
 This will clone the latest version of the HTML5 shiv into the `components` directory at the root of your project and also create or update the file `bower.json` which specifies your projects dependencies.
 
