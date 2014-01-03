@@ -359,7 +359,7 @@
     // copy element attributes to the wrapper
     while (index--) {
       node = nodes[index];
-      return (node.specified && wrapper.setAttribute(node.nodeName, node.nodeValue));
+      if (node.specified) wrapper.setAttribute(node.nodeName, node.nodeValue);
     }
     // copy element styles to the wrapper
     wrapper.style.cssText = element.style.cssText;
