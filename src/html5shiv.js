@@ -217,7 +217,7 @@
         // adds styling not present in IE6/7/8/9
         'mark{background:#FF0;color:#000}' +
         // hides non-rendered elements
-        'template{display:none}'
+        'source,template,track{display:none}'
       );
     }
     if (!supportsUnknownElements) {
@@ -244,7 +244,7 @@
      * @memberOf html5
      * @type Array|String
      */
-    'elements': options.elements || 'abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video',
+    'elements': options.elements || 'abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section source summary template time track video',
 
     /**
      * current version of html5shiv
