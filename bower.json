@@ -2,8 +2,7 @@
   "name": "html5shiv",
   "version": "3.7.0",
   "main": [
-  	"dist/html5shiv.js",
-  	"dist/html5shiv-printshiv.js"
+  	"dist/html5shiv.js"
   ],
   "ignore": [
     "**/.*",
