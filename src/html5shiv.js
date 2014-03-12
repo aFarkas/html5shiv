@@ -244,8 +244,18 @@
      * @memberOf html5
      * @type Array|String
      */
-    'elements': options.elements || 'abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video',
-
+    'elements': (function () {
+      var elements = 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup main mark meter nav output progress section summary time video';
+      if (options.elements) {
+        if (options.extendElementsList) {
+          elements = elements + ' ' + options.elements;
+        } else {
+          elements = options.elements;
+        } 
+      }
+      return elements;
+    })(),
+    
     /**
      * current version of html5shiv
      */
