@@ -1,10 +1,10 @@
 /**
-* @preserve HTML5 Shiv prev3.7.1 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed
+* @preserve HTML5 Shiv 3.7.1 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed
 */
 ;(function(window, document) {
 /*jshint evil:true */
   /** version */
-  var version = '3.7.0';
+  var version = '3.7.1';
 
   /** Preset options */
   var options = window.html5 || {};
