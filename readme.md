@@ -44,7 +44,7 @@ HTML5 Shiv works as a simple drop-in solution. In most cases there is no need to
 
 ### `html5.elements` option
 
-The `elements` option is a space separated string or array, which describes the **full** list of the elements to shiv. 
+The `elements` option is a space separated string or array, which describes the **full** list of the elements to shiv. see also `addElements`.
 
 **Configuring `elements` before `html5shiv.js` is included.**
 
@@ -96,6 +96,15 @@ window.html5 = {
 ```js
 //change the html5shiv options object 
 window.html5.shivMethods = false;
+```
+
+### `html5.addElements( newElements [, document] )`
+
+The `html5.addElements` method extends the list of elements to shiv. The newElements argument can be a whitespace separated list or an array.
+
+```js
+//extend list of elements to shiv
+html5.addElements('element content');
 ```
 
 ### `html5.createElement( nodeName [, document] )`
