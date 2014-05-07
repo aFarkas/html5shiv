@@ -6,10 +6,11 @@
   ],
   "ignore": [
     "**/.*",
+    "bower.json",
     "composer.json",
-    "test",
-    "build",
+    "Gruntfile.js",
+    "package.json",
     "src",
-    "build.xml"
+    "test"
   ]
 }
