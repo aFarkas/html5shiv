@@ -1,7 +1,7 @@
 (function(){
 
 module("html5shiv tests");
-var blockElements  = "article,aside,figcaption,figure,footer,header,hgroup,nav,section".split(',');
+var blockElements  = "article,aside,figcaption,figure,footer,header,hgroup,nav,section,main".split(',');
 
 var testEnv = [
 	{

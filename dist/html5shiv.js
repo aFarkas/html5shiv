@@ -1,5 +1,6 @@
 /**
 * @preserve HTML5 Shiv 3.7.2 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed
+* support for 'main' structural element added | @jbowyers
 */
 ;(function(window, document) {
 /*jshint evil:true */
@@ -30,24 +31,27 @@
   /** Detect whether the browser supports unknown elements */
   var supportsUnknownElements;
 
+  /** CSS properties to be tested on content loaded - 2D array - [element, css property, property value] */
+  var shivTestElements = [['main', 'display', 'block']];
+
   (function() {
     try {
-        var a = document.createElement('a');
-        a.innerHTML = '<xyz></xyz>';
-        //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
-        supportsHtml5Styles = ('hidden' in a);
+      var a = document.createElement('a');
+      a.innerHTML = '<xyz></xyz>';
+      //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
+      supportsHtml5Styles = ('hidden' in a);
 
-        supportsUnknownElements = a.childNodes.length == 1 || (function() {
-          // assign a false positive if unable to shiv
-          (document.createElement)('a');
-          var frag = document.createDocumentFragment();
-          return (
-            typeof frag.cloneNode == 'undefined' ||
-            typeof frag.createDocumentFragment == 'undefined' ||
-            typeof frag.createElement == 'undefined'
-          );
-        }());
-    } catch(e) {
+      supportsUnknownElements = a.childNodes.length == 1 || (function () {
+        // assign a false positive if unable to shiv
+        (document.createElement)('a');
+        var frag = document.createDocumentFragment();
+        return (
+          typeof frag.cloneNode == 'undefined' ||
+          typeof frag.createDocumentFragment == 'undefined' ||
+          typeof frag.createElement == 'undefined'
+        );
+      }());
+    } catch (e) {
       // assign a false positive if detection fails => unable to shiv
       supportsHtml5Styles = true;
       supportsUnknownElements = true;
@@ -318,5 +322,25 @@
 
   // shiv the document
   shivDocument(document);
+
+  // test css properties - for newer browsers
+  try {
+    document.addEventListener("DOMContentLoaded", function (event) {
+      if (supportsHtml5Styles) {
+        try {
+          for (var i in shivTestElements) {
+            var el = document.createElement(shivTestElements[i][0]);
+            var apEl = document.body.appendChild(el);
+            supportsHtml5Styles = (apEl.currentStyle && eval('apEl.currentStyle.' + shivTestElements[i][1]) == shivTestElements[i][2])
+              || (window.getComputedStyle && window.getComputedStyle(apEl).getPropertyValue(shivTestElements[i][1]) == shivTestElements[i][2]);
+            apEl.parentNode.removeChild(apEl);
+          }
+          if (!supportsHtml5Styles) {
+            shivDocument(document);
+          }
+        } catch (e) { }
+      }
+    });
+  } catch (e) { }
 
 }(this, document));
