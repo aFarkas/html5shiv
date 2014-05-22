@@ -324,25 +324,34 @@
   shivDocument(document);
 
   // test css properties - for newer browsers
-  try {
-    document.addEventListener("DOMContentLoaded", function (event) {
-      if (supportsHtml5Styles) {
+  if (supportsHtml5Styles) {  //  Document has not been shived
+    // Need outer try because DOMContentLoaded event listener not supported in IE8-
+    try {
+      // Tests need to happen after DOM content loaded
+      document.addEventListener("DOMContentLoaded", function (event) {
+        // Need inner try because outer try will not catch a callback
         try {
-          for (var i in shivTestElements) {
+          // Test array of specified elements
+          for (var i = 0; i < shivTestElements.length; i++) {
+            // create the test element
             var el = document.createElement(shivTestElements[i][0]);
-            var apEl = document.body.appendChild(el);
-            supportsHtml5Styles = (apEl.currentStyle && eval('apEl.currentStyle.' + shivTestElements[i][1]) == shivTestElements[i][2])
-              || (window.getComputedStyle && window.getComputedStyle(apEl).getPropertyValue(shivTestElements[i][1]) == shivTestElements[i][2]);
-            apEl.parentNode.removeChild(apEl);
+            // Append the test element to ensure browser default CSS Properties are applied
+            document.body.appendChild(el);
+            // Test property value
+            if (window.getComputedStyle) {
+              var cssProperty = window.getComputedStyle(el).getPropertyValue(shivTestElements[i][1]);
+              supportsHtml5Styles = (cssProperty == shivTestElements[i][2]);
+            }
+            document.body.removeChild(el);
           }
-          if (!supportsHtml5Styles) {
+          if (!supportsHtml5Styles) { //  Document needs to be shived
             shivDocument(document);
           }
         } catch (e) { }
-      }
-    });
-  } catch (e) { }
-  
+      });
+    } catch (e) { }
+  }
+
   /*------------------------------- Print Shiv -------------------------------*/
 
   /** Used to filter media types */
