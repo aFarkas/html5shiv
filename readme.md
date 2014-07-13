@@ -30,7 +30,7 @@ Include the HTML5 shiv in the `<head>` of your page in a conditional comment and
 
 ```html
 <!--[if lt IE 9]>
-	<script src="bower_components/html5shiv/html5shiv.js"></script>
+	<script src="bower_components/html5shiv/dist/html5shiv.js"></script>
 <![endif]-->
 ```
 
