@@ -13,7 +13,10 @@
   "extra": {
     "component": {
       "scripts": [
-        "dist/html5shiv.js"
+        "dist/html5shiv.min.js"
+      ],
+      "files": [
+        "dist/*.js"
       ]
     }
   }
