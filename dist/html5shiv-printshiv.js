@@ -517,4 +517,4 @@
   // shiv for print
   shivPrint(document);
 
-}(this, document));
+}(typeof window !== "undefined" ? window : this, document));
