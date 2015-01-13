@@ -7,7 +7,7 @@
     "MIT",
     "GPL-2.0"
   ],
-  "require": {
+  "require-dev": {
     "robloach/component-installer": "*"
   },
   "extra": {
