@@ -7,7 +7,7 @@ GPL version 2) you want to use this library.
 The license texts of the MIT license and the GPL version 2 are as follows:
 
 
- MIT License
+## MIT License
  
  Permission is hereby granted, free of charge, to any person obtaining a
  copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,7 @@ The license texts of the MIT license and the GPL version 2 are as follows:
 
 
 
-
-
-		    GNU GENERAL PUBLIC LICENSE
-		       Version 2, June 1991
+## GNU GENERAL PUBLIC LICENSE Version 2, June 1991
 
  Copyright (C) 1989, 1991 Free Software Foundation, Inc.
                        59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
