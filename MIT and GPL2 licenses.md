@@ -1,6 +1,13 @@
 Copyright (c) 2014 Alexander Farkas (aFarkas).
 
- Licensed under MIT
+This software is licensed under a dual license system (MIT or GPL version 2). 
+This means you are free to choose with which of both licenses (MIT or 
+GPL version 2) you want to use this library. 
+
+The license texts of the MIT license and the GPL version 2 are as follows:
+
+
+## MIT License
  
  Permission is hereby granted, free of charge, to any person obtaining a
  copy of this software and associated documentation files (the "Software"),
@@ -22,10 +29,7 @@ Copyright (c) 2014 Alexander Farkas (aFarkas).
 
 
 
-
-
-		    GNU GENERAL PUBLIC LICENSE
-		       Version 2, June 1991
+## GNU GENERAL PUBLIC LICENSE Version 2, June 1991
 
  Copyright (C) 1989, 1991 Free Software Foundation, Inc.
                        59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
