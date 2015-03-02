@@ -319,4 +319,4 @@
   // shiv the document
   shivDocument(document);
 
-}(this, document));
+}(typeof window !== "undefined" ? window : this, document));
