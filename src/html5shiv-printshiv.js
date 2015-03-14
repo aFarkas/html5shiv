@@ -518,7 +518,7 @@
   shivPrint(document);
 
   if(typeof module == 'object' && module.exports){
-    module.exports = lazySizes;
+    module.exports = html5;
   }
 
 }(typeof window !== "undefined" ? window : this, document));
