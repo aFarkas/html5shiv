@@ -1,0 +1,8 @@
+/src/
+/test/
+
+/.gitattributes
+/.gitignore
+/Gruntfile.js
+/bower.json
+/composer.json
