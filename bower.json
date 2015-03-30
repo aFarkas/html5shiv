@@ -6,7 +6,6 @@
   ],
   "ignore": [
     "**/.*",
-    "bower.json",
     "composer.json",
     "Gruntfile.js",
     "package.json",
