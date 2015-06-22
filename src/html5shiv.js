@@ -121,7 +121,7 @@
    * returns a shived element for the given nodeName and document
    * @memberOf html5
    * @param {String} nodeName name of the element
-   * @param {Document} ownerDocument The context document.
+   * @param {Document|DocumentFragment} ownerDocument The context document.
    * @returns {Object} The shived element.
    */
   function createElement(nodeName, ownerDocument, data){
