@@ -1,5 +1,5 @@
 /**
-* @preserve HTML5 Shiv 3.7.4-pre | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed
+* @preserve HTML5 Shiv 3.7.4-pre | @afarkas @jdalton @jon_neal @rem @mina86 | MIT/GPL2 Licensed
 */
 ;(function(window, document) {
 /*jshint evil:true */
@@ -78,7 +78,7 @@
    */
   function getElements() {
     var elements = html5.elements;
-    return typeof elements == 'string' ? elements.split(' ') : elements;
+    return elements.join ? elements : elements.split(' ');
   }
 
   /**
@@ -89,17 +89,17 @@
    */
   function addElements(newElements, ownerDocument) {
     var elements = html5.elements;
-    if(typeof elements != 'string'){
+    if (elements.join) {
       elements = elements.join(' ');
     }
-    if(typeof newElements != 'string'){
+    if (newElements.join) {
       newElements = newElements.join(' ');
     }
-    html5.elements = elements +' '+ newElements;
+    html5.elements = elements + ' ' + newElements;
     shivDocument(ownerDocument);
   }
 
-   /**
+ /**
    * Returns the data associated to the given document
    * @private
    * @param {Document} ownerDocument The document.
