@@ -37,8 +37,6 @@
     supportsHtml5Styles = ('hidden' in a);
 
     supportsUnknownElements = a.childNodes.length == 1 || (function() {
-      // assign a false positive if unable to shiv
-      (document.createElement)('a');
       a = document.createDocumentFragment();
       return !(a.cloneNode && a.createDocumentFragment && a.createElement);
     }());
