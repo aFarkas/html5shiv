@@ -1,10 +1,10 @@
 /**
-* @preserve HTML5 Shiv 3.7.3 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed
+* @preserve HTML5 Shiv 3.7.4-pre | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed
 */
 ;(function(window, document) {
 /*jshint evil:true */
   /** version */
-  var version = '3.7.3';
+  var version = '3.7.4-pre';
 
   /** Preset options */
   var options = window.html5 || {};
@@ -42,9 +42,9 @@
           (document.createElement)('a');
           var frag = document.createDocumentFragment();
           return (
-            typeof frag.cloneNode == 'undefined' ||
-            typeof frag.createDocumentFragment == 'undefined' ||
-            typeof frag.createElement == 'undefined'
+            frag.cloneNode === void 0 ||
+            frag.createDocumentFragment === void 0 ||
+            frag.createElement === void 0
           );
         }());
     } catch(e) {
@@ -323,4 +323,4 @@
     module.exports = html5;
   }
 
-}(typeof window !== "undefined" ? window : this, document));
+}(window === void 0 ? this : window, document));

@@ -1,10 +1,10 @@
 /**
-* @preserve HTML5 Shiv 3.7.3 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed
+* @preserve HTML5 Shiv 3.7.4-pre | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed
 */
 ;(function(window, document) {
 /*jshint evil:true */
   /** version */
-  var version = '3.7.3';
+  var version = '3.7.4-pre';
 
   /** Preset options */
   var options = window.html5 || {};
@@ -42,9 +42,9 @@
           (document.createElement)('a');
           var frag = document.createDocumentFragment();
           return (
-            typeof frag.cloneNode == 'undefined' ||
-            typeof frag.createDocumentFragment == 'undefined' ||
-            typeof frag.createElement == 'undefined'
+            frag.cloneNode === void 0 ||
+            frag.createDocumentFragment === void 0 ||
+            frag.createElement === void 0
           );
         }());
     } catch(e) {
@@ -332,11 +332,11 @@
     // assign a false negative if unable to shiv
     var docEl = document.documentElement;
     return !(
-      typeof document.namespaces == 'undefined' ||
-      typeof document.parentWindow == 'undefined' ||
-      typeof docEl.applyElement == 'undefined' ||
-      typeof docEl.removeNode == 'undefined' ||
-      typeof window.attachEvent == 'undefined'
+      document.namespaces === void 0 ||
+      document.parentWindow === void 0 ||
+      docEl.applyElement === void 0 ||
+      docEl.removeNode === void 0 ||
+      window.attachEvent === void 0
     );
   }());
 
@@ -439,7 +439,7 @@
     if (!supportsShivableSheets || ownerDocument.printShived) {
       return ownerDocument;
     }
-    if (typeof namespaces[shivNamespace] == 'undefined') {
+    if (namespaces[shivNamespace] === void 0) {
       namespaces.add(shivNamespace);
     }
 
@@ -521,4 +521,4 @@
     module.exports = html5;
   }
 
-}(typeof window !== "undefined" ? window : this, document));
+}(window === void 0 ? this : window, document));
