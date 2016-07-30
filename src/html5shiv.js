@@ -36,10 +36,10 @@
     //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
     supportsHtml5Styles = ('hidden' in a);
 
-    supportsUnknownElements = a.childNodes.length == 1 || (function() {
-      a = document.createDocumentFragment();
-      return !(a.cloneNode && a.createDocumentFragment && a.createElement);
-    }());
+    supportsUnknownElements = a.childNodes.length == 1 || (
+      (a = document.createDocumentFragment()),
+      !(a.cloneNode && a.createDocumentFragment && a.createElement)
+    );
   } catch(e) {
     // assign a false positive if detection fails => unable to shiv
     supportsHtml5Styles = true;
