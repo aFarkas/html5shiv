@@ -30,28 +30,26 @@
   /** Detect whether the browser supports unknown elements */
   var supportsUnknownElements;
 
-  (function() {
-    try {
-        var a = document.createElement('a');
-        a.innerHTML = '<xyz></xyz>';
-        //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
-        supportsHtml5Styles = ('hidden' in a);
+  try {
+    var a = document.createElement('a');
+    a.innerHTML = '<xyz></xyz>';
+    //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
+    supportsHtml5Styles = ('hidden' in a);
 
-        supportsUnknownElements = a.childNodes.length == 1 || (function() {
-          // assign a false positive if unable to shiv
-          (document.createElement)('a');
-          var frag = document.createDocumentFragment();
-          return !(frag.cloneNode &&
-                   frag.createDocumentFragment &&
-                   frag.createElement);
-        }());
-    } catch(e) {
-      // assign a false positive if detection fails => unable to shiv
-      supportsHtml5Styles = true;
-      supportsUnknownElements = true;
-    }
-
-  }());
+    supportsUnknownElements = a.childNodes.length == 1 || (function() {
+      // assign a false positive if unable to shiv
+      (document.createElement)('a');
+      var frag = document.createDocumentFragment();
+      return !(frag.cloneNode &&
+               frag.createDocumentFragment &&
+               frag.createElement);
+    }());
+  } catch(e) {
+    // assign a false positive if detection fails => unable to shiv
+    supportsHtml5Styles = true;
+    supportsUnknownElements = true;
+  }
+  a = 0;
 
   /*--------------------------------------------------------------------------*/
 
