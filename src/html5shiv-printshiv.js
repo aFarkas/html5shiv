@@ -41,11 +41,9 @@
           // assign a false positive if unable to shiv
           (document.createElement)('a');
           var frag = document.createDocumentFragment();
-          return (
-            frag.cloneNode === void 0 ||
-            frag.createDocumentFragment === void 0 ||
-            frag.createElement === void 0
-          );
+          return !(frag.cloneNode &&
+                   frag.createDocumentFragment &&
+                   frag.createElement);
         }());
     } catch(e) {
       // assign a false positive if detection fails => unable to shiv
@@ -331,13 +329,11 @@
   var supportsShivableSheets = !supportsUnknownElements && (function() {
     // assign a false negative if unable to shiv
     var docEl = document.documentElement;
-    return !(
-      document.namespaces === void 0 ||
-      document.parentWindow === void 0 ||
-      docEl.applyElement === void 0 ||
-      docEl.removeNode === void 0 ||
-      window.attachEvent === void 0
-    );
+    return !!(document.namespaces &&
+              document.parentWindow &&
+              docEl.applyElement &&
+              docEl.removeNode &&
+              window.attachEvent);
   }());
 
   /*--------------------------------------------------------------------------*/
@@ -439,7 +435,7 @@
     if (!supportsShivableSheets || ownerDocument.printShived) {
       return ownerDocument;
     }
-    if (namespaces[shivNamespace] === void 0) {
+    if (!namespaces[shivNamespace]) {
       namespaces.add(shivNamespace);
     }
 
@@ -521,4 +517,4 @@
     module.exports = html5;
   }
 
-}(window === void 0 ? this : window, document));
+}(window || this, document));

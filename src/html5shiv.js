@@ -41,11 +41,9 @@
           // assign a false positive if unable to shiv
           (document.createElement)('a');
           var frag = document.createDocumentFragment();
-          return (
-            frag.cloneNode === void 0 ||
-            frag.createDocumentFragment === void 0 ||
-            frag.createElement === void 0
-          );
+          return !(frag.cloneNode &&
+                   frag.createDocumentFragment &&
+                   frag.createElement);
         }());
     } catch(e) {
       // assign a false positive if detection fails => unable to shiv
@@ -323,4 +321,4 @@
     module.exports = html5;
   }
 
-}(window === void 0 ? this : window, document));
+}(window || this, document));
