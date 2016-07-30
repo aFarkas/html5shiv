@@ -39,10 +39,8 @@
     supportsUnknownElements = a.childNodes.length == 1 || (function() {
       // assign a false positive if unable to shiv
       (document.createElement)('a');
-      var frag = document.createDocumentFragment();
-      return !(frag.cloneNode &&
-               frag.createDocumentFragment &&
-               frag.createElement);
+      a = document.createDocumentFragment();
+      return !(a.cloneNode && a.createDocumentFragment && a.createElement);
     }());
   } catch(e) {
     // assign a false positive if detection fails => unable to shiv
