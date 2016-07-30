@@ -50,17 +50,24 @@
   /*--------------------------------------------------------------------------*/
 
   /**
-   * Creates a style sheet with the given CSS text and adds it to the document.
+   * Creates a style sheet with a shiv CSS text and adds it to the document.
    * @private
    * @param {Document} ownerDocument The document.
    * @param {String} cssText The CSS text.
    * @returns {StyleSheet} The style element.
    */
-  function addStyleSheet(ownerDocument, cssText) {
+  function addStyleSheet(ownerDocument) {
     var p = ownerDocument.createElement('p'),
         parent = ownerDocument.getElementsByTagName('head')[0] || ownerDocument.documentElement;
 
-    p.innerHTML = 'x<style>' + cssText + '</style>';
+    p.innerHTML = 'x<style>' +
+      // corrects block display not defined in IE6/7/8/9
+      'article,aside,dialog,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}' +
+      // adds styling not present in IE6/7/8/9
+      'mark{background:#FF0;color:#000}' +
+      // hides non-rendered elements
+      'template{display:none}' +
+      '</style>';
     return parent.insertBefore(p.lastChild, parent.firstChild);
   }
 
@@ -221,14 +228,7 @@
     var data = getExpandoData(ownerDocument);
 
     if (html5.shivCSS && !supportsHtml5Styles && !data.hasCSS) {
-      data.hasCSS = !!addStyleSheet(ownerDocument,
-        // corrects block display not defined in IE6/7/8/9
-        'article,aside,dialog,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}' +
-        // adds styling not present in IE6/7/8/9
-        'mark{background:#FF0;color:#000}' +
-        // hides non-rendered elements
-        'template{display:none}'
-      );
+      data.hasCSS = !!addStyleSheet(ownerDocument);
     }
     if (!supportsUnknownElements) {
       shivMethods(ownerDocument, data);
