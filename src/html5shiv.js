@@ -57,6 +57,68 @@
 
   /*--------------------------------------------------------------------------*/
 
+  /** Shiv the 'placeholder' for IE6, 7, 8, 9 */
+  (function() {
+    /** Detect whether the browser supports 'placeholder' */
+    var supportsPlaceholder = ('placeholder' in document.createElement('input'));
+
+    /** Used to skip elements that have not been supported now */
+    var typeToSkip = /^(button|checkbox|file|hidden|image|password|radio|reset|submit)$/i;
+
+    /** Used to make the color of placeholder the same as IE10's'*/
+    var placeholderColor = '#717171';
+
+    /**
+     * Set the facade of input.
+     * @private
+     * @param {Input} input The input.
+     * @param {String} value The value that the input should be set.
+     * @param {String} color The color that the input should be set.
+     */
+    function setFacade(input, value, color) {
+      input.value =  value;
+      input.style.color = color;
+    }
+
+    if (document.attachEvent) {
+      document.attachEvent('onreadystatechange', function () {
+        var isDomReady = document.readyState === 'complete';
+        if (!isDomReady || supportsPlaceholder) return;
+
+        var inputs = document.getElementsByTagName('input'),
+            i = 0, l = inputs.length,
+            input, placeholder, userColor;
+        for (; i < l; i++) {
+          input = inputs[i];
+          if (typeToSkip.test(input.type)) continue;
+
+          placeholder = input.getAttribute('placeholder');
+          userColor = input.style.color;
+
+          (function (input, placeholder, userColor) {
+            // make input look like what it should be
+            setFacade(input, placeholder, placeholderColor);
+
+            input.attachEvent('onfocus', function () {
+              if (input.value === placeholder) {
+                setFacade(input, '', userColor);
+              }
+            });
+
+            input.attachEvent('onblur', function () {
+              if (input.value === '') {
+                setFacade(input, placeholder, placeholderColor);
+              }
+            });
+          }(input, placeholder, userColor));
+        }
+      });
+    }
+
+  }());
+
+  /*--------------------------------------------------------------------------*/
+
   /**
    * Creates a style sheet with the given CSS text and adds it to the document.
    * @private
