@@ -7,7 +7,7 @@ The HTML5 Shiv enables use of HTML5 sectioning elements in legacy Internet Explo
 #### `html5shiv.js`
 *  This includes the basic `createElement()` shiv technique, along with monkeypatches for `document.createElement` and `document.createDocumentFragment` for IE6-8. It also applies [basic styling](https://github.com/aFarkas/html5shiv/blob/51da98dabd3c537891b7fe6114633fb10de52473/src/html5shiv.js#L216-220) for HTML5 elements for IE6-9, Safari 4.x and FF 3.x.
 
-####`html5shiv-printshiv.js` 
+#### `html5shiv-printshiv.js` 
 *  This includes all of the above, as well as a mechanism allowing HTML5 elements to be styled and contain children while being printed in IE 6-8.
 
 ### Who can I get mad at now?
@@ -20,7 +20,7 @@ For the full story of HTML5 Shiv and all of the people involved in making it, re
 
 ## Installation
 
-###Using [Bower](http://bower.io/)
+### Using [Bower](http://bower.io/)
 
 `bower install html5shiv --save-dev`
 
@@ -34,7 +34,7 @@ Include the HTML5 shiv in the `<head>` of your page in a conditional comment and
 <![endif]-->
 ```
 
-###Manual installation
+### Manual installation
 
 Download and extract the [latest zip package](https://github.com/aFarkas/html5shiv/archive/master.zip) from this repositiory and copy the two files `dist/html5shiv.js` and `dist/html5shiv-printshiv.js` into your project. Then include one of them into your `<head>` as above. 
 
