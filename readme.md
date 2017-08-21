@@ -20,7 +20,7 @@ For the full story of HTML5 Shiv and all of the people involved in making it, re
 
 ## Installation
 
-###Using [Bower](http://bower.io/)
+### Using [Bower](http://bower.io/)
 
 `bower install html5shiv --save-dev`
 
@@ -34,7 +34,7 @@ Include the HTML5 shiv in the `<head>` of your page in a conditional comment and
 <![endif]-->
 ```
 
-###Manual installation
+### Manual installation
 
 Download and extract the [latest zip package](https://github.com/aFarkas/html5shiv/archive/master.zip) from this repositiory and copy the two files `dist/html5shiv.js` and `dist/html5shiv-printshiv.js` into your project. Then include one of them into your `<head>` as above. 
 
