@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Бизнес сайт</title>
+	<link rel="stylesheet" href="libs/reset.css"/>
+	<link rel="stylesheet" href="libs/960_12_col.css"/>
+	<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+	<section class = "top_banner">
+			</section>
+
+		<script src="libs/jquery-3.2.1.slim.min.js" type=
+/text/javascript"></script>
+	<script src= "libs/jquery.jcarousel.min.js" type=
+	/text/javascript"></script>
+<script src= "js/common.js" type=
+/text/javascript"></script>
+<script src= "libs/html5shiv.min.js" type=
+/text/javascript"></script>
+</body>
+</html>
+
