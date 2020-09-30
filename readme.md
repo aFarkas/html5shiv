@@ -1,7 +1,8 @@
-# The HTML5 Shiv
+# The HTML5 Shiv based page
 
 The HTML5 Shiv enables use of HTML5 sectioning elements in legacy Internet Explorer and provides basic HTML5 styling for Internet Explorer 6-9, Safari 4.x (and iPhone 3.x), and Firefox 3.x.
-
+ 
+ 
 ### What do these files do?
 
 #### `html5shiv.js`
@@ -19,12 +20,14 @@ If you have any issues in these implementations, you can report them here! :)
 For the full story of HTML5 Shiv and all of the people involved in making it, read [The Story of the HTML5 Shiv](http://paulirish.com/2011/the-history-of-the-html5-shiv/).
 
 ## Installation
+not requided to installed into the pc.
 
 ### Using [Bower](http://bower.io/)
 
 `bower install html5shiv --save-dev`
 
 This will clone the latest version of the HTML5 shiv into the `bower_components` directory at the root of your project and also create or update the file `bower.json` which specifies your projects dependencies.
+
 
 Include the HTML5 shiv in the `<head>` of your page in a conditional comment and after any stylesheets.
 
