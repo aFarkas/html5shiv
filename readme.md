@@ -36,7 +36,7 @@ Include the HTML5 shiv in the `<head>` of your page in a conditional comment and
 
 ### Manual installation
 
-Download and extract the [latest zip package](https://github.com/aFarkas/html5shiv/archive/master.zip) from this repositiory and copy the two files `dist/html5shiv.js` and `dist/html5shiv-printshiv.js` into your project. Then include one of them into your `<head>` as above. 
+Download and extract the [latest zip package](https://github.com/aFarkas/html5shiv/archive/master.zip) from this repository and copy the two files `dist/html5shiv.js` and `dist/html5shiv-printshiv.js` into your project. Then include one of them into your `<head>` as above. 
 
 ## HTML5 Shiv API
 
@@ -149,4 +149,4 @@ A [detailed changelog of html5shiv](https://github.com/aFarkas/html5shiv/wiki) i
 
 ### Why is it called a *shiv*?
 
-The term **shiv** [originates](http://ejohn.org/blog/html5-shiv/) from [John Resig](https://github.com/jeresig), who was thought to have used the word for its slang meaning, *a sharp object used as a knife-like weapon*, intended for Internet Explorer. Truth be known, John probably intended to use the word [shim](http://en.wikipedia.org/wiki/Shim_(computing)), which in computing means *an application compatibility workaround*. Rather than correct his mispelling, most developers familiar with Internet Explorer appreciated the visual imagery. And that, kids, is [etymology](https://en.wikipedia.org/wiki/Etymology).
+The term **shiv** [originates](http://ejohn.org/blog/html5-shiv/) from [John Resig](https://github.com/jeresig), who was thought to have used the word for its slang meaning, *a sharp object used as a knife-like weapon*, intended for Internet Explorer. Truth be known, John probably intended to use the word [shim](http://en.wikipedia.org/wiki/Shim_(computing)), which in computing means *an application compatibility workaround*. Rather than correct his misspelling, most developers familiar with Internet Explorer appreciated the visual imagery. And that, kids, is [etymology](https://en.wikipedia.org/wiki/Etymology).
