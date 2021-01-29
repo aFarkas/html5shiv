@@ -14,7 +14,7 @@ The HTML5 Shiv enables use of HTML5 sectioning elements in legacy Internet Explo
 
 HTML5 Shiv is maintained by [Alexander Farkas](https://github.com/aFarkas/), [Jonathan Neal](https://twitter.com/jon_neal) and [Paul Irish](https://twitter.com/paul_irish), with many contributions from [John-David Dalton](https://twitter.com/jdalton). It is also distributed with [Modernizr](http://modernizr.com/).
 
-If you have any issues in these implementations, you can report them here! :)
+If you have any issues in these implementations, you can report them here!:)
 
 For the full story of HTML5 Shiv and all of the people involved in making it, read [The Story of the HTML5 Shiv](http://paulirish.com/2011/the-history-of-the-html5-shiv/).
 
@@ -40,7 +40,7 @@ Download and extract the [latest zip package](https://github.com/aFarkas/html5sh
 
 ## HTML5 Shiv API
 
-HTML5 Shiv works as a simple drop-in solution. In most cases there is no need to configure HTML5 Shiv or use methods provided by HTML5 Shiv.
+HTML5 Shiv works as a simple drop-in solution. In most cases there is no need to configure HTML5 Shiv or use methods provided by the HTML5 Shiv.
 
 ### `html5.elements` option
 
