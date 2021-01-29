@@ -37,6 +37,7 @@
 	font-size: 1.5em;
 	line-height: 1em;
 	font-weight: normal;
+	position: fixed;
 
 	border-radius: 15px 15px 0 0;
 	-moz-border-radius: 15px 15px 0 0;
