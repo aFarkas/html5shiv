@@ -1,10 +1,10 @@
 /**
-* @preserve HTML5 Shiv 3.7.3 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed
+* @preserve HTML5 Shiv 3.7.4-pre | @afarkas @jdalton @jon_neal @rem @mina86 | MIT/GPL2 Licensed
 */
 ;(function(window, document) {
 /*jshint evil:true */
   /** version */
-  var version = '3.7.3';
+  var version = '3.7.4-pre';
 
   /** Preset options */
   var options = window.html5 || {};
@@ -13,7 +13,7 @@
   var reSkip = /^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i;
 
   /** Not all elements can be cloned in IE **/
-  var saveClones = /^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i;
+  var saveClones = /^(?:[abipq]|code|div|fieldset|h[1-6]|label|li|ol|span|strong|style|table|tbody|t[dhr]|ul)$/i;
 
   /** Detect whether the browser supports default html5 styles */
   var supportsHtml5Styles;
@@ -30,45 +30,44 @@
   /** Detect whether the browser supports unknown elements */
   var supportsUnknownElements;
 
-  (function() {
-    try {
-        var a = document.createElement('a');
-        a.innerHTML = '<xyz></xyz>';
-        //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
-        supportsHtml5Styles = ('hidden' in a);
+  try {
+    var a = document.createElement('a');
+    a.innerHTML = '<xyz></xyz>';
+    //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
+    supportsHtml5Styles = ('hidden' in a);
 
-        supportsUnknownElements = a.childNodes.length == 1 || (function() {
-          // assign a false positive if unable to shiv
-          (document.createElement)('a');
-          var frag = document.createDocumentFragment();
-          return (
-            typeof frag.cloneNode == 'undefined' ||
-            typeof frag.createDocumentFragment == 'undefined' ||
-            typeof frag.createElement == 'undefined'
-          );
-        }());
-    } catch(e) {
-      // assign a false positive if detection fails => unable to shiv
-      supportsHtml5Styles = true;
-      supportsUnknownElements = true;
-    }
-
-  }());
+    supportsUnknownElements = a.childNodes.length == 1 || (
+      (a = document.createDocumentFragment()),
+      !(a.cloneNode && a.createDocumentFragment && a.createElement)
+    );
+  } catch(e) {
+    // assign a false positive if detection fails => unable to shiv
+    supportsHtml5Styles = true;
+    supportsUnknownElements = true;
+  }
+  a = 0;
 
   /*--------------------------------------------------------------------------*/
 
   /**
-   * Creates a style sheet with the given CSS text and adds it to the document.
+   * Creates a style sheet with a shiv CSS text and adds it to the document.
    * @private
    * @param {Document} ownerDocument The document.
    * @param {String} cssText The CSS text.
    * @returns {StyleSheet} The style element.
    */
-  function addStyleSheet(ownerDocument, cssText) {
+  function addStyleSheet(ownerDocument) {
     var p = ownerDocument.createElement('p'),
         parent = ownerDocument.getElementsByTagName('head')[0] || ownerDocument.documentElement;
 
-    p.innerHTML = 'x<style>' + cssText + '</style>';
+    p.innerHTML = 'x<style>' +
+      // corrects block display not defined in IE6/7/8/9
+      'article,aside,dialog,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}' +
+      // adds styling not present in IE6/7/8/9
+      'mark{background:#FF0;color:#000}' +
+      // hides non-rendered elements
+      'template{display:none}' +
+      '</style>';
     return parent.insertBefore(p.lastChild, parent.firstChild);
   }
 
@@ -79,7 +78,7 @@
    */
   function getElements() {
     var elements = html5.elements;
-    return typeof elements == 'string' ? elements.split(' ') : elements;
+    return elements.join ? elements : elements.split(' ');
   }
 
   /**
@@ -90,17 +89,17 @@
    */
   function addElements(newElements, ownerDocument) {
     var elements = html5.elements;
-    if(typeof elements != 'string'){
+    if (elements.join) {
       elements = elements.join(' ');
     }
-    if(typeof newElements != 'string'){
+    if (newElements.join) {
       newElements = newElements.join(' ');
     }
-    html5.elements = elements +' '+ newElements;
+    html5.elements = elements + ' ' + newElements;
     shivDocument(ownerDocument);
   }
 
-   /**
+ /**
    * Returns the data associated to the given document
    * @private
    * @param {Document} ownerDocument The document.
@@ -229,14 +228,7 @@
     var data = getExpandoData(ownerDocument);
 
     if (html5.shivCSS && !supportsHtml5Styles && !data.hasCSS) {
-      data.hasCSS = !!addStyleSheet(ownerDocument,
-        // corrects block display not defined in IE6/7/8/9
-        'article,aside,dialog,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}' +
-        // adds styling not present in IE6/7/8/9
-        'mark{background:#FF0;color:#000}' +
-        // hides non-rendered elements
-        'template{display:none}'
-      );
+      data.hasCSS = !!addStyleSheet(ownerDocument);
     }
     if (!supportsUnknownElements) {
       shivMethods(ownerDocument, data);
@@ -323,4 +315,4 @@
     module.exports = html5;
   }
 
-}(typeof window !== "undefined" ? window : this, document));
+}(window || this, document));
