@@ -201,17 +201,20 @@
       return createElement(nodeName, ownerDocument, data);
     };
 
-    ownerDocument.createDocumentFragment = Function('h,f', 'return function(){' +
-      'var n=f.cloneNode(),c=n.createElement;' +
-      'h.shivMethods&&(' +
-        // unroll the `createElement` calls
-        getElements().join().replace(/[\w\-:]+/g, function(nodeName) {
-          data.createElem(nodeName);
-          data.frag.createElement(nodeName);
-          return 'c("' + nodeName + '")';
-        }) +
-      ');return n}'
-    )(html5, data.frag);
+    ownerDocument.createDocumentFragment = function(h,f){
+      return function(){ 
+        var n=f.cloneNode(),c=n.createElement;
+        h.shivMethods&&(
+          // unroll the `createElement` calls
+          getElements().join().replace(/[\w\-:]+/g, function(nodeName) {
+            data.createElem(nodeName);
+            data.frag.createElement(nodeName);
+            return c("' + nodeName + '");
+          }) 
+        );
+        return n;
+      };
+    }(html5, data.frag); 
   }
 
   /*--------------------------------------------------------------------------*/
