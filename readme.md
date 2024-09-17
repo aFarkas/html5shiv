@@ -76,7 +76,7 @@ window.html5 = {
 };
 ```
 
-### `html5.shivMethods`
+### `html5.shivMethods` 
 
 If the `shivMethods` option is set to `true` (by default) HTML5 Shiv will override `document.createElement`/`document.createDocumentFragment` in Internet Explorer 6-8 to allow dynamic DOM creation of HTML5 elements. 
 
