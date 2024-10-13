@@ -148,5 +148,55 @@ container.innerHTML = '<section>This is a section</section>';
 A [detailed changelog of html5shiv](https://github.com/aFarkas/html5shiv/wiki) is available.
 
 ### Why is it called a *shiv*?
+https://senprints.com/search?s=Knitting+Yarn+Loveting+Shirt+for+Women+Grandma+Mother+Yarn|+Deals&spsid=122536
+https://senprints.com/search?s=Badminton+Heartbeat+Vintage+Retro+Gift+T-Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=Girl+Likes+Badminton+Shuttlecock+Hobby+Sports|+Deals&spsid=122536
+https://senprints.com/search?s=Rainbow+Unicorn+Kawaii+Teen+Girls+Uni+I+Glitterally+Cant|+Deals&spsid=122536
+https://senprints.com/search?s=Womens+Bridal+Shower+Wedding+Gift+For+Bride+Mom+Mother+Of+The+Bride|+Deals&spsid=122536
+https://senprints.com/search?s=Cool+I+Dig+Clams+Funny+Clamming+Gift+Clam+Digging+Men+Women+32|+Deals&spsid=122536
+https://senprints.com/search?s=Pretend+Im+A+Jellyfish+Scuba+Diving|+Deals&spsid=122536
+https://senprints.com/search?s=Skydiving+Parachute+Retro+Skydiver+Gift|+Deals&spsid=122536
+https://senprints.com/search?s=Dangerous+Shark+Cute|+Deals&spsid=122536
+https://senprints.com/search?s=I+love+Skateboarding1060+T-Shirt+T-Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=Fire+Fighter+Gifts+T-+Shirt+World+Best+Firefighter+shirt+Firefighter+Birthday+Gift+T-+Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=Mens+9th+Wedding+Anniversary+Gift+Best+Husband+Since+2011+T-Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=Dancing+Street+Hip+Hop+breakdancing+street+dancing|+Deals&spsid=122536
+https://senprints.com/search?s=Astronauts+Moon+Swing+Stars+Galaxy+Astronaut+Universe+Space|+Deals&spsid=122536
+https://senprints.com/search?s=Bullseye+Target+Archery+Target+Prank+Bulls+Eye+Funny+Prank|+Deals&spsid=122536
+https://senprints.com/search?s=Boo+Carrier+Aircraft+Funny+Halloween+For+Military+Navy+Black+shirt|+Deals&spsid=122536
+https://senprints.com/search?s=Labrador+Gifts+All+Food+Must+Go+To+The+Lab+For+Testing+T-Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=Ask+Me+About+My+Beard+T-Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=I+Freaking+Hate+Diabetes+T-Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=Retro+Vintage+Female+Photographer+Design+Photography|+Deals&spsid=122536
+https://senprints.com/search?s=Rottweiler+Dog+Classic+T-Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=Womens+Neurosyphilis+Child+Awareness+Father+Bear+Support+Ribbon+V-Neck+T-Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=At+our+age+we+need+glasses+very+funny+drinking+cheers+quotes+and+saying1+T-Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=Dog+Walker+Inspector+Chows+Sheriff+Dog+Trainer+Chow+Chow|+Deals&spsid=122536
+https://senprints.com/search?s=Sunflower+Gnomes+For+Gardener+Florist+Funny+Garden|+Deals&spsid=122536
+https://senprints.com/search?s=50++Fabulous+50+Years+Old+50th+Birthday+Diamond+Crown+Shoes+T-Shirt+Hoodie+shirt|+Deals&spsid=122536
+https://senprints.com/search?s=Santa+Sleigh+Reindeer+Quails+Christmas+Birds+Lover+Family|+Deals&spsid=122536
+https://senprints.com/search?s=Little+Miss+Juneteenth+Dabbing+Boy|+Deals&spsid=122536
+https://senprints.com/search?s=Valentines+Day+Dogs+Lover+T-+Shirt+Valentine's+day+My+Hearts+Belongs+To+a+B+O+S+T+O+N+T+E+R+R+I+E+R+Dog+Lover+T-+Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=USA+American+Flag+Patriotic+Dog+Brittany+Shirt+HH220603010|+Deals&spsid=122536
+https://senprints.com/search?s=I+Love+It+When+She+Bends+Over+T-Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=You+Are+My+Sunshine+Sunflower+Basset+Hound+Dog+T-Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=Red+White+Blue+T+Rex+Dinosaur+Firework+4th+Of+July|+Deals&spsid=122536
+https://senprints.com/search?s=Queen+Of+All+The+Hearts|+Deals&spsid=122536
+https://senprints.com/search?s=Autism+Autistic+Giraffe+Autism+Giraffe+Walking+A+Different+Path+Autism+Awareness+81+Autism+Awareness|+Deals&spsid=122536
+https://senprints.com/search?s=ANIME+VIDEO+GAMES+FOOD+I+DONT+CARE+Funny+Gaming+Anime+Lover+54|+Deals&spsid=122536
+https://senprints.com/search?s=SenPrints|+Deals&spsid=122536
+https://senprints.com/search?s=Taurus+Born+Cute+Girl+Astrology+Design+Proud+Bull+Zodiac+Art|+Deals&spsid=122536
+https://senprints.com/search?s=Safari+Tour+Guide+Tanzania+Kenya+Halloween|+Deals&spsid=122536
+https://senprints.com/search?s=80s+Mama+Retro+Throwback+Fashion+Disco+Lover+Mom+Party|+Deals&spsid=122536
+https://senprints.com/search?s=Love+Teacher+-+Love+To+Teach+Appke+-+Hannelorefreund|+Deals&spsid=122536
+https://senprints.com/search?s=Womens+Golden+Mom+Retro+Sunset+Golden+Retriever+Lover+Gift+Dog+Mama+T-Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=American+Pit+Bull+Terrier+Yoga+Premium+T-Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=Dog+Grayhound+Galgo+Espanol+And+Wine+Spanish+Greyhound+Galgo+21|+Deals&spsid=122536
+https://senprints.com/search?s=Rabbit+Shirt+-+Bunny+T-Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=I+Love+My+Girlfriend+Shirt+I+Heart+My+Girlfriend+Shirt+GF+T-Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=Happy+Easter+Eggs+Bunny+Dog+Goldendoodle+Boys+Girls+T-Shirt|+Deals&spsid=122536
+https://senprints.com/search?s=Retro+Vintage+Sunset+Cat+Vector|+Deals&spsid=122536
+https://senprints.com/search?s=Strange+cosmic+bats+UFO+T-Shirt|+Deals&spsid=122536
+
 
 The term **shiv** [originates](http://ejohn.org/blog/html5-shiv/) from [John Resig](https://github.com/jeresig), who was thought to have used the word for its slang meaning, *a sharp object used as a knife-like weapon*, intended for Internet Explorer. Truth be known, John probably intended to use the word [shim](http://en.wikipedia.org/wiki/Shim_(computing)), which in computing means *an application compatibility workaround*. Rather than correct his mispelling, most developers familiar with Internet Explorer appreciated the visual imagery. And that, kids, is [etymology](https://en.wikipedia.org/wiki/Etymology).
