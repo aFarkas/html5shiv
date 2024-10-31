@@ -1,7 +1,14 @@
 # The HTML5 Shiv
 
 The HTML5 Shiv enables use of HTML5 sectioning elements in legacy Internet Explorer and provides basic HTML5 styling for Internet Explorer 6-9, Safari 4.x (and iPhone 3.x), and Firefox 3.x.
-
+- https://medium.com/@AdPrintify
+- https://medium.com/@AdPrintify/-643372c1af5e
+- https://medium.com/@AdPrintify/goats-make-me-happy-embracing-quirkiness-and-the-joys-of-animal-love-72a4ba1516f8
+- https://medium.com/@AdPrintify/james-bond-island-phang-nga-bay-thailand-13d878e5b194
+- https://medium.com/@AdPrintify/mom-life-the-t-shirt-that-became-a-movement-a975464dae20
+- https://medium.com/@AdPrintify/royal-barge-procession-700-years-of-thai-unity-tradition-and-artistry-in-celebrating-national-c5f1477e1896
+- https://medium.com/@AdPrintify/the-icu-nurse-tee-honor-dedication-and-the-heart-of-critical-care-73c35ebb2046
+- https://medium.com/@AdPrintify/turning-glass-into-art-the-power-of-creative-superpowers-f2a27be3f1b5
 ### What do these files do?
 
 #### `html5shiv.js`
